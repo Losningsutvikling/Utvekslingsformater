@@ -1,0 +1,1087 @@
+{
+  "$id": "bufdir-bfk-schema-v3.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "BFK",
+  "description": "Barnevernfaglig kvalitetssystem",
+  "type": "object",
+  "properties": {
+    "bfk": {
+      "$ref": "#/definitions/BarnevernfagligKvalitetssystem"
+    }
+  },
+  "definitions": {
+    "InfoElement": {
+      "type": "object",
+      "required": [
+        "id",
+        "uri",
+        "navn"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "uri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "navn": {
+          "type": "string"
+        },
+        "beskrivelse": {
+          "type": "string"
+        },
+        "utgatt_etter_versjon": {
+          "type": "string"
+        },
+        "sortering": {
+          "type": "integer"
+        },
+        "implementeringstekst": {
+          "type": "string",
+          "description": "Implementeringstips til utvikler"
+        },
+        "emner": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Emner fra begrepskatalogen"
+        },
+        "tekstreferanser": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Objektreferanse"
+          },
+          "description": "Referanse til #/definitions/Kunnskapstekst eller #/definitions/Kilde"
+        }
+      },
+      "description": "Abstrakt baseklasse i BFK. Vil ikke forekomme i json-filen, med for dokumentasjonsformål."
+    },
+    "BegrepElement": {
+      "type": "object",
+      "required": [
+        "id",
+        "uri",
+        "navn"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "uri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "navn": {
+          "type": "string"
+        },
+        "beskrivelse": {
+          "type": "string"
+        },
+        "utgatt_etter_versjon": {
+          "type": "string"
+        },
+        "sortering": {
+          "type": "integer"
+        },
+        "implementeringstekst": {
+          "type": "string",
+          "description": "Implementeringstips til utvikler"
+        },
+        "emner": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Emner fra begrepskatalogen"
+        },
+        "tekstreferanser": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Objektreferanse"
+          },
+          "description": "Referanse til #/definitions/Kunnskapstekst eller #/definitions/Kilde"
+        },
+        "begrep": {
+          "$ref": "#/definitions/Objektreferanse",
+          "description": "Referanse til #/definitions/Begrep"
+        }
+      },
+      "description": "Abstrakt baseklasse for klasser hvor innholdet kan knyttes til begrep. Vil ikke forekomme i json-filen, med for dokumentasjonsformål."
+    },
+    "TekstBase": {
+      "type": "object",
+      "required": [
+        "id",
+        "uri",
+        "navn"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "uri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "navn": {
+          "type": "string"
+        },
+        "beskrivelse": {
+          "type": "string"
+        },
+        "utgatt_etter_versjon": {
+          "type": "string"
+        },
+        "sortering": {
+          "type": "integer"
+        },
+        "implementeringstekst": {
+          "type": "string",
+          "description": "Implementeringstips til utvikler"
+        },
+        "emner": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Emner fra begrepskatalogen"
+        },
+        "tekstreferanser": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Objektreferanse"
+          },
+          "description": "Referanse til #/definitions/Kunnskapstekst eller #/definitions/Kilde"
+        },
+        "teksttype": {
+          "$ref": "#/definitions/TekstType"
+        }
+      },
+      "description": "Abstrakt baseklasse for artikkelinnhold i BFK. Vil ikke forekomme i json-filen, med for dokumentasjonsformål."
+    },
+    "Objektreferanse": {
+      "type": "object",
+      "description": "Objektreferanse med InfoElementets Id, Type og Uri referanse i stringformat",
+      "properties": {
+        "refId": {
+          "type": "integer"
+        },
+        "refType": {
+          "type": "string"
+        },
+        "refUri": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "BarnevernfagligKvalitetssystem": {
+      "type": "object",
+      "description": "Kvalitetssystemet",
+      "required": [
+        "versjon",
+        "versjonsInformasjon"
+      ],
+      "properties": {
+        "versjon": {
+          "type": "string"
+        },
+        "versjonsInformasjon": {
+          "type": "string"
+        },
+        "gjelderFra": {
+          "type": "string",
+          "format": "date"
+        },
+        "begrep": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Begrep"
+          }
+        },
+        "kunnskapsmodell": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Kunnskapsmodell"
+          }
+        },
+        "dimensjon": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Dimensjon"
+          }
+        },
+        "omrade": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Omrade"
+          }
+        },
+        "fase": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Fase"
+          }
+        },
+        "prosess": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Prosess"
+          }
+        },
+        "oppgave": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Oppgave"
+          }
+        },
+        "liste": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Liste"
+          }
+        },
+        "listeelement": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ListeElement"
+          }
+        },
+        "sporsmal": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Sporsmal"
+          }
+        },
+        "kunnskapstekst": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Kunnskapstekst"
+          }
+        },
+        "kilde": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Kilde"
+          }
+        },
+        "publikasjon": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Publikasjon"
+          }
+        }
+      }
+    },
+    "Begrep": {
+      "type": "object",
+      "required": [
+        "id",
+        "uri",
+        "navn"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "uri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "navn": {
+          "type": "string"
+        },
+        "beskrivelse": {
+          "type": "string"
+        },
+        "utgatt_etter_versjon": {
+          "type": "string"
+        },
+        "sortering": {
+          "type": "integer"
+        },
+        "implementeringstekst": {
+          "type": "string",
+          "description": "Implementeringstips til utvikler"
+        },
+        "emner": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Emner fra begrepskatalogen"
+        },
+        "tekstreferanser": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Objektreferanse"
+          },
+          "description": "Referanse til #/definitions/Kunnskapstekst eller #/definitions/Kilde"
+        },
+        "kilde": {
+          "type": "string",
+          "format": "uri"
+        },
+        "eier": {
+          "type": "string"
+        },
+        "definisjon": {
+          "type": "string"
+        }
+      }
+    },
+    "Kunnskapsmodell": {
+      "type": "object",
+      "required": [
+        "id",
+        "uri",
+        "navn"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "uri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "navn": {
+          "type": "string"
+        },
+        "beskrivelse": {
+          "type": "string"
+        },
+        "utgatt_etter_versjon": {
+          "type": "string"
+        },
+        "sortering": {
+          "type": "integer"
+        },
+        "implementeringstekst": {
+          "type": "string",
+          "description": "Implementeringstips til utvikler"
+        },
+        "emner": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Emner fra begrepskatalogen"
+        },
+        "tekstreferanser": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Objektreferanse"
+          },
+          "description": "Referanse til #/definitions/Kunnskapstekst eller #/definitions/Kilde"
+        },
+        "dimensjoner": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Objektreferanse"
+          },
+          "minItems": 3,
+          "maxItems": 3,
+          "description": "Kunnskapsmodellens underliggende dimensjoner"
+        }
+      }
+    },
+    "Dimensjon": {
+      "type": "object",
+      "required": [
+        "id",
+        "uri",
+        "navn"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "uri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "navn": {
+          "type": "string"
+        },
+        "beskrivelse": {
+          "type": "string"
+        },
+        "utgatt_etter_versjon": {
+          "type": "string"
+        },
+        "sortering": {
+          "type": "integer"
+        },
+        "implementeringstekst": {
+          "type": "string",
+          "description": "Implementeringstips til utvikler"
+        },
+        "emner": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Emner fra begrepskatalogen"
+        },
+        "tekstreferanser": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Objektreferanse"
+          },
+          "description": "Referanse til #/definitions/Kunnskapstekst eller #/definitions/Kilde"
+        },
+        "begrep": {
+          "$ref": "#/definitions/Objektreferanse",
+          "description": "Referanse til #/definitions/Begrep"
+        },
+        "omrader": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Objektreferanse"
+          },
+          "minItems": 3,
+          "maxItems": 4,
+          "description": "Dimensjonens underliggende områder"
+        }
+      }
+    },
+    "Omrade": {
+      "type": "object",
+      "required": [
+        "id",
+        "uri",
+        "navn"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "uri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "navn": {
+          "type": "string"
+        },
+        "beskrivelse": {
+          "type": "string"
+        },
+        "utgatt_etter_versjon": {
+          "type": "string"
+        },
+        "sortering": {
+          "type": "integer"
+        },
+        "implementeringstekst": {
+          "type": "string",
+          "description": "Implementeringstips til utvikler"
+        },
+        "emner": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Emner fra begrepskatalogen"
+        },
+        "tekstreferanser": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Objektreferanse"
+          },
+          "description": "Referanse til #/definitions/Kunnskapstekst eller #/definitions/Kilde"
+        },
+        "begrep": {
+          "$ref": "#/definitions/Objektreferanse",
+          "description": "Referanse til #/definitions/Begrep"
+        }
+      }
+    },
+    "Fase": {
+      "type": "object",
+      "required": [
+        "id",
+        "uri",
+        "navn"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "uri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "navn": {
+          "type": "string"
+        },
+        "beskrivelse": {
+          "type": "string"
+        },
+        "utgatt_etter_versjon": {
+          "type": "string"
+        },
+        "sortering": {
+          "type": "integer"
+        },
+        "implementeringstekst": {
+          "type": "string",
+          "description": "Implementeringstips til utvikler"
+        },
+        "emner": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Emner fra begrepskatalogen"
+        },
+        "tekstreferanser": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Objektreferanse"
+          },
+          "description": "Referanse til #/definitions/Kunnskapstekst eller #/definitions/Kilde"
+        },
+        "begrep": {
+          "$ref": "#/definitions/Objektreferanse",
+          "description": "Referanse til #/definitions/Begrep"
+        },
+        "prosesser": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Objektreferanse"
+          },
+          "description": "Fasens underliggende prosesser"
+        }
+      }
+    },
+    "Prosess": {
+      "type": "object",
+      "required": [
+        "id",
+        "uri",
+        "navn"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "uri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "navn": {
+          "type": "string"
+        },
+        "beskrivelse": {
+          "type": "string"
+        },
+        "utgatt_etter_versjon": {
+          "type": "string"
+        },
+        "sortering": {
+          "type": "integer"
+        },
+        "implementeringstekst": {
+          "type": "string",
+          "description": "Implementeringstips til utvikler"
+        },
+        "emner": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Emner fra begrepskatalogen"
+        },
+        "tekstreferanser": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Objektreferanse"
+          },
+          "description": "Referanse til #/definitions/Kunnskapstekst eller #/definitions/Kilde"
+        },
+        "begrep": {
+          "$ref": "#/definitions/Objektreferanse",
+          "description": "Referanse til #/definitions/Begrep"
+        },
+        "prosesstype": {
+          "$ref": "#/definitions/ProsessType"
+        },
+        "oppgaver": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Objektreferanse"
+          },
+          "description": "Prosessens underliggende oppgaver"
+        }
+      }
+    },
+    "Oppgave": {
+      "type": "object",
+      "required": [
+        "id",
+        "uri",
+        "navn"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "uri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "navn": {
+          "type": "string"
+        },
+        "beskrivelse": {
+          "type": "string"
+        },
+        "utgatt_etter_versjon": {
+          "type": "string"
+        },
+        "sortering": {
+          "type": "integer"
+        },
+        "implementeringstekst": {
+          "type": "string",
+          "description": "Implementeringstips til utvikler"
+        },
+        "emner": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Emner fra begrepskatalogen"
+        },
+        "tekstreferanser": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Objektreferanse"
+          },
+          "description": "Referanse til #/definitions/Kunnskapstekst eller #/definitions/Kilde"
+        },
+        "begrep": {
+          "$ref": "#/definitions/Objektreferanse",
+          "description": "Referanse til #/definitions/Begrep"
+        },
+        "oppgavetype": {
+          "$ref": "#/definitions/OppgaveType"
+        },
+        "sporsmal": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Objektreferanse"
+          }
+        },
+        "dimensjoner": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Objektreferanse"
+          }
+        },
+        "omrader": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Objektreferanse"
+          }
+        },
+        "lister": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Objektreferanse"
+          }
+        }
+      }
+    },
+    "Liste": {
+      "type": "object",
+      "required": [
+        "id",
+        "uri",
+        "navn"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "uri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "navn": {
+          "type": "string"
+        },
+        "beskrivelse": {
+          "type": "string"
+        },
+        "utgatt_etter_versjon": {
+          "type": "string"
+        },
+        "sortering": {
+          "type": "integer"
+        },
+        "implementeringstekst": {
+          "type": "string",
+          "description": "Implementeringstips til utvikler"
+        },
+        "emner": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Emner fra begrepskatalogen"
+        },
+        "tekstreferanser": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Objektreferanse"
+          },
+          "description": "Referanse til #/definitions/Kunnskapstekst eller #/definitions/Kilde"
+        },
+        "begrep": {
+          "$ref": "#/definitions/Objektreferanse",
+          "description": "Referanse til #/definitions/Begrep"
+        },
+        "listeelementer": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Objektreferanse"
+          }
+        }
+      }
+    },
+    "ListeElement": {
+      "type": "object",
+      "required": [
+        "id",
+        "uri",
+        "navn"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "uri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "navn": {
+          "type": "string"
+        },
+        "beskrivelse": {
+          "type": "string"
+        },
+        "utgatt_etter_versjon": {
+          "type": "string"
+        },
+        "sortering": {
+          "type": "integer"
+        },
+        "implementeringstekst": {
+          "type": "string",
+          "description": "Implementeringstips til utvikler"
+        },
+        "emner": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Emner fra begrepskatalogen"
+        },
+        "tekstreferanser": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Objektreferanse"
+          },
+          "description": "Referanse til #/definitions/Kunnskapstekst eller #/definitions/Kilde"
+        },
+        "begrep": {
+          "$ref": "#/definitions/Objektreferanse",
+          "description": "Referanse til #/definitions/Begrep"
+        },
+        "kode": {
+          "type": "string"
+        }
+      }
+    },
+    "Sporsmal": {
+      "type": "object",
+      "required": [
+        "id",
+        "uri",
+        "navn"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "uri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "navn": {
+          "type": "string"
+        },
+        "beskrivelse": {
+          "type": "string"
+        },
+        "utgatt_etter_versjon": {
+          "type": "string"
+        },
+        "sortering": {
+          "type": "integer"
+        },
+        "implementeringstekst": {
+          "type": "string",
+          "description": "Implementeringstips til utvikler"
+        },
+        "emner": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Emner fra begrepskatalogen"
+        },
+        "tekstreferanser": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Objektreferanse"
+          },
+          "description": "Referanse til #/definitions/Kunnskapstekst eller #/definitions/Kilde"
+        },
+        "begrep": {
+          "$ref": "#/definitions/Objektreferanse",
+          "description": "Referanse til #/definitions/Begrep"
+        },
+        "svardatatype": {
+          "$ref": "#/definitions/SvarDataType"
+        },
+        "svaralternativ": {
+          "$ref": "#/definitions/Objektreferanse"
+        },
+        "eksternreferanse": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "Kunnskapstekst": {
+      "type": "object",
+      "required": [
+        "id",
+        "uri",
+        "navn",
+        "tekst"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "uri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "navn": {
+          "type": "string"
+        },
+        "beskrivelse": {
+          "type": "string"
+        },
+        "utgatt_etter_versjon": {
+          "type": "string"
+        },
+        "sortering": {
+          "type": "integer"
+        },
+        "implementeringstekst": {
+          "type": "string",
+          "description": "Implementeringstips til utvikler"
+        },
+        "emner": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Emner fra begrepskatalogen"
+        },
+        "tekstreferanser": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Objektreferanse"
+          },
+          "description": "Referanse til #/definitions/Kunnskapstekst eller #/definitions/Kilde"
+        },
+        "teksttype": {
+          "$ref": "#/definitions/TekstType"
+        },
+        "tekst": {
+          "type": "string"
+        }
+      }
+    },
+    "Kilde": {
+      "type": "object",
+      "required": [
+        "id",
+        "uri",
+        "navn"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "uri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "navn": {
+          "type": "string"
+        },
+        "beskrivelse": {
+          "type": "string"
+        },
+        "utgatt_etter_versjon": {
+          "type": "string"
+        },
+        "sortering": {
+          "type": "integer"
+        },
+        "implementeringstekst": {
+          "type": "string",
+          "description": "Implementeringstips til utvikler"
+        },
+        "emner": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Emner fra begrepskatalogen"
+        },
+        "tekstreferanser": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Objektreferanse"
+          },
+          "description": "Referanse til #/definitions/Kunnskapstekst eller #/definitions/Kilde"
+        },
+        "teksttype": {
+          "$ref": "#/definitions/TekstType"
+        },
+        "forfatter": {
+          "type": "string"
+        },
+        "utgiver": {
+          "type": "string"
+        },
+        "utgivelsesar": {
+          "type": "string"
+        },
+        "utgivelsessted": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "hentet": {
+          "type": "string",
+          "format": "date",
+          "description": "Dato når kilden ble opprettet"
+        },
+        "publikasjon": {
+          "$ref": "#/definitions/Objektreferanse"
+        }
+      }
+    },
+    "Publikasjon": {
+      "type": "object",
+      "required": [
+        "id",
+        "uri",
+        "navn"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "uri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "navn": {
+          "type": "string"
+        },
+        "beskrivelse": {
+          "type": "string"
+        },
+        "utgatt_etter_versjon": {
+          "type": "string"
+        },
+        "sortering": {
+          "type": "integer"
+        },
+        "implementeringstekst": {
+          "type": "string",
+          "description": "Implementeringstips til utvikler"
+        },
+        "emner": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Emner fra begrepskatalogen"
+        },
+        "tekstreferanser": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Objektreferanse"
+          },
+          "description": "Referanse til #/definitions/Kunnskapstekst eller #/definitions/Kilde"
+        },
+        "utgiver": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "SvarDataType": {
+      "type": "string",
+      "enum": [
+        "IngenSvar",
+        "Boolsk",
+        "Tekst",
+        "ListeEnvalg",
+        "ListeFlervalg"
+      ]
+    },
+    "TekstType": {
+      "type": "string",
+      "enum": [
+        "Hjelpetekst",
+        "Fordypningstekst",
+        "Veiledningstekst",
+        "JuridiskKilde",
+        "FagligKilde"
+      ]
+    },
+    "OppgaveType": {
+      "type": "string",
+      "enum": [
+        "Normal",
+        "Stoppunkt"
+      ]
+    },
+    "ProsessType": {
+      "type": "string",
+      "enum": [
+        "Normal",
+        "Akutt",
+		"Ledermodul"
+      ]
+    }
+  }
+}

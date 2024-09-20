@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kodelister versjon="0.8.0" nmsp="https://Bufdir.no/Melding_v0.8.0">
+
+<kodeliste navn="MeldingsForbindelseType" id="BUF_30F7A6FE-6D88-4C5A-9881-12A69821780D">
+	<kode verdi="Oppdatering" 	tekst="Oppdatering av tidligere melding" />
+	<kode verdi="Tillegg" 		tekst="Tillegg til melding, f.eks. vedlegg" />
+	<kode verdi="Trukket" 		tekst="Trukket melding (det melding gjalt er ikke aktuelt mer)" />
+	<kode verdi="Slettet" 		tekst="Slettet melding (melding var sendt ved feiltakelse, skal slettes hos mottaker)" />
+	<kode verdi="ApplikasjonsKvittering" 	tekst="Kvittering på mottatt melding (fra fagsystem)" />
+	<kode verdi="SaksbehandlerKvittering" 	tekst="Kvittering på mottatt melding (fra saksbehandler)" />
+	<kode verdi="Svar" 			tekst="Svar på mottatt melding" />
+</kodeliste>
+
+</kodelister>

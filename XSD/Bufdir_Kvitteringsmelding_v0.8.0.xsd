@@ -1,0 +1,32 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:bg="https://Bufdir.no/Generelt_v0.8.0" 
+	xmlns:mld="https://Bufdir.no/Melding_v0.8.0" 
+	xmlns="https://Bufdir.no/KvitteringsMelding_v0.8.0" 
+	targetNamespace="https://Bufdir.no/KvitteringsMelding_v0.8.0" 
+	elementFormDefault="qualified" 
+	version="0.8.0">
+	<xs:import namespace="https://Bufdir.no/Generelt_v0.8.0" schemaLocation="Bufdir_Generelt_v0.8.0.xsd"/>
+	<xs:import namespace="https://Bufdir.no/Melding_v0.8.0" schemaLocation="Bufdir_Melding_v0.8.0.xsd"/>
+
+	<xs:element name="KvitteringsMelding" id="BUF_4ED03B9B-FFEF-47C0-B44C-8781A28AAB4A">
+		<xs:annotation>
+			<xs:documentation>
+				Kvittering på saksbehandlernivå, sendes etter saksbehandler har vært inne i melding.
+			</xs:documentation>
+			<xs:appinfo>
+				<ledetekst>Kvittering</ledetekst>
+				<MeldingsForbindelse>SaksbehandlerKvittering</MeldingsForbindelse>
+				<Aktor>1.Linje|2.Linje</Aktor>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="mld:MeldingType">
+					<xs:sequence>
+						<xs:element name="Informasjon" type="bg:Fritekst" minOccurs="0" id="BUF_7FE410C1-97FE-48CE-9407-AC96041D2C5E"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>		
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
