@@ -1,0 +1,52 @@
+﻿@using System.Xml.Schema
+@using System.Xml
+@using DemoApp.Models
+@model DemoApp.Pages.MeldingModel
+@{
+    var schemasInProtocolVersion = XsdUtils.GetSchemasForProtocol(Model.SelectedProtocol!.TargetNamespace!);
+    bool disable = false;// !string.IsNullOrEmpty(Model.SelectedSkjemaElement);
+    string disableCssClass = (disable) ? "disabled_button" : "";
+    string disableStr = (disable) ? "disabled" : "";
+        <div>
+        <span class="ledetekst">Skjema:</span>
+        <select name="@Konstanter.SelectedSkjema" onchange="this.form.submit()">
+            <option value="">- velg skjema / melding -</option>
+            @foreach (XmlSchema schema in schemasInProtocolVersion)
+            {
+                var availableSkjema = XsdUtils.ElementsExtending(schema, Konstanter.MeldingType);
+                if (availableSkjema.Count > 0)
+                {
+                    <optgroup label="@schema.TargetNamespace"></optgroup>
+                    foreach (XmlSchemaElement rotElement in availableSkjema)
+                    {
+                        bool disabledOption = !XsdUtils.GetUsedInAksjon(rotElement, Model.SelectedAksjon);
+                        bool selected = false;
+                        if (Model.SelectedSkjemaElementName == rotElement.QualifiedName.ToString())
+                        {
+                                selected = true;
+//                                header = XsdUtils.GetMeldingshode(XsdUtils.GetXsdChildren(rotElement), true);
+                        }
+                        string? caption = XsdUtils.GetCaption(rotElement, true);
+                        if (disabledOption)
+                        {
+                            <option value="@rotElement.QualifiedName" disabled>@caption</option>
+                        }
+                        else
+                        {
+                            if (selected)
+                            {
+                                <option value="@rotElement.QualifiedName" selected>@caption</option>
+                            }
+                            else
+                            {
+                                <option value="@rotElement.QualifiedName">@caption</option>
+                            }
+                        }
+
+                    }
+                }
+            }
+            </select>
+            <hr />
+        </div>
+}

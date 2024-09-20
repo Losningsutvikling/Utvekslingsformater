@@ -1,0 +1,40 @@
+﻿@page
+@using DemoApp.Models
+@using DemoApp.Models.Fagsystem
+@using DemoApp.Models.ViewModels
+@using System.Xml.Schema
+@using System.Xml
+@model DemoApp.Pages.MeldingModel
+@{
+    @await Html.PartialAsync("/Pages/Partial/MeldingsprotokollVersjon.cshtml", Model)
+
+    if (Model.SelectedProtocol != null)
+    {
+    @await Html.PartialAsync("/Pages/Partial/MeldingsAksjon.cshtml", Model)
+        
+    @await Html.PartialAsync("/Pages/Partial/Skjemavelger.cshtml", Model)
+
+    @if (!string.IsNullOrEmpty(Model.SelectedSkjemaElementName))
+        {
+            var values = Model.PrefillValues;
+    @await Html.PartialAsync("/Pages/Partial/Gruppe.cshtml", new PropertyRendererModel(Model, "", Model.SelectedXmlSchemaElement, values))
+                <input name="Send" type="submit" value="Send/Lagre" />
+                <input name="LagHTML" type="submit" value="Lag HTML" />
+        }
+
+    }
+}
+
+@section Scripts
+{
+@foreach (ControlEnabler enabler in Model.controlEnablers)
+{
+    <script>
+        registerDependentControl('@enabler.EnabledControlId', '@enabler.ControlId', '@enabler.ControlValue');
+    </script>
+}
+<script>
+    setDependentControlsDefault();
+</script>
+}
+

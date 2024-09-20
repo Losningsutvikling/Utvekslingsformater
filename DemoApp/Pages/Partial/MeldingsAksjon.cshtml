@@ -1,0 +1,48 @@
+﻿@using DemoApp.Models
+@model DemoApp.Pages.MeldingModel
+@{
+    var aksjonEnum = XsdUtils.GetTypeDefinition(Model.SelectedProtocol, Konstanter.MeldingsForbindelseType) ??
+        throw new Exception($"Finner ikke aksjonsverdier for type {Konstanter.MeldingsForbindelseType}");
+    var kodeliste = XsdUtils.GetKodelisteVerdier(aksjonEnum);
+    kodeliste.Insert(0, new("", "- velg forbindelsestype -"));
+    kodeliste.Insert(1, new("Ny", "Ny melding"));
+    bool disable = false;// !string.IsNullOrEmpty(Model.SelectedAksjon);
+    string disableCssClass = (disable) ? "disabled_button" : "";
+    string disableStr = (disable) ? "disabled" : "";
+    <div>
+    <span class="ledetekst @disableCssClass">Hendelse</span>
+    @if (disable)
+    {
+        <input type="hidden" name="@Konstanter.SelectedAksjon" id="@Konstanter.SelectedAksjon" value="@Model.SelectedAksjon" />
+        <select class="dropdown" disabled>
+                @foreach (var kode in kodeliste)
+                {
+                    if (kode.Key == Model.SelectedAksjon)
+                    {
+                        <option value="@kode.Key" selected>@kode.Value</option>
+                    }
+                    else
+                    {
+                        <option value="@kode.Key">@kode.Value</option>
+                    }
+                }
+        </select>
+    }
+    else
+    {
+        <select class="dropdown" name="@Konstanter.SelectedAksjon" id="@Konstanter.SelectedAksjon" onchange="this.form.submit()">
+            @foreach (var kode in kodeliste)
+            {
+                if (kode.Key == Model.SelectedAksjon)
+                {
+                    <option value="@kode.Key" selected>@kode.Value</option>
+                }
+                else
+                {
+                    <option value="@kode.Key">@kode.Value</option>
+                }
+            }
+        </select>
+    }
+    </div>
+}

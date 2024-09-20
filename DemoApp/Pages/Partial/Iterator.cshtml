@@ -1,0 +1,44 @@
+﻿@using DemoApp.Models
+@using DemoApp.Models.ViewModels
+@model PropertyIteratorRendererModel
+@{
+    var caption = Model.GetCaption(false);
+    var elements = XsdUtils.GetXsdChildren(Model.Prop);
+    var description = Model.GetDescription();
+    bool synligGruppe = !string.IsNullOrEmpty(caption);
+    string cssClass = (synligGruppe) ? "synlig_gruppe" : "anonym_gruppe";
+    var enumType = Model.GetIterateTypeDefinition()
+        ?? throw new Exception($"Could not find type {Model.Prop.ToString()}");
+    string enumTypeName = XsdUtils.GetName(enumType) ?? "";
+    var kodeliste = XsdUtils.GetKodeliste(enumType);
+    var isOptional = XsdUtils.GetIsOptional(Model.Prop);
+    var cssClassVariable = isOptional ? "hidden" : "";
+    var clickActionTemplate = isOptional ? "setHiddenByCheckbox('[id1]', '[id2]')" : "";
+    @foreach (var kode in kodeliste!.koder!)
+        {
+            string id = Model.GetId() + "_" + kode.verdi + "_";
+            string idVariabelDiv = Model.GetId() + "_" + kode.verdi + "__container";
+            string onChangeHandler = clickActionTemplate.Replace("[id1]", id).Replace("[id2]", idVariabelDiv);
+            <div>
+                <input type="checkbox" value="@kode.verdi" id="@id" onchange="@onChangeHandler">
+                <label class="checkbox_tekst" for="@id">@kode.tekst</label>
+
+                <div id="@idVariabelDiv" class="option_container @cssClassVariable">
+                @foreach (var element in elements)
+                {
+                    if (XsdUtils.GetSimpleType(element) != enumType)
+                    {
+                        <div class="variabel">
+                            @{
+                                var elementModel = new PropertyRendererModel(Model.Melding, $"{id}", element, Model.Values, enumType);
+                                string controlName = XsdUtils.GetControlNameForProperty(element);
+                            }
+                            @await Html.PartialAsync($"/Pages/Partial/{controlName}.cshtml", elementModel)
+                        </div>
+                    }
+                }
+                </div>
+        </div>
+    }
+
+}

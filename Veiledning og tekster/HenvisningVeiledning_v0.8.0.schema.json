@@ -5,10 +5,19 @@
 	"description": "Tekster og veiliedning til henvisningsskjema til Bufetats tjenester",
 	"type": "object",
 	"properties": {
+		"sprak": 
+		{
+			"description": "Språkform for denne filen.  nb-NO, nn-NO, en, osv.",
+			"type": "string"
+		},
 		"henvisning": {
 			"$ref": "#/definitions/Henvisning"
 		}
 	},
+	"required": [
+		"sprak",
+		"henvisning"
+	],
 	"definitions": {
 		"Henvisning": {
 			"description": "Veiledning til henvisning",

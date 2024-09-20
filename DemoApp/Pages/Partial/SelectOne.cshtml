@@ -1,0 +1,52 @@
+﻿@using DemoApp.Models
+@using DemoApp.Models.Fagsystem
+@model DemoApp.Models.ViewModels.PropertyRendererModel
+@{
+    var enumValues = XsdUtils.GetKodelisteVerdier(Model.Prop);
+    var fixedValue = XsdUtils.GetFixedValue(Model.Prop);
+    var prefilled = TestdataGenerator.GetPrefilledValueFor(Model.Values, Model.GetId());
+    string value = fixedValue != "" ? fixedValue : ((prefilled?.Value) ?? "");
+    bool disable = ((fixedValue != "") || prefilled?.OpenToEdit == false);
+    string disableCssClass = (disable) ? "disabled_button" : "";
+    string disableStr = (disable) ? "disabled" : "";
+    <span class="ledetekst @disableCssClass">@Model.GetCaption(true)</span>
+    @await Html.PartialAsync($"/Pages/Partial/Beskrivelse.cshtml", @Model.GetDescription())
+    if (disable)
+    {
+        <select class="dropdown" name="@Model.GetId()" id="@Model.GetId()" disabled>
+            <option disabled selected value=""> -- Velg -- </option>
+            @{
+                foreach (var enumValue in enumValues)
+                {
+                    if (enumValue.Key == value)
+                    {
+                        <option value="@enumValue.Key" selected>@enumValue.Value</option>
+                    }
+                    else
+                    {
+                        <option value="@enumValue.Key">@enumValue.Value</option>
+                    }
+                }
+            }
+        </select>
+    }
+    else
+    {
+        <select class="dropdown" name="@Model.GetId()" id="@Model.GetId()" onchange="checkDependentControlsActivation(this)">
+            <option disabled selected value=""> -- Velg -- </option>
+            @{
+                foreach (var enumValue in enumValues)
+                {
+                    if (enumValue.Key == value)
+                    {
+                        <option value="@enumValue.Key" selected>@enumValue.Value</option>
+                    }
+                    else
+                    {
+                        <option value="@enumValue.Key">@enumValue.Value</option>
+                    }
+                }
+            }
+        </select>
+    }
+}

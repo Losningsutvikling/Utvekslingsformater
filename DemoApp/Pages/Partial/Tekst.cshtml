@@ -1,0 +1,32 @@
+﻿@using DemoApp.Models
+@using DemoApp.Models.Fagsystem
+@model DemoApp.Models.ViewModels.PropertyRendererModel
+@{
+    var minLength = Model.GetMinLength();
+    var maxLength = Model.GetMaxLength();
+    bool flerlinje = maxLength > 150;
+    string cssClassCaption = (flerlinje) ? "ledetekst_flerlinje" : "ledetekst";
+    var prefilled = TestdataGenerator.GetPrefilledValueFor(Model.Values, Model.GetId());
+    string value = (prefilled?.Value) ?? "";
+    bool disable = (prefilled?.OpenToEdit == false);
+    if (!disable)
+    {
+        Model.CheckAddEnabler();
+    }
+    string disableCssClass = (disable) ? "disabled_button" : "";
+    string disableStr = (disable) ? "disabled" : "";
+    string mandatoryMarker = Model.Mandatory ? "<span class='obligatorisk_markor'>*</span>" : "";
+    <div class="@cssClassCaption @disableCssClass">@Model.GetCaption(true)@Html.Raw(mandatoryMarker)</div>
+
+
+    @if (flerlinje)
+    {
+        @await Html.PartialAsync($"/Pages/Partial/Beskrivelse.cshtml", @Model.GetDescription())
+        <textarea class="flerlinjetekst @disableCssClass" name="@Model.GetId()" id="@Model.GetId()">@value</textarea>
+    }
+    else
+    {
+        <input type="text" class="enlinjetekst @disableCssClass" name="@Model.GetId()" id="@Model.GetId()" value="@value" @disableStr />
+        @await Html.PartialAsync($"/Pages/Partial/Beskrivelse.cshtml", @Model.GetDescription())
+    }
+}

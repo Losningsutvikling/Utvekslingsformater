@@ -1,0 +1,21 @@
+﻿@using DemoApp.Models.Fagsystem
+@using DemoApp.Models;
+@model DemoApp.Models.ViewModels.PropertyRendererModel
+@{
+    var prefilled = TestdataGenerator.GetPrefilledValueFor(Model.Values, Model.GetId());
+    string value = (prefilled?.Value) ?? "";
+    bool disable = (prefilled?.OpenToEdit == false);
+    string disableCssClass = (disable) ? "disabled_button" : "";
+    string disableStr = (disable) ? "disabled" : "";
+    <span class="ledetekst @disableCssClass">@Model.GetCaption(true)</span>
+    @await Html.PartialAsync($"/Pages/Partial/Beskrivelse.cshtml", @Model.GetDescription())
+    if (disable)
+    {
+        <input id="@Model.GetId()" disabled name="@Model.GetId()" type="date" class="dato" min="@DateTime.Now.AddDays(Konstanter.DagerFortid).ToString("yyyy-MM-dd")" max="@DateTime.Now.AddDays(Konstanter.DagerFremtid).ToString("yyyy-MM-dd")" value="@value" />
+    }
+    else
+    {
+        Model.CheckAddEnabler();
+        <input id="@Model.GetId()" name="@Model.GetId()" type="date" class="dato" min="@DateTime.Now.AddDays(Konstanter.DagerFortid).ToString("yyyy-MM-dd")" max="@DateTime.Now.AddDays(Konstanter.DagerFremtid).ToString("yyyy-MM-dd")" value="@value" />
+    }
+}

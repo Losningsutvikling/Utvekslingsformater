@@ -1,0 +1,21 @@
+﻿@using DemoApp.Models.Fagsystem
+@using System.Xml.Schema;
+@model DemoApp.Models.ViewModels.PropertyRendererModel
+@{
+    bool anyValuesInOptionalGroup = Model.Values.Any(v => v.Xpath.StartsWith(Model.XPath)); // Må være mer nøyaktig!!!!
+    string hiddenClass = anyValuesInOptionalGroup ? "" : "hidden";
+    <div class="optional_gruppe">
+        @if (anyValuesInOptionalGroup)
+        {
+            <input type="checkbox" name="optional_@Model.GetId()" id="optional_@Model.GetId()" checked onchange="toggleOptionalBox('optionContainer_@Model.GetId()')" />
+        }
+        else
+        {
+            <input type="checkbox" name="optional_@Model.GetId()" id="optional_@Model.GetId()" onchange="toggleOptionalBox('optionContainer_@Model.GetId()')" />
+        }
+        <label class="checkbox_tekst" for="optional_@Model.GetId()">@Model.GetCaption(true)</label>
+        <div id="optionContainer_@Model.GetId()" class="option_container @hiddenClass">
+            @await Html.PartialAsync($"/Pages/Partial/Gruppe.cshtml", Model)
+        </div>
+    </div>
+}

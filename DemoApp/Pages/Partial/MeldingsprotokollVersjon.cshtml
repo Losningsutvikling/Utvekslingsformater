@@ -1,0 +1,48 @@
+﻿@using DemoApp.Models
+@model DemoApp.Pages.MeldingModel
+@{
+    var meldingsprotokoller = XsdUtils.MeldingsprotokollVersjoner.OrderByDescending(mp => mp.Version);
+    // Selected eller bare 1 tilgjengelig
+    string? selectedProtocol = Model.SelectedProtocol?.Version ?? "";
+    bool disable = !string.IsNullOrEmpty(selectedProtocol);
+    string disableCssClass = (disable) ? "disabled_button" : "";
+    string disableStr = (disable) ? "disabled" : "";
+    <div>
+    <span class="ledetekst @disableCssClass">Meldingsprotokoll</span>
+    @if (disable)
+    {
+        <input type="hidden" name="@Konstanter.SelectedProtocol" id="@Konstanter.SelectedProtocol" value="@selectedProtocol" />
+        <select class="dropdown" disabled>
+            <option disabled selected value=""> -- Velg -- </option>
+                @foreach (var schema in meldingsprotokoller)
+                {
+                    if (schema.Version == selectedProtocol)
+                    {
+                    <option value="@schema.Version" selected>@schema.Version</option>
+                    }
+                    else
+                    {
+                    <option value="@schema.Version">@schema.Version</option>
+                    }
+                }
+        </select>
+    }
+    else
+    {
+        <select class="dropdown" name="@Konstanter.SelectedProtocol" id="@Konstanter.SelectedProtocol" onchange="this.form.submit()">
+            <option selected value=""> -- Velg -- </option>
+            @foreach (var schema in meldingsprotokoller)
+            {
+                if (schema.Version == selectedProtocol)
+                {
+                    <option value="@schema.Version" selected>@schema.Version</option>
+                }
+                else
+                {
+                    <option value="@schema.Version">@schema.Version</option>
+                }
+            }
+        </select>
+    }
+    </div>
+}

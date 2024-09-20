@@ -1,0 +1,22 @@
+﻿@using DemoApp.Models
+@using DemoApp.Models.Fagsystem
+@model DemoApp.Models.ViewModels.PropertyRendererModel
+@{
+    var prefilled = TestdataGenerator.GetPrefilledValueFor(Model.Values, Model.GetId());
+    bool disable = (prefilled?.OpenToEdit == false);
+    bool check = prefilled?.Value == true.ToString();
+    string checkedStr = (check) ? "checked" : "";
+
+    <span class="ledetekst_flervalg">@Model.GetCaption(true)</span>
+    @await Html.PartialAsync($"/Pages/Partial/Beskrivelse.cshtml", @Model.GetDescription())
+    var kodeliste = XsdUtils.GetKodelisteVerdier(Model.Prop);
+    foreach (var enumValue in kodeliste)
+    {
+        string id = Model.GetId() + "_" + enumValue.Key;
+        <input type="checkbox" value="@enumValue.Key" id="@id">
+
+        <label class="checkbox_tekst" for="@id">@enumValue.Value</label>
+        <br />
+    }
+
+}

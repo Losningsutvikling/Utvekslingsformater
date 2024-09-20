@@ -1,0 +1,139 @@
+html {
+  font-size: 14px;
+  font-family: Arial;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+/* mine */
+
+.anonym_gruppe {
+    /*    background-color: #FFFFF0;*/
+    /*border: 1px solid #FFFFD0;*/
+}
+.synlig_gruppe {
+    /*background-color: #E0E0E0;*/
+    border: 1px solid gray;
+    margin: 15px 0px 15px 15px;
+    padding: 15px 0px 15px 15px;
+}
+
+.gruppetekst {
+    font-weight: bold;
+    font-size: 1.4em;
+    display: block;
+}
+
+.variabel{
+    margin-bottom: 10px;
+}
+.ledetekst {
+    font-weight: bold;
+    font-size: 1em;
+    display: inline-block;
+    min-width: 150px;
+}
+
+.ledetekst_flerlinje {
+    font-weight: bold;
+    font-size: 1em;
+    display: block;
+}
+
+.ledetekst_flervalg {
+    font-weight: bold;
+    font-size: 1em;
+    display: block;
+}
+
+
+.tekst_verdi {
+    display: inline-block;
+}
+
+.gruppe_beskrivelse {
+    font-style: italic;
+}
+
+.checkbox_tekst {
+    font-weight: bold;
+    font-size: 1em;
+    margin-left: 0.3em;
+}
+
+.enlinjetekst {
+    width: 500px;
+}
+
+.dato {
+    width: 100px !important;
+}
+
+.flerlinjetekst {
+    width: 657px;
+    height: 150px;
+}
+
+.barn_selector_tittel {
+    margin-right: 10px;
+}
+
+.obligatorisk_markor {
+    color: red;
+    padding-left: 3px;
+}
+.disabled_button .obligatorisk_markor {
+    color: silver;
+    padding-left: 3px;
+}
+.disabled_button {
+    color: silver !important;
+}
+.disabled_button:hover {
+    cursor: default !important;
+    background-color: white !important;
+}
+
+.option_container {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+    .option_container.hidden {
+        display: none;
+    }
+
+.disabled_variable {
+    color: silver !important;
+}
+
+    .disabled_variable .obligatorisk_markor {
+        color: silver;
+        padding-left: 3px;
+    }
+
+.hidden_template {
+    display: none;
+}
+
+.new_button {
+    display: block;
+}

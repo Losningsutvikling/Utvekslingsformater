@@ -1,0 +1,20 @@
+﻿@using DemoApp.Models.Fagsystem
+@model DemoApp.Pages.Partial.BarnSelectorModel
+@{
+    <span class="barn_selector_tittel">Velg barn: </span>
+    <select name="barn_id" onchange="this.form.submit()">
+        <option value=""></option>
+        @foreach (Barn barn in Model.BarnListe!)
+        {
+            if (Model.selectedBarn == barn)
+            {
+                <option value="@barn.Id" selected>@barn.FREG_Person!.Fornavn @barn.FREG_Person.Etternavn (@barn.FREG_Person.Fodselsnummer)</option>
+            }
+            else
+            {
+                <option value="@barn.Id">@barn.FREG_Person!.Fornavn @barn.FREG_Person.Etternavn (@barn.FREG_Person.Fodselsnummer)</option>
+            }
+        }
+
+    </select>
+}
