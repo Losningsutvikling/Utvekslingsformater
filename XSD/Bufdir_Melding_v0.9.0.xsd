@@ -1,20 +1,20 @@
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:bg="https://Bufdir.no/Generelt_v0.8.0" xmlns="https://Bufdir.no/Melding_v0.8.0" xmlns:kodelister="Bufdir_Melding_kodelister_v0.8.0.xml" targetNamespace="https://Bufdir.no/Melding_v0.8.0" elementFormDefault="qualified" version="0.8.0">
-	<xs:import namespace="https://Bufdir.no/Generelt_v0.8.0" schemaLocation="Bufdir_Generelt_v0.8.0.xsd"/>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:bg="https://Bufdir.no/Generelt_v0.9.0" xmlns="https://Bufdir.no/Melding_v0.9.0" xmlns:kodelister="Bufdir_Melding_kodelister_v0.9.0.xml" targetNamespace="https://Bufdir.no/Melding_v0.9.0" elementFormDefault="qualified" version="0.9.0">
+	<xs:import namespace="https://Bufdir.no/Generelt_v0.9.0" schemaLocation="Bufdir_Generelt_v0.9.0.xsd"/>
 	<xs:complexType name="FagsystemType" id="BUF_32C0FA0C-2703-4E8F-983F-5E3678D4F0C1">
 		<xs:sequence>
 			<xs:element name="Leverandor" type="bg:Enlinje" id="BUF_B7F75A62-0280-412E-B707-BB61A28335B7">
 				<xs:annotation>
-					<xs:appinfo>Leverandørnavn fagsystem. Eksempler: 'Visma', 'Acos' eller 'Netcompany'.</xs:appinfo>
+					<xs:documentation>Leverandørnavn fagsystem. Eksempler: 'Visma', 'Acos' eller 'Netcompany'.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="Navn" type="bg:Enlinje" id="BUF_A2ED2B17-C0F5-4A07-B106-784F4D4E5BA5">
 				<xs:annotation>
-					<xs:appinfo>Navn fagsystem. Eksempel: 'Familia'.</xs:appinfo>
+					<xs:documentation>Navn fagsystem. Eksempel: 'Familia'.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="Versjon" type="bg:VersjonType" id="BUF_092CDC42-C004-40F8-AB99-BC8D740129D4">
 				<xs:annotation>
-					<xs:appinfo>Versjonsnavn fagsystem. Eksempel: 'v1.2.3'.</xs:appinfo>
+					<xs:documentation>Versjonsnavn fagsystem. Eksempel: 'v1.2.3'.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
@@ -23,19 +23,9 @@
 		<xs:sequence>
 			<xs:element name="Kontaktperson" type="bg:KontaktpersonType" id="BUF_135B6A86-99D6-4A2A-BD9E-692B670A96F1">
 				<xs:annotation>
-					<xs:appinfo>
-						<ledetekst>Kontaktperson</ledetekst>
-						<veiledning/>
-					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="KontaktpersonLeder" type="bg:KontaktpersonType" id="BUF_3E9352C3-C977-499A-967E-8B8E090F5E6D">
-				<xs:annotation>
-					<xs:appinfo>
-						<ledetekst>Kontaktpersons leder</ledetekst>
-						<veiledning/>
-					</xs:appinfo>
-				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
@@ -72,20 +62,12 @@
 		<xs:sequence>
 			<xs:element name="Id" type="bg:UUIDType" id="BUF_7F4D17A6-765F-4B89-8362-0A5E7190B129" minOccurs="1"/>
 			<xs:element name="OppfolgingAvMelding" type="OppfolgingAvMeldingType" id="BUF_1DFCE9C1-F608-4E80-A32E-5B3765F55C56" minOccurs="0">
-				<xs:annotation>
-					<xs:appinfo>
-						<ledetekst>Oppfølging av tidligere melding</ledetekst>
-					</xs:appinfo>
-				</xs:annotation>
 			</xs:element>
 			<xs:element name="MeldingstypeNmsp" type="xs:string" id="BUF_8F21452E-E1DD-47D6-B9A0-F7810BF2FC1A" minOccurs="1">
 				<xs:annotation>
 					<xs:documentation>
 						Namespace for meldingsdefinisjon
 					</xs:documentation>
-					<xs:appinfo>
-						<ledetekst>Meldingstype nmsp</ledetekst>
-					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="MeldingstypeXpath" type="xs:string" id="BUF_91755FE9-F957-42D0-9D81-0A622FFF351C" minOccurs="1">
@@ -93,9 +75,6 @@
 					<xs:documentation>
 						XPathuttrykk for meldingsdefinisjon
 					</xs:documentation>
-					<xs:appinfo>
-						<ledetekst>Meldingstype element (XPath)</ledetekst>
-					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="FagsystemAvsender" type="FagsystemType" id="BUF_9A2BA0E2-24A8-43ED-B60F-8F7A7C64E66D" minOccurs="1"/>
@@ -121,17 +100,7 @@ Abstrakt basetype for Bufdir-meldinger. Konkrete meldingstyper defineres som ext
 			<xs:element name="Meldingshode" type="MeldingshodeType" id="BUF_A96CA391-9868-4416-9C06-896EC995098C"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="MeldingType2" id="BUF_B1163D07-7E32-424E-B8E5-08CC8B6DEC37">
-		<xs:annotation>
-			<xs:documentation>
-"Envelope" for Bufdir-meldinger
-			</xs:documentation>
-		</xs:annotation>
-		<xs:sequence>
-			<xs:element name="Meldingshode" type="MeldingshodeType" id="BUF_A68E0204-679E-470A-A070-2E0288220CD6"/>
-			<xs:any/>
-		</xs:sequence>
-	</xs:complexType>
+
 	<!-- enum - definisjoner -->
 	<xs:simpleType name="MeldingsForbindelseType" id="BUF_30F7A6FE-6D88-4C5A-9881-12A69821780D">
 		<xs:annotation>

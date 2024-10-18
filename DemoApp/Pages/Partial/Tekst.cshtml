@@ -15,8 +15,7 @@
     }
     string disableCssClass = (disable) ? "disabled_button" : "";
     string disableStr = (disable) ? "disabled" : "";
-    string mandatoryMarker = Model.Mandatory ? "<span class='obligatorisk_markor'>*</span>" : "";
-    <div class="@cssClassCaption @disableCssClass">@Model.GetCaption(true)@Html.Raw(mandatoryMarker)</div>
+    <div class="@cssClassCaption @disableCssClass">@Model.GetCaption(true)@Html.Raw(Utils.getMandatoryMarker(Model.Mandatory))</div>
 
 
     @if (flerlinje)

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<kodelister versjon="0.8.0" nmsp="https://Bufdir.no/Barnevern/Henvisning_v0.8.0" >
+<kodelister versjon="0.9.0" nmsp="https://Bufdir.no/Barnevern/Henvisning_v0.9.0" >
 
 <kodeliste navn="HenvisningForespurtBistandType" id="BUF_D960BB0E-3A3E-4F81-AA5A-DDEA3F51061E">
 	<kode verdi="1" tekst="Fosterhjem"/>

@@ -1,20 +1,20 @@
 ﻿@using DemoApp.Models
 @using DemoApp.Models.ViewModels
 @model PropertyRendererModel
-@{
+@{  
     var caption = Model.GetCaption(false);
     var minOccurs = XsdUtils.GetMinOccurs(Model.Prop);
     var maxOccurs = XsdUtils.GetMaxOccurs(Model.Prop);
     var description = Model.GetDescription();
     <div>
-        <input id="@Model.GetId()_counter" type="hidden" value="@minOccurs" />
-        <input id="@Model.GetId()_minOccurs" type="hidden" value="@minOccurs" />
-        <input id="@Model.GetId()_maxOccurs" type="hidden" value="@maxOccurs" />
-        <div id="@Model.GetId()_template" class="hidden_template">
-            <h2>Item</h2>
+        <input id="@Model.GetRawId()_counter" type="hidden" value="@minOccurs" />
+        <input id="@Model.GetRawId()_minOccurs" type="hidden" value="@minOccurs" />
+        <input id="@Model.GetRawId()_maxOccurs" type="hidden" value="@maxOccurs" />
+        <div id="@Model.GetRawId()_template" class="hidden_template">
+            <h2>@Model.GetCaption(true):0:template</h2>
             @await Html.PartialAsync("Gruppe.cshtml", Model)
         </div>
         @await Html.PartialAsync("Beskrivelse.cshtml", description)
-        <input type="button" id="@Model.GetId()_new" onclick="createNewFromTemplate('@Model.GetId()')" value="Ny @caption" class="new_button" />
+        <input type="button" id="@Model.GetRawId()_new" onclick="createNewFromTemplate('@Model.GetRawId()')" value="Ny @caption" class="new_button" />
     </div>
 }

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-	xmlns="https://Bufdir.no/Generelt_v0.8.0" 
-	xmlns:kodelister="Bufdir_Generelt_kodelister_v0.8.0.xml"
-	targetNamespace="https://Bufdir.no/Generelt_v0.8.0" 
+	xmlns="https://Bufdir.no/Generelt_v0.9.0" 
+	xmlns:kodelister="Bufdir_Generelt_kodelister_v0.9.0.xml"
+	targetNamespace="https://Bufdir.no/Generelt_v0.9.0" 
 	elementFormDefault="qualified" 
-	version="0.8.0">
+	version="0.9.0">
 
 	<xs:complexType name="AdresseType" id="BUF_C625B5CB-F30B-4A66-850E-00DCA90547D9">
 		<xs:sequence>
@@ -61,7 +61,7 @@
 	<xs:simpleType name="DUFNummerType" id="BUF_2C2C3B52-194E-420B-ACE3-DBC813DFFB02">
 		<xs:annotation>
 			<xs:documentation>DUF-nummer (https://www.udi.no/ord-og-begreper/duf-nummer/)
-                            </xs:documentation>
+            </xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="xs:string">
 			<xs:minLength value="12"/>
@@ -90,10 +90,6 @@
                 fødselsdato (DDMMÅÅ) + 55555,
                 fødselsdato (DDMMÅÅ) + 99999
             </xs:documentation>
-			<xs:appinfo>
-				<ledetekst>Fødselsnummer</ledetekst>
-				<veiledning>Fødselsnummer eller D-nummer</veiledning>
-			</xs:appinfo>
 		</xs:annotation>
 		<xs:restriction base="xs:string">
 			<xs:minLength value="11"/>
@@ -237,7 +233,7 @@ Benyttes kun for kommuner med bydeler
 		</xs:sequence>
 	</xs:complexType>
 	
-<!-- Enum, kodeliste = Bufdir_kodelister_v0.8.0.xml -->
+<!-- Enum, kodeliste = Bufdir_kodelister_v0.9.0.xml -->
 
 	<xs:simpleType name="JaNeiType" id="BUF_B454E56F-DCDF-49A1-8DE1-3381E638C062">
 		<xs:annotation>
@@ -255,10 +251,6 @@ Benyttes kun for kommuner med bydeler
 
 	<xs:simpleType name="KjonnFregType" id="BUF_26D1F613-F2E1-4589-A444-0810ECD0508D">
 		<xs:annotation>
-			<xs:appinfo>
-				<ledetekst>Kjønn</ledetekst>
-				<veiledning>Kjønn som det er registrert i FREG</veiledning>
-			</xs:appinfo>
 			<xs:documentation>
                                 mann = Mann / Gutt
                                 kvinne = Kvinne / Jentes

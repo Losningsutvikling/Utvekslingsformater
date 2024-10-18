@@ -17,7 +17,7 @@
     @if (!string.IsNullOrEmpty(Model.SelectedSkjemaElementName))
         {
             var values = Model.PrefillValues;
-    @await Html.PartialAsync("/Pages/Partial/Gruppe.cshtml", new PropertyRendererModel(Model, "", Model.SelectedXmlSchemaElement, values))
+    @await Html.PartialAsync("/Pages/Partial/Gruppe.cshtml", new PropertyRendererModel(null, Model, "", Model.SelectedXmlSchemaElement, values))
                 <input name="Send" type="submit" value="Send/Lagre" />
                 <input name="LagHTML" type="submit" value="Lag HTML" />
         }

@@ -1,37 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-	xmlns:bg="https://Bufdir.no/Generelt_v0.8.0" 
-	xmlns:bv="https://Bufdir.no/Barnevern/Generelt_v0.8.0" 
-	xmlns:mld="https://Bufdir.no/Melding_v0.8.0" 
-	xmlns="https://Bufdir.no/Barnevern/Henvisning_v0.8.0" 
-	xmlns:kodelister="Bufdir_Barnevern_Henvisning_kodelister_v0.8.0.xml" 
-	targetNamespace="https://Bufdir.no/Barnevern/Henvisning_v0.8.0" elementFormDefault="qualified" version="0.8.0">
-	<xs:import namespace="https://Bufdir.no/Barnevern/Generelt_v0.8.0" schemaLocation="Bufdir_Barnevern_Generelt_v0.8.0.xsd"/>
-	<xs:import namespace="https://Bufdir.no/Generelt_v0.8.0" schemaLocation="Bufdir_Generelt_v0.8.0.xsd"/>
-	<xs:import namespace="https://Bufdir.no/Melding_v0.8.0" schemaLocation="Bufdir_Melding_v0.8.0.xsd"/>
+	xmlns:bg="https://Bufdir.no/Generelt_v0.9.0" 
+	xmlns:bv="https://Bufdir.no/Barnevern/Generelt_v0.9.0" 
+	xmlns:mld="https://Bufdir.no/Melding_v0.9.0" 
+	xmlns="https://Bufdir.no/Barnevern/Henvisning_v0.9.0" 
+	xmlns:kodelister="Bufdir_Barnevern_Henvisning_kodelister_v0.9.0.xml" 
+	targetNamespace="https://Bufdir.no/Barnevern/Henvisning_v0.9.0" elementFormDefault="qualified" version="0.9.0">
+	<xs:import namespace="https://Bufdir.no/Barnevern/Generelt_v0.9.0" schemaLocation="Bufdir_Barnevern_Generelt_v0.9.0.xsd"/>
+	<xs:import namespace="https://Bufdir.no/Generelt_v0.9.0" schemaLocation="Bufdir_Generelt_v0.9.0.xsd"/>
+	<xs:import namespace="https://Bufdir.no/Melding_v0.9.0" schemaLocation="Bufdir_Melding_v0.9.0.xsd"/>
+	
+	<xs:complexType name="NettverkPersonType" id="BUF_1C17DEEA-AA35-4568-AAB3-810103511C49">
+		<xs:sequence>
+			<xs:element name="Fornavn" type="xs:string" id="BUF_935D58C7-B110-4D3F-9C21-D9FDCBE9EB47"/>
+			<xs:element name="Relasjon" type="bv:NettverkRelasjonType" id="BUF_8EF675E0-923D-4A92-B823-C2C8F34731AB"/>
+			<xs:element name="RelasjonAnnet" type="bg:Enlinje" id="BUF_A01FF1AC-6F13-4AC8-80C3-5F34DC312FBF">
+				<xs:annotation>
+					<xs:appinfo>
+						<enable>Relasjon=9</enable>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Dod" type="xs:boolean" id="BUF_CAC47084-DB07-41A8-9619-BECEBDC5D97A"/>
+			<xs:element name="Omsorg" type="bv:OmsorgType" id="BUF_BC98557F-A19A-401B-B83C-EEE2EC10FA83">
+				<xs:annotation>
+					<xs:appinfo>
+						<enable>Dod=0</enable>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="KontaktFrekvens" type="bv:KontaktFrekvensType" id="BUF_D9894232-2B77-4D67-A6BA-72AC558FD354">
+				<xs:annotation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Foreldreansvar" type="xs:boolean" id="BUF_384F33C5-9925-4224-9207-BADD1AACEA21"/>
+		</xs:sequence>
+	</xs:complexType>
 
-	<xs:complexType name="BistandsPeriodeType" id="BUF_2CEE2E0A-9474-47E7-A2D3-8BC288C90E56">
+
+	<xs:complexType name="BarnetsNettverkType" id="BUF_1BC0AD78-4524-47D7-AE76-CF25E605C86C">
+		<xs:sequence>
+			<xs:element name="Person" type="NettverkPersonType" minOccurs="0" maxOccurs="unbounded" id="BUF_A7950F28-0B95-42EE-ADE1-AB21F3F240B1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+
+	<xs:complexType name="OnsketBistandsPeriodeType" id="BUF_2CEE2E0A-9474-47E7-A2D3-8BC288C90E56">
 		<xs:annotation>
-			<xs:appinfo>
-				<ledetekst/>
-				<veiledning/>
-			</xs:appinfo>
 		</xs:annotation>
 		<xs:sequence>
 			<xs:element name="DatoFra" type="xs:date" id="BUF_EF489DB6-24CD-4A05-9F44-16F772134B62">
 				<xs:annotation>
-					<xs:appinfo>
-						<ledetekst>Fra dato</ledetekst>
-						<veiledning/>
-					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="DatoTil" type="xs:date" minOccurs="0" id="BUF_97884515-3B1F-4B07-9BB2-3BA6C1926D3F">
 				<xs:annotation>
-					<xs:appinfo>
-						<ledetekst>Til dato</ledetekst>
-						<veiledning/>
-					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
@@ -41,49 +64,51 @@
 		<xs:sequence>
 			<xs:element name="NettverkPlasseringVurdert" type="bg:JaNeiType" id="BUF_28F9384B-0D0C-430E-A30A-8CA6BD4F69F3">
 				<xs:annotation>
-					<xs:appinfo>
-						<ledetekst>Er mulighet for plassering i slekt eller nettverk undersøkt?</ledetekst>
-					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="NettverkPlasseringVurdering" type="bg:Fritekst" minOccurs="1" id="BUF_B3707F9C-CF99-433D-B410-A5C98B98DFCC">
 				<xs:annotation>
-					<xs:appinfo>
-						<ledetekst>Hvilke vurdering og kartlegging er gjortVed flytting ut av hjemmet?</ledetekst>
-					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
+	
+	
+	<xs:complexType name="BarnetsSoskenSamplasseringType" id="BUF_9333F71C-4116-4895-BBA7-4919AE265DC5">
+		<xs:sequence>
+			<xs:element name="Sosken" type="SoskenSamplasseringType" minOccurs="0" maxOccurs="unbounded" id="BUF_46F692C1-9F7C-4E2D-831B-B1421ECC1383"/>
+		</xs:sequence>
+	</xs:complexType>
+	
 	<xs:complexType name="SoskenSamplasseringType" id="BUF_6660CE9F-A771-46ED-A2CF-F4A1C6F10648">
 		<xs:sequence>
 			<xs:element name="SoskenRelasjon" type="bv:SoskenRelasjonType" id="BUF_3E816ABE-9127-4EF2-8EC9-0057A60F0CED">
 				<xs:annotation>
-					<xs:appinfo>
-						<ledetekst>Relasjon</ledetekst>
-					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="SoskenRelasjonAnnet" type="bg:Enlinje" id="BUF_5043F20E-37F1-4F9A-BA32-32E6347E0332">
 				<xs:annotation>
 					<xs:appinfo>
-						<ledetekst>Beskriv annen relasjon</ledetekst>
 						<enable>SoskenRelasjon=9</enable>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="SoskenInformasjon" type="bv:KlientBarnevernType" id="BUF_E615BE17-D314-4DE8-8FA3-FD27A4F332E9">
+			<xs:element name="Fodselsnummer" type="bg:FodselsnummerType" minOccurs="1" id="BUF_AA59F2BF-8085-4661-88AB-E188667A612F">
 				<xs:annotation>
 					<xs:appinfo>
-						<ledetekst/>
+						<enable>DUFnummer=</enable>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DUFnummer" type="bg:DUFNummerType" id="BUF_49AA99A5-7593-4FF9-9A52-7C732422D63A">
+				<xs:annotation>
+					<xs:appinfo>
+						<enable>Fodselsnummer=</enable>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="HenvisningMeldingsId" type="bg:UUIDType" minOccurs="0" maxOccurs="1" id="BUF_0D907ADF-CB49-4B1D-BE8C-A1819AE119AD">
 				<xs:annotation>
-					<xs:appinfo>
-						<ledetekst>Meldings-id til allerede utfylt henvisning for barnet</ledetekst>
-					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
@@ -92,25 +117,15 @@
 	<xs:complexType name="TilleggstjenesterType" id="BUF_5CC8E325-C679-4409-8280-40BF8A17E5D0">
 		<xs:annotation>
 			<xs:appinfo>
-				<ledetekst/>
-				<veiledning/>
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:sequence>
 			<xs:element name="Familierad" type="xs:boolean" id="BUF_EBBF6A1F-9FD9-4BC0-B6A1-4B66B4106A0C">
 				<xs:annotation>
-					<xs:appinfo>
-						<ledetekst>Familieråd</ledetekst>
-						<veiledning/>
-					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="TverrfagligHelsekartlegging" type="xs:boolean" id="BUF_6C377FF2-522C-49D8-B51E-AD4C3646F1C8">
 				<xs:annotation>
-					<xs:appinfo>
-						<ledetekst>Tverrfaglig helsekartlegging</ledetekst>
-						<veiledning/>
-					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
@@ -123,12 +138,9 @@
 			<xs:extension base="mld:MeldingType">
 				<xs:sequence>
 					<xs:element name="Klient" type="bv:KlientBarnevernType" id="BUF_E838A6AF-DF52-40BA-86F7-F20563C6F405"/>
-					<xs:element name="Bistandsperiode" type="BistandsPeriodeType" id="BUF_B3FA7714-E438-4739-B288-2C0BA6FC2F59"/>
-					<xs:element name="Vedlegg" type="bg:VedleggType" minOccurs="0" maxOccurs="1" id="BUF_C4705C17-35AB-443E-B574-2B03826495F9">
+					<xs:element name="Bistandsperiode" type="OnsketBistandsPeriodeType" id="BUF_B3FA7714-E438-4739-B288-2C0BA6FC2F59"/>
+					<xs:element name="Vedlegg" type="bg:VedleggType" minOccurs="0" maxOccurs="10" id="BUF_C4705C17-35AB-443E-B574-2B03826495F9">
 						<xs:annotation>
-							<xs:appinfo>
-								<veiledning>Dersom det skal legges ved ytterligere dokumentasjon, må dette vurderes som relevant og nødvendig for å gi utfyllende informasjon om barnets behov. Barnevernets vurderinger av vedlagt informasjon må komme tydelig fram i henvisningsskjemaet.</veiledning>
-							</xs:appinfo>
 						</xs:annotation>
 					</xs:element>
 				</xs:sequence>
@@ -140,58 +152,39 @@
 		<xs:complexContent>
 			<xs:extension base="HenvisningMeldingType">
 				<xs:sequence>
-					<xs:element name="Nettverk" type="bv:NettverkType" id="BUF_B4EC7A38-CAAD-4820-9FBC-8E3B1499EF3D"/>
+					<xs:element name="Nettverk" type="BarnetsNettverkType" id="BUF_B4EC7A38-CAAD-4820-9FBC-8E3B1499EF3D"/>
 					<xs:element name="PlasseringINettverk" type="PlasseringINettverkType" id="BUF_73A3AB62-5202-484E-BAA3-48E1B9CDFD0C">
 						<xs:annotation>
-							<xs:appinfo>
-								<ledetekst>Vurdering om barnet kan plasseres hos slekt eller nettverk</ledetekst>
-							</xs:appinfo>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="TiltakHistorikk" type="bg:Fritekst" minOccurs="0" id="BUF_CF961F26-2624-4DFB-BF7D-BADEB828C7F8">
 						<xs:annotation>
-							<xs:appinfo>
-								<ledetekst>Oversikt over tidligere barnevernstiltak og eventuelt andre relevante tiltak med begrunnelse for opprettelse og avslutning.</ledetekst>
-								<veiledning/>
-							</xs:appinfo>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="Dagtilbud" type="bv:DagtilbudType" id="BUF_C4B6EEC5-231D-4F78-BCAD-49CD094381C0"/>
 					<xs:element name="Vedtak" type="bv:VedtakType" id="BUF_2D0E6614-F4FE-4844-BB1D-5AFF4FE3D761"/>
-					<xs:element name="TiltaksplanPlan" type="bv:TiltaksplanType" id="BUF_E112D04D-B1E9-4324-8308-5AFE7CB01C4D"/>
+					<xs:element name="TiltaksplanPlan" type="bv:KommunensTiltaksplanType" id="BUF_E112D04D-B1E9-4324-8308-5AFE7CB01C4D"/>
 					<xs:element name="IndividuellPlan" type="bv:IndividuellPlanType" minOccurs="0" id="BUF_3F888520-7A2D-4BFD-8C77-62ED8F4888CB"/>
-					<xs:element name="Medvirkning" type="bv:MedvirkningType" id="BUF_06D131AB-A289-4F7F-9878-F7498F2F1012"/>
-					<xs:element name="OmForeldrene" type="bv:InformasjonOmForeldreType" id="BUF_5C3DCC89-B36C-4C28-9B2D-0C67F726D4A8"/>
-					<xs:element name="SoskenSamplassering" type="SoskenSamplasseringType" id="BUF_13699B3A-F193-4E18-B606-60B8739A0520">
+					<xs:element name="Medvirkning" type="bv:BarnetsMedvirkningType" id="BUF_06D131AB-A289-4F7F-9878-F7498F2F1012"/>
+					<xs:element name="OmForeldrene" type="bv:SamarbeidMedForeldreType" id="BUF_5C3DCC89-B36C-4C28-9B2D-0C67F726D4A8"/>
+					<xs:element name="MedvirkningAnnet" type="bg:Fritekst" id="BUF_F8D18C62-FE29-4297-B7FA-E85A9D83A6C7"/>
+					<xs:element name="SoskenSamplassering" type="BarnetsSoskenSamplasseringType" id="BUF_13699B3A-F193-4E18-B606-60B8739A0520">
 			</xs:element>
-					<xs:element name="BarnetsSituasjon" type="bv:BarnetsSituasjonType" id="BUF_CC9A7CDF-B998-415D-995A-6275CBCCA465">
+					<xs:element name="BarnetsSituasjon" type="bv:BarnetsSituasjonOgBehovType" id="BUF_CC9A7CDF-B998-415D-995A-6275CBCCA465">
 						<xs:annotation>
-							<xs:appinfo>
-								<ledetekst>6-8 Barnets nåsituasjon</ledetekst>
-								<veiledning>Barnets nåsituasjon beskrevet med utgangspunkt i kunnskapsmodellens områder</veiledning>
-							</xs:appinfo>
 						</xs:annotation>
-						<xs:unique name="uniktOmrade">
-							<xs:selector xpath="Omrade"/>
-							<xs:field xpath="."/>
-						</xs:unique>
 					</xs:element>
 					<xs:element name="BistandSamletBehov" type="bg:Fritekst" id="BUF_D7577E46-86D7-4AFD-B170-E3D4C6D8234D">
 						<xs:annotation>
-							<xs:appinfo>
-								<ledetekst>10 Samlet vurdering av barnets behov for bistand</ledetekst>
-								<veiledning>Her gjøres den samlede vurderingen av barnets behov for bistand. I dette inngår en totalvurdering av den beskyttelse og risiko som omgir barnet, og av barnets mottagelighet for ønsket tiltak. Dette innebefatter en samlet vurdering av de behov barnet må få tilfredsstilt for å kunne ha god utvikling. Barnets beste skal være et grunnleggende hensyn i dette.</veiledning>
-							</xs:appinfo>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="PlanEtterOnsketTiltak" type="ViderePlanType" maxOccurs="unbounded" id="BUF_3A616CCF-41B9-4E31-AB8B-9496157CDB3F">
 						<xs:annotation>
-							<xs:documentation/>
-							<xs:appinfo>
-								<ledetekst>Velg ønsket tiltak</ledetekst>
-								<veiledning>Hva er kommunens foreløpige plan etter avsluttet tiltak</veiledning>
-							</xs:appinfo>
 						</xs:annotation>
+						<xs:unique name="unikViderePlan">
+							<xs:selector xpath="."/>
+							<xs:field xpath="."/>
+						</xs:unique>
 					</xs:element>
 					<xs:element name="Tilleggstjenester" type="TilleggstjenesterType" id="BUF_E35239C9-7183-4685-9BEE-5667204C5B6A">
 					</xs:element>
@@ -201,7 +194,7 @@
 		</xs:complexContent>
 	</xs:complexType>
 
-	<!-- Enum - Bufdir_barnevern_henvisning_kodelister_v0.8.0.xml -->
+	<!-- Enum - Bufdir_barnevern_henvisning_kodelister_v0.9.0.xml -->
 
 	<xs:simpleType name="HenvisningForespurtBistandType" id="BUF_D960BB0E-3A3E-4F81-AA5A-DDEA3F51061E">
 		<xs:annotation>
@@ -218,10 +211,6 @@
 				10 = Familieråd
 				11 = Tverrfaglig helsekartlegging
 			</xs:documentation>
-			<xs:appinfo>
-				<ledetekst>Ønsket bistand</ledetekst>
-				<veiledning/>
-			</xs:appinfo>
 		</xs:annotation>
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="1"/>
@@ -249,10 +238,6 @@
 				7 = Etableres i egen bolig
 				9 = Annet
             </xs:documentation>
-			<xs:appinfo>
-				<ledetekst>Videre plan</ledetekst>
-				<veiledning>Kommunens foreløpige plan etter avslutning av tiltak</veiledning>
-			</xs:appinfo>
 		</xs:annotation>
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="1"/>

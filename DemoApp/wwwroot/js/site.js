@@ -3,19 +3,13 @@
     document.forms[0].submit();
 }
 
-function toggleOptionalBox(element) {
-    el = $('#' + element);
-    el.toggleClass('hidden');
-    checkDependentControlsActivationById(element);
-}
-
 function setHiddenByCheckbox(element, controlledElement) {
-    el = $('#' + element);
     var checked = document.getElementById(element).checked;
-    controlledEl = $('#' + controlledElement);
-    controlledEl.removeClass('hidden');
+    controlledEl = document.getElementById(controlledElement);
+
+    controlledEl.classList.remove('hidden');
     if (!checked) {
-        controlledEl.addClass('hidden');
+        controlledEl.classList.add('hidden');
     }
     checkDependentControlsActivationById(element);
 }
@@ -33,6 +27,31 @@ function checkDependentControlsActivationById(elementId) {
     var el = document.getElementById(elementId);
     checkDependentControlsActivation(el);
 }
+
+function toggleCollapseContainer(element) {
+    for (i = 0; i < element.children.length; i++) {
+        child = element.children[i];
+        if (child.tagName == 'DIV') {
+            child.classList.toggle('hidden');
+            break;
+        }
+    }
+    for (i = 0; i < element.children.length; i++) {
+        child = element.children[i];
+        if (child.tagName == 'IMG') {
+            if (child.src.includes('up')){
+                child.src = child.src.replace('up', 'right');
+            }
+            else {
+                child.src = child.src.replace('right', 'up');
+            }
+
+// Forandre bildesource eller vise/gjemme to bilder motsatt 
+            break;
+        }
+    }
+}
+
 function checkDependentControlsActivation(element) {
     foundControl = controlDependencies.find((item) => element && element.hasAttribute('id') && item.activatorControl == element.id);
     if (foundControl != null) {
@@ -40,11 +59,11 @@ function checkDependentControlsActivation(element) {
         var enabled = element.type == 'checkbox' ? (foundControl.value == (element.checked ? '1' : '0')) : foundControl.value == element.value;
         //var el = document.getElementById(foundControl.control);
         //el.disabled = !enabled;
-        el = $('#' + foundControl.control);
-        el.prop('disabled', !enabled);
-        el.parent().removeClass('disabled_variable');
+        el = document.getElementById(foundControl.control);
+        el.disabled = !enabled;
+        el.parentElement.classList.remove('disabled_variable');
         if (!enabled) {
-            el.parent().addClass('disabled_variable');
+            el.parentElement.classList.add('disabled_variable');
         }
     }
 }
@@ -52,14 +71,15 @@ function checkDependentControlsActivation(element) {
 function createNewFromTemplate(divId) {
     counterEl = document.getElementById(divId + '_counter');
     count = parseInt(counterEl.value);
+    count++;
     templateElement = document.getElementById(divId + '_template');
-    templateContents = templateElement.innerHTML.replace('_template', '__' + count + '__').replace('hidden_template', '');
+    templateContents = templateElement.innerHTML.replaceAll(':0:template', ':' + count).replaceAll('hidden_template', '');
 
     div = document.createElement('div');
+    div.classList.add('expanded_template');
     div.innerHTML = templateContents;
     buttonElement = document.getElementById(divId + '_new');
     templateElement.parentNode.insertBefore(div, buttonElement);
-    count++;
     counterEl.value = count.toString();
 
     maxEl = document.getElementById(divId + '_maxOccurs');
@@ -67,5 +87,6 @@ function createNewFromTemplate(divId) {
     if (count >= maxCount) {
         buttonElement.disabled = true;
     }
-
+    setDependentControlsDefault();
 }
+

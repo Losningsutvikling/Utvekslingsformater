@@ -13,7 +13,7 @@
     {
         <input type="hidden" name="@Konstanter.SelectedProtocol" id="@Konstanter.SelectedProtocol" value="@selectedProtocol" />
         <select class="dropdown" disabled>
-            <option disabled selected value=""> -- Velg -- </option>
+            <option selected value=""> -- Velg -- </option>
                 @foreach (var schema in meldingsprotokoller)
                 {
                     if (schema.Version == selectedProtocol)

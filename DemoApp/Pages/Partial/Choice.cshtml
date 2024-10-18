@@ -19,7 +19,7 @@
     string disableCssClass = (disable) ? "disabled_button" : "";
     string disableStr = (disable) ? "disabled" : "";
     <div>
-    <span class="ledetekst @disableCssClass">@Model.GetCaption(true)</span>
+        <span class="ledetekst @disableCssClass">@Model.GetCaption(true)@Html.Raw(Utils.getMandatoryMarker(Model.Mandatory))</span>
     @await Html.PartialAsync($"/Pages/Partial/Beskrivelse.cshtml", @Model.GetDescription())
         @if(disable)
         {
@@ -47,6 +47,7 @@
         }
         else
         {
+            Model.CheckAddEnabler();
             <select class="dropdown" name="selected_@Model.GetId()" id="selected_@Model.GetId()" onchange="this.form.submit()">
                 @if (selectedValue == "")
                 {
@@ -71,7 +72,7 @@
         }
         @if (selectedElement != null)
         {
-            @await Html.PartialAsync($"/Pages/Partial/Gruppe.cshtml", new PropertyRendererModel(Model.Melding, $"{Model.XPath}", selectedElement, Model.Values))
+            @await Html.PartialAsync($"/Pages/Partial/Gruppe.cshtml", new PropertyRendererModel(Model, Model.Melding, $"{Model.XPath}", selectedElement, Model.Values))
         }
     </div>
 }

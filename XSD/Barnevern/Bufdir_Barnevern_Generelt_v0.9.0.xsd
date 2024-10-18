@@ -1,29 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema 
 	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-	xmlns:bg="https://Bufdir.no/Generelt_v0.8.0"  
-	xmlns="https://Bufdir.no/Barnevern/Generelt_v0.8.0" 
-	xmlns:kodelister="Bufdir_Barnevern_Generelt_kodelister_v0.8.0.xml"
-	targetNamespace="https://Bufdir.no/Barnevern/Generelt_v0.8.0" 
+	xmlns:bg="https://Bufdir.no/Generelt_v0.9.0"  
+	xmlns="https://Bufdir.no/Barnevern/Generelt_v0.9.0" 
+	xmlns:kodelister="Bufdir_Barnevern_Generelt_kodelister_v0.9.0.xml"
+	targetNamespace="https://Bufdir.no/Barnevern/Generelt_v0.9.0" 
 	elementFormDefault="qualified" 
-	version="0.8.0">
-	<xs:import namespace="https://Bufdir.no/Generelt_v0.8.0" schemaLocation="Bufdir_Generelt_v0.8.0.xsd"/>
+	version="0.9.0">
+	<xs:import namespace="https://Bufdir.no/Generelt_v0.9.0" schemaLocation="Bufdir_Generelt_v0.9.0.xsd"/>
 
-	<xs:complexType name="BarnetsSituasjonType" id="BUF_F9F73634-8308-48E6-A962-F9F2B8ACD0F6">
+	<xs:complexType name="BarnetsSituasjonOgBehovType" id="BUF_F9F73634-8308-48E6-A962-F9F2B8ACD0F6">
 		<xs:sequence>
 			<xs:element name="SamletBehov" type="bg:Fritekst" id="BUF_A7DEBDE6-0131-489A-831F-D11711B7319F">
 				<xs:annotation>
-					<xs:appinfo>
-						<ledetekst>Samlet vurdering av behov for bistand</ledetekst>
-						<veiledning>Her gjøres den samlede vurderingen av barnets behov for bistand. I dette inngår en totalvurdering av den beskyttelsen og risikoen som omgir barnet, ressurser og belastninger som påvirker barnet og barnets utvikling, og av hvor mottakelig barnet er for det ønskede tiltaket. Dette innebefatter også en samlet vurdering av de behovene barnet må få tilfredsstilt for å kunne ha god utvikling. Barnets beste skal være et grunnleggende hensyn i dette. I vurderingen skal også barnets rett til medvirkning tydelig ivaretas. Barnevernstjenestens vurdering av valg av tiltak skal også inngå her.</veiledning>
-					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="Omrade" type="OmradeSituasjonType" minOccurs="0" maxOccurs="unbounded" id="BUF_5E9BDD35-9188-4C44-9921-F557F4E8BB08">
+			<xs:element name="Omrade" type="KunnskapsmodellOmradeBeskrivelseType" minOccurs="0" maxOccurs="unbounded" id="BUF_5E9BDD35-9188-4C44-9921-F557F4E8BB08">
 				<xs:annotation>
-					<xs:appinfo>
-						<iterer>Omrade</iterer>
-					</xs:appinfo>
 				</xs:annotation>
 				<xs:unique name="KunnskapsmodellOmrade">
 					<xs:selector xpath="Omrade"></xs:selector>
@@ -35,23 +28,16 @@
 
 	<xs:complexType name="DagtilbudType" id="BUF_DAADF7BD-D8BA-4B6E-8552-FFC81CEB0ACC">
 		<xs:annotation>
-			<xs:appinfo>
-				<ledetekst>4.4	Dagtilbud- barnehage/skole/arbeid</ledetekst>
-			</xs:appinfo>
 		</xs:annotation>
 		<xs:sequence>
 			<xs:element name="Type" type="DagtilbudTypeType" id="BUF_FBD88251-E5D6-4E8E-AF2A-0BD2417C1DA4">
 				<xs:annotation>
-					<xs:appinfo>
-						<ledetekst>Type</ledetekst>
-					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="Beskrivelse" type="bg:Fritekst" id="BUF_B0CF0017-A1B2-4F28-8050-BDC3EAE93457">
 				<xs:annotation>
 					<xs:appinfo>
-						<ledetekst>Beskrivelse</ledetekst>
-						<veiledning></veiledning>
+						<enable>Type=9</enable>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
@@ -60,10 +46,6 @@
 
 	<xs:complexType name="IndividuellPlanKoordinatorType" id="BUF_801447D3-281D-4351-AA04-1C4C7FCAB444">
 		<xs:annotation>
-			<xs:appinfo>
-				<ledetekst></ledetekst>
-				<veiledning/>
-			</xs:appinfo>
 		</xs:annotation>
 		<xs:sequence>
 			<xs:element name="Kontaktperson" type="bg:KontaktpersonType" id="BUF_30E231DB-D91D-4E72-8098-593AF7F4157D"/>
@@ -74,50 +56,33 @@
 
 	<xs:complexType name="IndividuellPlanType" id="BUF_41E9643E-F727-42C6-A459-3D2E4612306D">
 		<xs:annotation>
-			<xs:appinfo>
-				<Avsnitt>4.6</Avsnitt>
-				<ledetekst>Individuell plan</ledetekst>
-				<veiledning/>
-			</xs:appinfo>
 		</xs:annotation>
 		<xs:sequence>
 			<xs:element name="Status" type="IndividuellPlanStatusType" id="BUF_4801A8A8-F57E-46F1-99B4-0A85A66A324A"/>
-			<xs:element name="GyldigFra" type="xs:date" id="BUF_5EEB3D6A-523F-40CE-8871-9E2075D22221"/>
-			<xs:element name="Koordinator" type="IndividuellPlanKoordinatorType" id="BUF_056EDE9A-A696-49C4-9967-8AE7A4CE67E6">
+			<xs:element name="GyldigFra" type="xs:date" id="BUF_5EEB3D6A-523F-40CE-8871-9E2075D22221">
 				<xs:annotation>
 					<xs:appinfo>
-						<ledetekst>Koordinator for individuell plan</ledetekst>
-						<veiledning>Kontaktperson/koordinator for individuell plan</veiledning>
+						<enable>Status=1</enable>
 					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Koordinator" type="IndividuellPlanKoordinatorType" id="BUF_056EDE9A-A696-49C4-9967-8AE7A4CE67E6">
+				<xs:annotation>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 	
-	<xs:complexType name="InformasjonOmForeldreType" id="BUF_1287BB07-C395-42F2-AAFF-4298CDAFD640">
+	<xs:complexType name="SamarbeidMedForeldreType" id="BUF_1287BB07-C395-42F2-AAFF-4298CDAFD640">
 		<xs:annotation>
-			<xs:appinfo>
-				<ledetekst>Om foreldrene</ledetekst>
-				<veiledning>Samarbeid med og involvering av foreldre eller andre omsorgspersoner. Barnevernet skal legge til rette for samarbeid med barnets foreldre, og skal behandle dem med respekt. Barnevernet skal legge til rette for at barnets familie og nettverk involveres.</veiledning>
-			</xs:appinfo>
 		</xs:annotation>
 		<xs:sequence>
 			<xs:element name="ForeldrenesMedvirkning" type="bg:Fritekst" id="BUF_ABB6710A-BE5B-49B8-ADB2-A7275F714C89">
 				<xs:annotation>
-					<xs:appinfo>
-						<ledetekst>Foreldrenes medvirkning (??)</ledetekst>
-						<veiledning>- Hvordan har barnevernstjenesten sikret at foreldrenes rett til å være involvert er ivaretatt i henvisningsprosessen?
-- På hvilke måter har foreldrene vært involvert i henvisningsprosessen?
-- Hvilke ønsker har foreldrene for barnets opphold på institusjon og for tiden etter endt opphold? 
-- Hvilke forhold vil være viktig ved samarbeid med barnets foreldre og øvrig familie? </veiledning>
-					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="SamvaerPersoner" type="bg:Fritekst" id="BUF_2893D1A7-FFDF-45C6-BD55-FF00D28EDA2A">
 				<xs:annotation>
-					<xs:appinfo>
-						<ledetekst>Hvem skal barnet ha samvær/kontakt med, og hvordan. Og skal det tilrettelegges for dette?</ledetekst>
-					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
@@ -127,15 +92,11 @@
 		<xs:sequence>
 			<xs:element name="Ufodt" type="xs:boolean" id="BUF_EC27AD6F-06A5-404D-93D6-4051D677ED2F">
 				<xs:annotation>
-					<xs:appinfo>
-						<veiledning>Informasjonen (Fødselsdato/-nummer) gjelder mor, kjønn (hvis kjent) gjelder barn</veiledning>
-					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="TerminDato" type="xs:date" id="BUF_B5FB52CD-AE16-475A-9CE8-21B08A3F6ED5">
 				<xs:annotation>
 					<xs:appinfo>
-						<ledetekst>Termindato</ledetekst>
 						<enable>Ufodt=1</enable>
 					</xs:appinfo>
 				</xs:annotation>
@@ -144,29 +105,21 @@
 			<xs:element name="Fodselsnummer" type="bg:FodselsnummerType" minOccurs="1" id="BUF_AA59F2BF-8085-4661-88AB-E188667A612F">
 				<xs:annotation>
 					<xs:appinfo>
-						<ledetekst>Fødselsnummer</ledetekst>
 						<enable>DUFnummer=</enable>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="Fodseldato" type="bg:FodselsdatoType" minOccurs="1" id="BUF_A52643CA-7C01-41E8-BAB8-8A31B245581B">
 				<xs:annotation>
-					<xs:appinfo>
-						<ledetekst>Fødselsdato</ledetekst>
-					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="KjonnFreg" type="bg:KjonnFregType" minOccurs="1" id="BUF_1668E607-BB92-45AF-8C66-4C9CE81BD2B1">
+			<xs:element name="Kjonn" type="bg:KjonnFregType" minOccurs="1" id="BUF_1668E607-BB92-45AF-8C66-4C9CE81BD2B1">
 				<xs:annotation>
-					<xs:appinfo>
-						<ledetekst>Kjønn</ledetekst>
-					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="DUFnummer" type="bg:DUFNummerType" id="BUF_49AA99A5-7593-4FF9-9A52-7C732422D63A">
 				<xs:annotation>
 					<xs:appinfo>
-						<ledetekst>DUF-nummer</ledetekst>
 						<enable>Fodselsnummer=</enable>
 					</xs:appinfo>
 				</xs:annotation>
@@ -178,26 +131,16 @@
 		<xs:sequence>
 			<xs:element name="Identifikator" type="KlientIdentifikatorType" id="BUF_7CFECA91-738D-4388-9C28-8168036F3F4A">
 				<xs:annotation>
-					<xs:appinfo>
-						<ledetekst>Identifikator</ledetekst>
-					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="KommunalSaksId" type="xs:string">
+			<xs:element name="KommunalSaksId" type="xs:string" id="BUF_CF0CF9F2-BD9C-4293-94E0-BDEC56FA1543">
 				<xs:annotation>
-					<xs:appinfo>
-						<ledetekst>Saks-Id</ledetekst>
-						<veiledning>Barn-/Saksid i kommunalt fagsystem. Brukes også ved fakturering.</veiledning>
-					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="Bostedsadresse" type="bg:AdresseType" id="BUF_1D86C9FE-AAF6-4E6B-85DA-F695C0BCF84D">
 			</xs:element>
 			<xs:element name="UtenlandskBakgrunn" type="UtenlandskBakgrunnType" minOccurs="0" id="BUF_C4315249-A3E6-4D85-8CE3-6B8BEBDA9641">
 				<xs:annotation>
-					<xs:appinfo>
-						<ledetekst>Utenlandsk bakgrunn</ledetekst>
-					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
@@ -255,168 +198,71 @@
 		</xs:sequence>
 	</xs:complexType>
 
-	<xs:complexType name="MedvirkningType" id="BUF_9B0CC631-2BF4-4C42-A5AB-5DEBE86CC095">
+	<xs:complexType name="BarnetsMedvirkningType" id="BUF_9B0CC631-2BF4-4C42-A5AB-5DEBE86CC095">
 		<xs:annotation>
-			<xs:appinfo>
-				<ledetekst>Barnets medvirkning</ledetekst>
-				<veiledning>Barns rett til medvirkning omfatter både en rett for barnet til å få relevant informasjon tilpasset barnets alder og modenhet, en rett til å uttrykke seg fritt og uhindret, retten til å bli lyttet til og at barnets mening skal tillegges vekt ved beslutninger som berører barnet. Retten til å medvirke inkluderer også retten til ikke å medvirke.</veiledning>
-			</xs:appinfo>
 		</xs:annotation>
 		<xs:sequence>
 			<xs:element name="Rammer" type="bg:Fritekst" id="BUF_569F439B-3F31-42A9-9D7D-41BF4BFCB624">
 				<xs:annotation>
-					<xs:appinfo>
-						<ledetekst>Rammer for gjennomføring av medvirkning</ledetekst>
-						<veiledning>- Hvilken informasjon om henvisning er gitt til barnet?
-- Hvordan har barnevernstjenesten sikret at barnet har fått og forstått informasjon tilpasset alder og modenhet?
-- På hvilken måte er det lagt til rette for trygge rammer for barnets deltakelse?
-- Hvilke ønsker har barnet knyttet til medvirkningen fremover i tid? 
-						</veiledning>
-					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="BarnetsMedvirkning" type="bg:Fritekst" id="BUF_6A70D5D5-9178-4618-A267-F2B589FB52D4">
 				<xs:annotation>
-					<xs:appinfo>
-						<ledetekst>Barnets medvirkning</ledetekst>
-						<veiledning>Barnets egne synspunkter og tanker, her kan barnet selv utforme sin egen henvisning eller komme med sine tanker direkte inn i prosessen med f.eks. sine egnede ord eller tegninger.
-</veiledning>
-					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="VektingAvBarnetsSysnpunkt" type="bg:Fritekst" id="BUF_4E368AC0-FF61-4064-B2F5-15BC20E6D9C6">
 				<xs:annotation>
-					<xs:appinfo>
-						<ledetekst>Barnevernstjenestens vekting av barnets synspunkter</ledetekst>
-						<veiledning>Hvordan er barnets synspunkter, meninger og tanker vektlagt i prosessen?</veiledning>
-					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 	
 
-	<xs:complexType name="NettverkPersonType" id="BUF_1C17DEEA-AA35-4568-AAB3-810103511C49">
-		<xs:sequence>
-			<xs:element name="Relasjon" type="NettverkRelasjonType" id="BUF_8EF675E0-923D-4A92-B823-C2C8F34731AB"/>
-			<xs:element name="RelasjonAnnet" type="bg:Enlinje" id="BUF_A01FF1AC-6F13-4AC8-80C3-5F34DC312FBF">
-				<xs:annotation>
-					<xs:appinfo>
-						<ledetekst>Beskriv annen relasjon</ledetekst>
-						<veiledning/>
-						<enable>Relasjon=9</enable>
-					</xs:appinfo>
-				</xs:annotation>
-			</xs:element>
-			<xs:element name="Omsorg" type="OmsorgType" id="BUF_BC98557F-A19A-401B-B83C-EEE2EC10FA83">
-				<xs:annotation>
-					<xs:appinfo>
-						<ledetekst>Omsorgssituasjon</ledetekst>
-						<veiledning/>
-					</xs:appinfo>
-				</xs:annotation>
-			</xs:element>
-			<xs:element name="OmsorgssituasjonAnnet" type="bg:Fritekst" id="BUF27C8B361-A710-497C-B03A-557E3FC4D29C">
-				<xs:annotation>
-					<xs:appinfo>
-						<ledetekst>Beskriv annen omsorgssituasjon</ledetekst>
-						<veiledning/>
-						<enable>Omsorg=9</enable>
-					</xs:appinfo>
-				</xs:annotation>
-			</xs:element>
-			<xs:element name="Personalia" type="bg:KontaktpersonType" id="BUF_935D58C7-B110-4D3F-9C21-D9FDCBE9EB47">
-			</xs:element>
-			<xs:element name="Adresse" type="bg:AdresseType" id="BUF_09253BE1-4070-4BDE-A94A-21225B7D7739"/>
-			<xs:element name="UtenlandskBakgrunn" type="UtenlandskBakgrunnType" minOccurs="0" maxOccurs="1" id="BUF_820E8E54-A898-41F0-AB80-7425B9FA6551"/>
-			<xs:element name="KontaktFrekvens" type="KontaktFrekvensType" id="BUF_D9894232-2B77-4D67-A6BA-72AC558FD354">
-				<xs:annotation>
-					<xs:appinfo>
-						<ledetekst>Kontakt med barnet</ledetekst>
-						<veiledning/>
-					</xs:appinfo>
-				</xs:annotation>
-			</xs:element>
-		</xs:sequence>
-	</xs:complexType>
-
-
-	<xs:complexType name="NettverkType" id="BUF_1BC0AD78-4524-47D7-AE76-CF25E605C86C">
-		<xs:sequence>
-			<xs:element name="Person" type="NettverkPersonType" minOccurs="0" maxOccurs="unbounded" id="BUF_A7950F28-0B95-42EE-ADE1-AB21F3F240B1"/>
-		</xs:sequence>
-	</xs:complexType>
+	
 	
 	<xs:complexType name="UtenlandskBakgrunnType" id="BUF_512AE196-82C8-47ED-8F01-DFBDA193FEEA">
 		<xs:sequence>
 			<xs:element name="Statsborgerskap" type="StatsborgerskapType" id="BUF_CD52F990-1345-495A-B9C8-807BBD119F7A"/>
 			<xs:element name="Morsmal" type="MorsmalType" id="BUF_B004A41B-4320-4463-8084-C52877C5FCDC">
 				<xs:annotation>
-					<xs:appinfo>
-						<ledetekst>Morsmål</ledetekst>
-						<veiledning/>
-					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="BehovForTolk" type="xs:boolean" id="BUF_722387E5-1AF7-4F88-A6C7-80B2DAEF4339">
 				<xs:annotation>
-					<xs:appinfo>
-						<ledetekst>Behov for tolk</ledetekst>
-						<veiledning/>
-					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 	
-	<xs:complexType name="OmradeSituasjonType" id="BUF_8B111992-F4D7-4FC8-A1F5-6775ABFE9E6B">
+	<xs:complexType name="KunnskapsmodellOmradeBeskrivelseType" id="BUF_8B111992-F4D7-4FC8-A1F5-6775ABFE9E6B">
 		<xs:annotation>
 		</xs:annotation>		
 		<xs:sequence>
 			<xs:element name="Omrade" type="KunnskapsmodellOmradeType" id="BUF_F1E2E935-4B31-49A4-BE3D-2BD5729FBEF9">
 				<xs:annotation>
-					<xs:appinfo>
-						<controlType>CheckboxEnum</controlType>
-					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="BeskrivelseFungering" type="bg:Fritekst" minOccurs="0" id="BUF_02E03054-70DA-4618-BD00-21F99145DF56">
 				<xs:annotation>
-					<xs:appinfo>
-						<ledetekst>Beskrivelse av barnets fungering</ledetekst>
-					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="BeskrivelseBehov" type="bg:Fritekst" minOccurs="0" id="BUF_E42B359C-9134-4868-ADB5-19042BBC0942">
 				<xs:annotation>
-					<xs:appinfo>
-						<ledetekst>Samlet vurdering av behov for bistand</ledetekst>
-						<veiledning>Her gjøres den samlede vurderingen av barnets behov for bistand. I dette inngår en totalvurdering av den beskyttelsen og risikoen som omgir barnet, ressurser og belastninger som påvirker barnet og barnets utvikling, og av hvor mottakelig barnet er for det ønskede tiltaket. Dette innebefatter også en samlet vurdering av de behovene barnet må få tilfredsstilt for å kunne ha god utvikling. Barnets beste skal være et grunnleggende hensyn i dette. I vurderingen skal også barnets rett til medvirkning tydelig ivaretas. Barnevernstjenestens vurdering av valg av tiltak skal også inngå her.</veiledning>
-					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 
-	<xs:complexType name="TiltaksplanType" id="BUF_7BA3C032-0BD7-43D3-B7E2-AB36255F6CF7">
+	<xs:complexType name="KommunensTiltaksplanType" id="BUF_7BA3C032-0BD7-43D3-B7E2-AB36255F6CF7">
 		<xs:annotation>
-			<xs:appinfo>
-				<ledetekst>Mål og plan for oppholdet/tiltaket</ledetekst>
-			</xs:appinfo>
 		</xs:annotation>
 		<xs:sequence>
 			<xs:element name="Beskrivelse" type="bg:Fritekst" id="BUF_41EA2A29-0616-4A60-B862-3D45EA69A6C5">
 				<xs:annotation>
-					<xs:appinfo>
-						<ledetekst>Beskriv eller henvis til vedlegg med kommunens plan</ledetekst>
-					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="RammerOpphold" type="bg:Fritekst" id="BUF_A059E9FC-D65D-4413-90D0-7B5C0909EA7C">
 				<xs:annotation>
-					<xs:appinfo>
-						<ledetekst>Beskrivelse av andre relevante rammer for oppholdet, for eksempel geografisk beliggenhet, dyrehold mm.</ledetekst>
-					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
@@ -424,32 +270,32 @@
 
 	<xs:complexType name="VedtakType" id="BUF_653C0E1D-E638-4FC7-99D9-2861878D0099">
 		<xs:annotation>
-			<xs:appinfo>
-				<ledetekst>Vedtak</ledetekst>
-			</xs:appinfo>
 		</xs:annotation>
 		<xs:sequence>
 			<xs:element name="Lovhjemmel" type="VedtakHenvisningParagrafType" id="BUF_293BFCD4-B05C-444C-B489-1683C5155FE6">
 				<xs:annotation>
-					<xs:appinfo>
-						<ledetekst>Lovhjemmel</ledetekst>
-					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="Status" type="VedtakStatusType" id="BUF_F4328206-A933-4477-AA37-91CC540DF145"/>
-			<xs:element name="NemndsbehandlingStatus" type="NemndsbehandlingStatusType" id="BUF_77751E42-4E85-4B2D-967B-606561A86D15"/>
 			<xs:element name="Dato" type="xs:date" minOccurs="0" id="BUF_16F048A6-0C19-4726-BD48-B7B12B750046">
 				<xs:annotation>
 					<xs:appinfo>
-						<veiledning>Dato vedtak fattet</veiledning>
 						<enable>Status=1</enable>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NemndsbehandlingStatus" type="NemndsbehandlingStatusType" id="BUF_77751E42-4E85-4B2D-967B-606561A86D15"/>
+			<xs:element name="NemndsbehandlingDato" type="xs:date" minOccurs="0" id="BUF_C122795C-C29B-4AFC-93E9-31D6F112C719">
+				<xs:annotation>
+					<xs:appinfo>
+						<enable>NemndsbehandlingStatus=1</enable>
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 
-<!-- Enum, kodeliste = Bufdir_barnevern_kodelister_v0.8.0.xml -->
+<!-- Enum, kodeliste = Bufdir_barnevern_kodelister_v0.9.0.xml -->
 
 	<xs:simpleType name="DagtilbudTypeType" id="BUF_B5FF17B2-B04D-4AC0-857B-11517C84A541">
 		<xs:annotation>
@@ -485,9 +331,6 @@
 				3 = Vurderes
 				4 = Ikke aktuell
             </xs:documentation>
-			<xs:appinfo>
-				<ledetekst>Status</ledetekst>
-			</xs:appinfo>
 		</xs:annotation>
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="Foreligger"/>
@@ -515,10 +358,6 @@
 	
 	<xs:simpleType name="KunnskapsmodellDimensjonType" id="BUF_68013692-AF12-4731-905F-44CC1218BB02">
 		<xs:annotation>
-			<xs:appinfo>
-				<ledetekst>Dimensjon</ledetekst>
-				<veiledning>Dimensjon i kunnskapsmodellen</veiledning>
-			</xs:appinfo>
 			<xs:documentation>
 				1 = Barnets utvikling
 				2 = Foreldrenes omsorg
@@ -534,10 +373,6 @@
 
 	<xs:simpleType name="KunnskapsmodellOmradeType" id="BUF_C113BA46-0BFE-4FE7-839B-6F039FEA0197">
 		<xs:annotation>
-			<xs:appinfo>
-				<ledetekst>Område</ledetekst>
-				<veiledning>Område i kunnskapsmodellen</veiledning>
-			</xs:appinfo>
 			<xs:documentation>
 				1 = Helse							
 				2 = Barnehage og skole				
@@ -594,6 +429,7 @@
 			<xs:documentation>
                 1 = Mor
                 2 = Far
+                3 = Verge
 				9 = Annet
             </xs:documentation>
 		</xs:annotation>
@@ -601,6 +437,7 @@
 			<xs:length value="1"/>
 			<xs:enumeration value="1"/>
 			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
 			<xs:enumeration value="9"/>
 		</xs:restriction>
 	</xs:simpleType>
@@ -609,10 +446,9 @@
 		<xs:annotation>
 			<xs:documentation>
                 1 = Ingen
-                2 = Foreldreansvar
-                3 = Daglig omsorg
-				4 = Samvær
-				9 = Annet
+                2 = Daglig omsorg
+                3 = Delt Omsorg
+                4 = Samvær
             </xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="xs:string">

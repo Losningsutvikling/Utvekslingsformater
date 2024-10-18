@@ -9,12 +9,12 @@
     bool disable = ((fixedValue != "") || prefilled?.OpenToEdit == false);
     string disableCssClass = (disable) ? "disabled_button" : "";
     string disableStr = (disable) ? "disabled" : "";
-    <span class="ledetekst @disableCssClass">@Model.GetCaption(true)</span>
+    <span class="ledetekst @disableCssClass">@Model.GetCaption(true)@Html.Raw(Utils.getMandatoryMarker(Model.Mandatory))</span>
     @await Html.PartialAsync($"/Pages/Partial/Beskrivelse.cshtml", @Model.GetDescription())
     if (disable)
     {
         <select class="dropdown" name="@Model.GetId()" id="@Model.GetId()" disabled>
-            <option disabled selected value=""> -- Velg -- </option>
+            <option selected value=""> -- Velg -- </option>
             @{
                 foreach (var enumValue in enumValues)
                 {
@@ -32,8 +32,9 @@
     }
     else
     {
+        Model.CheckAddEnabler();
         <select class="dropdown" name="@Model.GetId()" id="@Model.GetId()" onchange="checkDependentControlsActivation(this)">
-            <option disabled selected value=""> -- Velg -- </option>
+            <option selected value=""> -- Velg -- </option>
             @{
                 foreach (var enumValue in enumValues)
                 {

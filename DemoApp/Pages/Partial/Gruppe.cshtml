@@ -1,4 +1,5 @@
 ﻿@using DemoApp.Models
+@using DemoApp.Models.Fagsystem
 @using DemoApp.Models.ViewModels
 @using System.Xml.Schema
 @model PropertyRendererModel
@@ -8,34 +9,39 @@
     var description = Model.GetDescription();
     bool synligGruppe = !string.IsNullOrEmpty(caption);
     string cssClass = (synligGruppe) ? "synlig_gruppe" : "anonym_gruppe";
-    string iterate = (Model.Prop != null) ? XsdUtils.GetAppInfoValue(Model.Prop, "iterer") : "";
-    <div class="@cssClass" id="@Model.GetId()">
+    var prefilled = TestdataGenerator.GetPrefilledValueFor(Model.Values, Model.GetId());
+    string collapsedGroupClass = (prefilled?.InitiallyClosed == true) ? "collapsedGroup" : "";
+    string closedGroupClass = (prefilled?.InitiallyClosed == true) ? "hidden" : "";
+    string onClickHandler = (prefilled?.InitiallyClosed == true) ? "toggleCollapseContainer(this);" : "";
+    <div class="@cssClass @collapsedGroupClass" id="@Model.GetId()" onclick="@onClickHandler">
         @if (synligGruppe)
         {
+            if (prefilled?.InitiallyClosed == true)
+            {
+                <img class="collapse-image" src="../img/arrow-right.png" alt="collapse image">
+
+            }
             <span class="gruppetekst">@caption</span>
             @await Html.PartialAsync($"/Pages/Partial/Beskrivelse.cshtml", description)
+
+            
+            
         }
-        @if (iterate != "")
+        <div class="collapseContainer @closedGroupClass ">
+        @foreach (var element in elements)
         {
-            var elementModel = new PropertyIteratorRendererModel(Model.Melding, $"{Model.XPath}", Model.Prop ?? throw new Exception("Model=null"), Model.Values, iterate);
-            @await Html.PartialAsync($"/Pages/Partial/Iterator.cshtml", elementModel)
-        }
-        else
-        {
-            @foreach (var element in elements)
+            bool skipRender = Model.SkipProp != null && element is XmlSchemaElement el && el.ElementSchemaType == Model.SkipProp;
+            if (!skipRender)
             {
-                bool skipRender = Model.SkipProp != null && element is XmlSchemaElement el && el.ElementSchemaType == Model.SkipProp;
-                if (!skipRender)
-                {
-                    <div class="variabel">
-                        @{
-                            var elementModel = new PropertyRendererModel(Model.Melding, $"{Model.XPath}", element, Model.Values);
-                            string controlName = XsdUtils.GetControlNameForProperty(element);
-                        }
-                        @await Html.PartialAsync($"/Pages/Partial/{controlName}.cshtml", elementModel)
-                    </div>
+            <div class="variabel">
+                @{
+                    var elementModel = new PropertyRendererModel(Model, Model.Melding, $"{Model.GetId()}", element, Model.Values);
+                    string controlName = XsdUtils.GetControlNameForProperty(element);
                 }
+                @await Html.PartialAsync($"/Pages/Partial/{controlName}.cshtml", elementModel)
+                </div>
             }
         }
+        </div>
     </div>
 }

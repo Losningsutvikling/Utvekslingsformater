@@ -7,7 +7,7 @@
     bool check = prefilled?.Value == true.ToString();
     string checkedStr = (check) ? "checked" : "";
 
-    <span class="ledetekst_flervalg">@Model.GetCaption(true)</span>
+    <span class="ledetekst_flervalg">@Model.GetCaption(true)@Html.Raw(Utils.getMandatoryMarker(Model.Mandatory))</span>
     @await Html.PartialAsync($"/Pages/Partial/Beskrivelse.cshtml", @Model.GetDescription())
     var kodeliste = XsdUtils.GetKodelisteVerdier(Model.Prop);
     foreach (var enumValue in kodeliste)

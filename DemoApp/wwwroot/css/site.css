@@ -30,10 +30,66 @@ body {
 }
 .synlig_gruppe {
     /*background-color: #E0E0E0;*/
-    border: 1px solid gray;
-    margin: 15px 0px 15px 15px;
-    padding: 15px 0px 15px 15px;
+    border: 1px solid silver;
+    border-radius: 10px;
+    margin: 15px 15px 15px 15px;
+    padding: 15px 15px 15px 15px;
 }
+
+.collapsedGroup {
+    height: auto;
+    background-color: #F6F6F6;
+    /*background-image: url("../img/arrow-right.png");
+    background-position: top 15px right 5%;*/ /* Position the image at the left center of the div */
+    /*background-repeat: no-repeat;
+    background-size: 25px;*/
+}
+
+.collapse-image {
+    position: relative;
+    top: -5px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+/*.custom-checkbox {
+    position: relative;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+    .custom-checkbox input {
+        display: none;
+    }
+
+    .custom-checkbox .checkbox-image {
+        position: absolute;
+        top: 5px;
+        left: 0;
+        width: 80%;
+        height: 80%;
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    .custom-checkbox input:checked + .checkbox-image {
+        transform: rotate(90deg);
+    }*/
+
+
+
+.collapseContainer {
+    border: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+.collapseContainer .hidden{
+    display: none;
+}
+
 
 .gruppetekst {
     font-weight: bold;
@@ -48,7 +104,7 @@ body {
     font-weight: bold;
     font-size: 1em;
     display: inline-block;
-    min-width: 150px;
+    min-width: 190px;
 }
 
 .ledetekst_flerlinje {
@@ -134,6 +190,37 @@ body {
     display: none;
 }
 
+.expanded_template {
+    font-display: block;
+}
+
 .new_button {
     display: block;
 }
+
+.custom-checkbox {
+    position: relative;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+    .custom-checkbox input {
+        display: none;
+    }
+
+    .custom-checkbox .checkbox-image {
+        position: absolute;
+        top: 5px;
+        left: 0;
+        width: 80%;
+        height: 80%;
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    .custom-checkbox input:checked + .checkbox-image {
+        transform: rotate(90deg);
+    }
+
+

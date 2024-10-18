@@ -15,8 +15,8 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-XsdUtils.LoadXsds(app.Configuration);
-XsdUtils.LoadTekster(app.Configuration);
+XsdUtils.LoadXsds(app.Configuration, app.Environment);
+XsdUtils.LoadTekster(app.Configuration, app.Environment);
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

@@ -33,5 +33,10 @@
             return GetRequestValue(RequestParams, param);
         }
 
+        public static string getMandatoryMarker(bool mandatory)
+        {
+            return (mandatory) ? "<span class='obligatorisk_markor'>*</span>" : "";
+        }
+
     }
 }

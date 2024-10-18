@@ -2,16 +2,35 @@
 @using System.Xml.Schema;
 @model DemoApp.Models.ViewModels.PropertyRendererModel
 @{
+    var prefilled = TestdataGenerator.GetPrefilledValueFor(Model.Values, Model.GetId());
     bool anyValuesInOptionalGroup = Model.Values.Any(v => v.Xpath.StartsWith(Model.XPath)); // Må være mer nøyaktig!!!!
     string hiddenClass = anyValuesInOptionalGroup ? "" : "hidden";
+    bool disableCheck = (prefilled != null) ? !anyValuesInOptionalGroup : false;
     <div class="optional_gruppe">
         @if (anyValuesInOptionalGroup)
         {
-            <input type="checkbox" name="optional_@Model.GetId()" id="optional_@Model.GetId()" checked onchange="toggleOptionalBox('optionContainer_@Model.GetId()')" />
+            <label class="custom-checkbox">
+                <input type="checkbox" name="optional_@Model.GetId()" id="optional_@Model.GetId()" checked onchange="setHiddenByCheckbox('optional_@Model.GetId()', 'optionContainer_@Model.GetId()')" />
+                <img class="checkbox-image" src="../img/arrow-right.png" alt="Checkbox image">
+            </label>
+
         }
         else
         {
-            <input type="checkbox" name="optional_@Model.GetId()" id="optional_@Model.GetId()" onchange="toggleOptionalBox('optionContainer_@Model.GetId()')" />
+            if (disableCheck)
+            {
+                <label class="custom-checkbox">
+                    <input type="checkbox" name="optional_@Model.GetId()" id="optional_@Model.GetId()" disabled />
+                    <img class="checkbox-image" src="../img/arrow-right.png" alt="Checkbox image">
+                </label>
+            }
+            else
+            {
+                <label class="custom-checkbox">
+                    <input type="checkbox"   name="optional_@Model.GetId()" id="optional_@Model.GetId()" onchange="setHiddenByCheckbox('optional_@Model.GetId()', 'optionContainer_@Model.GetId()')" />
+                    <img class="checkbox-image" src="../img/arrow-right.png" alt="Checkbox image">
+                </label>
+            }
         }
         <label class="checkbox_tekst" for="optional_@Model.GetId()">@Model.GetCaption(true)</label>
         <div id="optionContainer_@Model.GetId()" class="option_container @hiddenClass">

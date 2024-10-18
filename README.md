@@ -9,9 +9,14 @@
 
 ## Status
 
-Versjon 0.8.0 skal vise formatet for meldinger, kodelister og tilhørende tekster.
+- Versjon 0.9.0 er oppdatert så langt som vi er kommet med definisjonene
+- Versjon 0.8.0 skal vise formatet for meldinger, kodelister og tilhørende tekster.
 
-Frem mot neste hovedversjon vil vi komplettere og kvalitetssikre innholdet. 
+Frem mot neste hovedversjon vil vi:
+
+- Kvalitetssikre innholdet. 
+- Gå gjennom og om nødvendig justere begrepsbruk/navngiving
+- Dokumentere XSD bedre
 
 Det er i første omgang *Henvisning til fosterhjem* som skal utvikles ferdig, de andre meldingstypene som ligger i definisjonene er lagt med for å illustrerre hvordan en mer komplett digital samhandling vil fungere.
 

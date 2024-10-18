@@ -37,10 +37,11 @@ namespace DemoApp.Models
             XsdSchemasWithRootElement.Clear();
         }
 
-        public static void LoadXsds(IConfiguration config)
+        public static void LoadXsds(IConfiguration config, IWebHostEnvironment env)
         {
             SetPreselectedProtocolVersion(config);
-            string DefsPath = GetDefinitionsDirectory(config);
+            string configPath = GetDefinitionsDirectory(config);
+            string DefsPath = (configPath.StartsWith("..")) ? configPath : Path.Combine(env.ContentRootPath, configPath);
             var files = new DirectoryInfo(DefsPath).GetFiles(@"*.xsd", SearchOption.TopDirectoryOnly/*AllDirectories*/);
             XmlSchemaSet schemaSet = new();
             foreach (var file in files)
@@ -68,17 +69,21 @@ namespace DemoApp.Models
                 }
 
             }
-            LoadKodelister(config);
+            LoadKodelister(config, env);
 
         }
 
-        public static void LoadTekster(IConfiguration config)
+        public static void LoadTekster(IConfiguration config, IWebHostEnvironment env)
         {
-            string path = config["JsonPath"];
+            string configPath = config["JsonPath"];
+            string path = (configPath.StartsWith("..")) ? configPath : Path.Combine(env.ContentRootPath, configPath);
             var files = new DirectoryInfo(path).GetFiles(@"*.json", SearchOption.TopDirectoryOnly);
-            var file = files.First(f => f.Name.IndexOf("schema") < 0);
-            string jsonData = File.ReadAllText(file.FullName);
-            Tekster = JsonSerializer.Deserialize<TeksterJson>(jsonData);
+            var file = files?.First(f => f.Name.IndexOf("schema") < 0);
+            if (file != null)
+            {
+                string jsonData = File.ReadAllText(file.FullName);
+                Tekster = JsonSerializer.Deserialize<TeksterJson>(jsonData);
+            }
         }
 
         private static bool ContainsTypeDefinition(XmlSchema schema, string typeName)
@@ -100,9 +105,10 @@ namespace DemoApp.Models
             return null;
         }
 
-        public static void LoadKodelister(IConfiguration config)
+        public static void LoadKodelister(IConfiguration config, IWebHostEnvironment env)
         {
-            string defsPath = GetDefinitionsDirectory(config);
+            string configPath = GetDefinitionsDirectory(config);
+            string defsPath = (configPath.StartsWith("..")) ? configPath : Path.Combine(env.ContentRootPath, configPath);
             var serializer = new XmlSerializer(typeof(Kodelister));
             // var files = new DirectoryInfo(defsPath).GetFiles(@"*odeliste*.xml", SearchOption.TopDirectoryOnly/*AllDirectories*/);
             var filnavn = KodelisteFiler.Select(kvp => kvp.Key);
@@ -301,6 +307,8 @@ namespace DemoApp.Models
                 return hintedControlType;
             if (XsdUtils.GetIsRepeating(prop))
             {
+                if (XsdUtils.HasUniqueConstraint(prop))
+                    return "Iterator";
                 return "Duplicator";
             }
             else if (prop is XmlSchemaChoice)
@@ -342,6 +350,25 @@ namespace DemoApp.Models
                 _ => "Tekst"
             };
             return controlName;
+        }
+
+        public static XmlSchemaUnique? GetUniqueConstraint(XmlSchemaAnnotated prop)
+        {
+            if (prop is XmlSchemaElement element)
+            {
+                foreach (var constraint in element.Constraints)
+                {
+                    if (constraint is XmlSchemaUnique result)
+                        return result;
+                }
+            }
+            return null;
+        }
+
+        public static bool HasUniqueConstraint(XmlSchemaAnnotated prop)
+        {
+            var constraint = GetUniqueConstraint(prop);
+            return constraint != null;
         }
 
         public static int GetMaxOccurs(XmlSchemaAnnotated prop)

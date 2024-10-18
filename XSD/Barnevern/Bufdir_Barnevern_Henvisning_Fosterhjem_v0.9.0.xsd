@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-	xmlns="https://Bufdir/Barnevern/Henvisning/Fosterhjem_v0.8.0" 
-	targetNamespace="https://Bufdir/Barnevern/Henvisning/Fosterhjem_v0.8.0" 
-	xmlns:henv="https://Bufdir.no/Barnevern/Henvisning_v0.8.0" 
-	xmlns:mld="https://Bufdir.no/Melding_v0.8.0" 
-	xmlns:kodelister="Bufdir_Barnevern_Henvisning_kodelister_v0.8.0.xml" 
+	xmlns="https://Bufdir.no/Barnevern/Henvisning/Fosterhjem_v0.9.0" 
+	targetNamespace="https://Bufdir.no/Barnevern/Henvisning/Fosterhjem_v0.9.0" 
+	xmlns:henv="https://Bufdir.no/Barnevern/Henvisning_v0.9.0" 
+	xmlns:mld="https://Bufdir.no/Melding_v0.9.0" 
+	xmlns:kodelister="Bufdir_Barnevern_Henvisning_kodelister_v0.9.0.xml" 
 	elementFormDefault="qualified" 
-	version="0.8.0">
-	<xs:import namespace="https://Bufdir.no/Barnevern/Henvisning_v0.8.0" schemaLocation="Bufdir_Barnevern_Henvisning_v0.8.0.xsd"/>
+	version="0.9.0">
+	<xs:import namespace="https://Bufdir.no/Barnevern/Henvisning_v0.9.0" schemaLocation="Bufdir_Barnevern_Henvisning_v0.9.0.xsd"/>
 
 	<xs:complexType name="FosterhjemHenvisningType" id="BUF_3BDAE573-2546-41F4-AB46-8B5875D9ADDB">
 		<xs:annotation>
-			<xs:appinfo>
-				<ledetekst>Fosterhjem</ledetekst>
-			</xs:appinfo>
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="henv:OmsorgstiltakHenvisningType">
@@ -32,7 +29,6 @@
 			<xs:appinfo>
 				<MeldingsForbindelse>Ny|Oppdatering</MeldingsForbindelse>
 				<Aktor>1.Linje</Aktor>
-				<ledetekst>Henvisning Fosterhjem</ledetekst>
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>

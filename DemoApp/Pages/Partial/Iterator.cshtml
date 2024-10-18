@@ -1,6 +1,6 @@
 ﻿@using DemoApp.Models
 @using DemoApp.Models.ViewModels
-@model PropertyIteratorRendererModel
+@model PropertyRendererModel
 @{
     var caption = Model.GetCaption(false);
     var elements = XsdUtils.GetXsdChildren(Model.Prop);
@@ -16,7 +16,7 @@
     var clickActionTemplate = isOptional ? "setHiddenByCheckbox('[id1]', '[id2]')" : "";
     @foreach (var kode in kodeliste!.koder!)
         {
-            string id = Model.GetId() + "_" + kode.verdi + "_";
+            string id = Model.GetId() + "_" + kode.verdi;
             string idVariabelDiv = Model.GetId() + "_" + kode.verdi + "__container";
             string onChangeHandler = clickActionTemplate.Replace("[id1]", id).Replace("[id2]", idVariabelDiv);
             <div>
@@ -30,7 +30,7 @@
                     {
                         <div class="variabel">
                             @{
-                                var elementModel = new PropertyRendererModel(Model.Melding, $"{id}", element, Model.Values, enumType);
+                                var elementModel = new PropertyRendererModel(Model, Model.Melding, $"{id}", element, Model.Values, enumType);
                                 string controlName = XsdUtils.GetControlNameForProperty(element);
                             }
                             @await Html.PartialAsync($"/Pages/Partial/{controlName}.cshtml", elementModel)

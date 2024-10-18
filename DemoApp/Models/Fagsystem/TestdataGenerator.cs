@@ -146,7 +146,7 @@ namespace DemoApp.Models.Fagsystem
                         BarnId = 10000001,
                         Saksdata = new Dictionary<string, string>()
                         {
-                            { "FellesInfo/BarnMedNettverk/BarnetsSituasjon/Omrade", "Omrade=1|Beskrivelse=" },
+                            { "FellesInfo.BarnMedNettverk.BarnetsSituasjon.Omrade", "Omrade=1|Beskrivelse=" },
                         }
                     },
 
@@ -198,57 +198,67 @@ namespace DemoApp.Models.Fagsystem
 
             var selectedSchema = Utils.GetRequestValue(request, Konstanter.SelectedSkjema) ?? "";
             if (selectedSchema != "")
-                result.Add(new($"/{rotElement}/Meldingshode/MeldingsTypeXpath", selectedSchema, false));
+                result.Add(new($"{rotElement}.Meldingshode.MeldingsTypeXpath", selectedSchema, false));
             var selectedAksjon = Utils.GetRequestValue(request, Konstanter.SelectedAksjon) ?? "";
             if (selectedAksjon != "")
             {
                 if (selectedAksjon != "Ny")
                 {
-                    result.Add(new($"/{rotElement}/Meldingshode/OppfolgingAvMelding/Aksjon", selectedAksjon, false));
+                    result.Add(new($"{rotElement}.Meldingshode.OppfolgingAvMelding.Aksjon", selectedAksjon, false));
                     var gjelderId = Utils.GetRequestValue(request, "followUpOnId") ?? "";
-                    result.Add(new($"/{rotElement}/Meldingshode/OppfolgingAvMelding/GjelderId", gjelderId, false));
+                    result.Add(new($"{rotElement}.Meldingshode.OppfolgingAvMelding.GjelderId", gjelderId, false));
                 }
             }
-            result.Add(new($"/{rotElement}/Meldingshode/Id", Guid.NewGuid().ToString(), false));
+            result.Add(new($"{rotElement}.Meldingshode", "", false, true));
+            result.Add(new($"{rotElement}.Meldingshode.Id", Guid.NewGuid().ToString(), false));
+            result.Add(new($"{rotElement}.Meldingshode.MeldingstypeNmsp", "https://Bufdir.no/Barnevern/Henvisning/Fosterhjem_v0.9.0", false));
+            result.Add(new($"{rotElement}.Meldingshode.MeldingstypeXpath", "Bufdir_Barnevern_Henvisning_v0.9.0.xsd", false));
+            result.Add(new($"{rotElement}.Meldingshode.SendtTidspunkt", "2024-01-01", false));
 
-            result.Add(new($"/{rotElement}/Meldingshode/FagsystemAvsender/Leverandor", "Visma", false));
-            result.Add(new($"/{rotElement}/Meldingshode/FagsystemAvsender/Navn", "Visma Flyt Barnevern", false));
-            result.Add(new($"/{rotElement}/Meldingshode/FagsystemAvsender/Versjon", "2.2.234", false));
+            result.Add(new($"{rotElement}.Meldingshode.FagsystemAvsender.Leverandor", "Visma", false));
+            result.Add(new($"{rotElement}.Meldingshode.FagsystemAvsender.Navn", "Visma Flyt Barnevern", false));
+            result.Add(new($"{rotElement}.Meldingshode.FagsystemAvsender.Versjon", "2.2.234", false));
 
             var bvTjeneste = GetBarneverntjeneste();
-            result.Add(new($"/{rotElement}/Meldingshode/Avsender/Organisasjonsnummer", bvTjeneste?.Organisasjonsnummer ?? "---", false));
-            result.Add(new($"/{rotElement}/Meldingshode/Avsender/Navn", bvTjeneste?.Navn ?? "---", false));
-            result.Add(new($"/{rotElement}/Meldingshode/Avsender/Kommuneinfo/Kommunenummer", bvTjeneste?.Kommunenummer ?? "---", false));
-            result.Add(new($"/{rotElement}/Meldingshode/Avsender/Kommuneinfo/Kommunenavn", bvTjeneste?.KommuneNavn ?? "---", false));
-            result.Add(new($"/{rotElement}/Meldingshode/Avsender/Kommuneinfo/Bydelsnummer", bvTjeneste?.Bydelsnummer ?? "---", false));
-            result.Add(new($"/{rotElement}/Meldingshode/Avsender/Kommuneinfo/Bydelsnavn", bvTjeneste?.Bydelsnavn ?? "---", false));
+            result.Add(new($"{rotElement}.Meldingshode.Avsender.Organisasjonsnummer", bvTjeneste?.Organisasjonsnummer ?? "---", false));
+            result.Add(new($"{rotElement}.Meldingshode.Avsender.Navn", bvTjeneste?.Navn ?? "---", false));
+            result.Add(new($"{rotElement}.Meldingshode.Avsender.Kommuneinfo.Kommunenummer", bvTjeneste?.Kommunenummer ?? "---", false));
+            result.Add(new($"{rotElement}.Meldingshode.Avsender.Kommuneinfo.Kommunenavn", bvTjeneste?.KommuneNavn ?? "---", false));
+            result.Add(new($"{rotElement}.Meldingshode.Avsender.Kommuneinfo.Bydelsnummer", bvTjeneste?.Bydelsnummer ?? "---", false));
+            result.Add(new($"{rotElement}.Meldingshode.Avsender.Kommuneinfo.Bydelsnavn", bvTjeneste?.Bydelsnavn ?? "---", false));
+            result.Add(new($"{rotElement}.Meldingshode.Avsender.Kommuneinfo.Bydelsinfo", false.ToString(), false));
+            result.Add(new($"{rotElement}.Meldingshode.Avsender.Kommuneinfo.Bydelsinfo.Bydelsnummer", "", false));
+            result.Add(new($"{rotElement}.Meldingshode.Avsender.Kommuneinfo.Bydelsinfo.Bydelsnavn", "", false));
 
-            result.Add(new($"/{rotElement}/Meldingshode/Mottaker/Organisasjonsnummer", "986 128 433", false));
-            result.Add(new($"/{rotElement}/Meldingshode/Mottaker/Navn", "Barne- ungdoms- og familieetaten", false));
+            result.Add(new($"{rotElement}.Meldingshode.Mottaker.Organisasjonsnummer", "986 128 433", false));
+            result.Add(new($"{rotElement}.Meldingshode.Mottaker.Navn", "Barne- ungdoms- og familieetaten", false));
+            result.Add(new($"{rotElement}.Meldingshode.Mottaker.Kommuneinfo", false.ToString(), false));
 
             BarnSelectorModel model = new(request);
             var barn = model.selectedBarn;
 
-            result.Add(new("Henvisning/KontaktInfoAvsender/Kontaktperson/Navn", "Bjørge Sæther", true));
-            result.Add(new("Henvisning/KontaktInfoAvsender/Kontaktperson/Telefon", "90822239", true));
-            result.Add(new("Henvisning/KontaktInfoAvsender/Kontaktperson/epost", "bjorge.saether@bufdir.no", true));
-            result.Add(new("Henvisning/KontaktInfoAvsender/KontaktpersonLeder/Navn", "Kenneth Normann Hansen", true));
-            result.Add(new("Henvisning/KontaktInfoAvsender/KontaktpersonLeder/Telefon", "90909090", true));
-            result.Add(new("Henvisning/KontaktInfoAvsender/KontaktpersonLeder/epost", "kenneth.hansen@bufdir.no", true));
-            result.Add(new("Henvisning/Klient/Identifikator/Fodselsnummer", barn?.FREG_Person?.Fodselsnummer ?? "---", false));
-            result.Add(new("Henvisning/Klient/Identifikator/Fodseldato", barn?.FREG_Person?.Fodselsdato.ToString("yyyy-MM-dd") ?? "---", false));
-            result.Add(new("Henvisning/Klient/Identifikator/KjonnFreg", barn?.FREG_Person?.Kjonn ?? "---", false));
-            result.Add(new("Henvisning/Klient/Identifikator/EMA", false.ToString(), false));
-            result.Add(new("Henvisning/Klient/Identifikator/Ufodt", false.ToString(), false));
-            result.Add(new("Henvisning/Klient/Identifikator/DUFnummer", "", false));
-            result.Add(new("Henvisning/Fosterhjem/TiltakHistorikk", @"01.02.2022 - 12.09.2022 Fosterhjem
+            result.Add(new($"{rotElement}.KontaktInfoAvsender.Kontaktperson.Navn", "Bjørge Sæther", true));
+            result.Add(new($"{rotElement}.KontaktInfoAvsender.Kontaktperson.Telefon", "90822239", true));
+            result.Add(new($"{rotElement}.KontaktInfoAvsender.Kontaktperson.epost", "bjorge.saether@bufdir.no", true));
+            result.Add(new($"{rotElement}.KontaktInfoAvsender.KontaktpersonLeder.Navn", "Kenneth Normann Hansen", true));
+            result.Add(new($"{rotElement}.KontaktInfoAvsender.KontaktpersonLeder.Telefon", "90909090", true));
+            result.Add(new($"{rotElement}.KontaktInfoAvsender.KontaktpersonLeder.epost", "kenneth.hansen@bufdir.no", true));
+            result.Add(new($"{rotElement}.Klient.Identifikator.Fodselsnummer", barn?.FREG_Person?.Fodselsnummer ?? "---", false));
+            result.Add(new($"{rotElement}.Klient.Identifikator.Fodseldato", barn?.FREG_Person?.Fodselsdato.ToString("yyyy-MM-dd") ?? "---", false));
+            result.Add(new($"{rotElement}.Klient.Identifikator.KjonnFreg", barn?.FREG_Person?.Kjonn ?? "---", false));
+            result.Add(new($"{rotElement}.Klient.Identifikator.EMA", false.ToString(), false));
+            result.Add(new($"{rotElement}.Klient.Identifikator.TerminDato", "", false));
+            result.Add(new($"{rotElement}.Klient.Identifikator.Kjonn", "", false));
+            result.Add(new($"{rotElement}.Klient.Identifikator.Ufodt", false.ToString(), false));
+            result.Add(new($"{rotElement}.Klient.Identifikator.DUFnummer", "", false));
+            result.Add(new($"{rotElement}Fosterhjem.TiltakHistorikk", @"01.02.2022 - 12.09.2022 Fosterhjem
 12.09.2022 - 20.10.2023 Omsorgsinstitusjon", true));
             return result;
         }
 
         public static PrefilledValue? GetPrefilledValueFor(List<PrefilledValue>? values, string id)
         {
-            var hit = values?.FirstOrDefault(p => id.EndsWith(p.Xpath.Replace('/', '_')));
+            var hit = values?.FirstOrDefault(p => id.EndsWith(p.Xpath));
             return hit;
         }
     }

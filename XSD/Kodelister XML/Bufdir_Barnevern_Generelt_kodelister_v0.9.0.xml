@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<kodelister versjon="0.8.0" nmsp="https://Bufdir.no/Barnevern/Generelt_v0.8.0">
+<kodelister versjon="0.9.0" nmsp="https://Bufdir.no/Barnevern/Generelt_v0.9.0">
 
 <kodeliste navn="DagtilbudTypeType" id="BUF_B5FF17B2-B04D-4AC0-857B-11517C84A541">
 	<kode verdi="1" tekst="Ingen dagtilbud"/>
@@ -32,17 +32,17 @@
 </kodeliste>
 
 <kodeliste navn="KunnskapsmodellOmradeType" id="BUF_C113BA46-0BFE-4FE7-839B-6F039FEA0197">
-	<kode verdi= "1" tekst="Helse"							dimensjon="1"/>
-	<kode verdi= "2" tekst="Barnehage og skole"				dimensjon="1"/>
-	<kode verdi= "3" tekst="Følelser og uttrykk"			dimensjon="1"/>
-	<kode verdi= "4" tekst="Venner og fritid"				dimensjon="1"/>
-	<kode verdi= "5" tekst="Grunnleggende omsorg"			dimensjon="2"/>
-	<kode verdi= "6" tekst="Følelsesmessig tilgjengelighet"	dimensjon="2"/>
-	<kode verdi= "7" tekst="Stimulering og veiledning"		dimensjon="2"/>
-	<kode verdi= "8" tekst="Beskyttelse"					dimensjon="2"/>
-	<kode verdi= "9" tekst="Familieforhold"					dimensjon="3"/>
-	<kode verdi="10" tekst="Bolig, økonomi og arbeid"		dimensjon="3"/>
-	<kode verdi="11" tekst="Nettverk og sosial integrering"	dimensjon="3"/>
+	<kode verdi= "1" tekst="Helse"							KunnskaspmodellDimensjonType="1"/>
+	<kode verdi= "2" tekst="Barnehage og skole"				KunnskaspmodellDimensjonType="1"/>
+	<kode verdi= "3" tekst="Følelser og uttrykk"			KunnskaspmodellDimensjonType="1"/>
+	<kode verdi= "4" tekst="Venner og fritid"				KunnskaspmodellDimensjonType="1"/>
+	<kode verdi= "5" tekst="Grunnleggende omsorg"			KunnskaspmodellDimensjonType="2"/>
+	<kode verdi= "6" tekst="Følelsesmessig tilgjengelighet"	KunnskaspmodellDimensjonType="2"/>
+	<kode verdi= "7" tekst="Stimulering og veiledning"		KunnskaspmodellDimensjonType="2"/>
+	<kode verdi= "8" tekst="Beskyttelse"					KunnskaspmodellDimensjonType="2"/>
+	<kode verdi= "9" tekst="Familieforhold"					KunnskaspmodellDimensjonType="3"/>
+	<kode verdi="10" tekst="Bolig, økonomi og arbeid"		KunnskaspmodellDimensjonType="3"/>
+	<kode verdi="11" tekst="Nettverk og sosial integrering"	KunnskaspmodellDimensjonType="3"/>
 </kodeliste>
 
 <kodeliste navn="LovType" id="BUF_365F5EFF-E99A-41EF-9BD3-A84493366067">
@@ -56,17 +56,17 @@
 </kodeliste>
 
 <kodeliste navn="NettverkRelasjonType" id="BUF_EDA6F43C-5280-4A9C-8016-5C7B6A924BAB">
-	<kode verdi="1" tekst="Mor"/>
+	<kode verdi="1" tekst="Mor" gyldigFra="1970.01.01" gyldigTil="2024.12.31" />
 	<kode verdi="2" tekst="Far"/>
+	<kode verdi="3" tekst="Verge"/>
 	<kode verdi="9" tekst="Annet"/>
 </kodeliste>
 
 <kodeliste navn="OmsorgType" id="BUF_006637AF-CE1A-46A2-AE58-065F13754203">
 	<kode verdi="1" tekst="Ingen"/>
-	<kode verdi="2" tekst="Foreldreansvar"/>
-	<kode verdi="3" tekst="Daglig omsorg"/>
-	<kode verdi="3" tekst="Samvær"/>
-	<kode verdi="9" tekst="Annet"/>
+	<kode verdi="2" tekst="Daglig omsorg"/>
+	<kode verdi="3" tekst="Delt omsorg"/>
+	<kode verdi="4" tekst="Samvær"/>
 </kodeliste>
 
 <kodeliste navn="SoskenRelasjonType" id="BUF_DCC037FD-2382-4459-A1D0-549B5A3C1E1A">

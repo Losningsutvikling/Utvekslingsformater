@@ -1,15 +1,15 @@
 {
 	"sprak": "nb-NO",
 	"henvisning": {
-		"versjon": "0.8.0",
+		"versjon": "0.9.0",
 		"versjonsInformasjon": "Første testversjon",
 		"gjelderFra": "2024-09-16",
 		"xsd": [
-			"https://Bufdir.no/Melding_v0.8.0",
-			"https://Bufdir.no/Generelt_v0.8.0", 
-			"https://Bufdir.no/KvitteringsMelding_v0.8.0", 
-			"https://Bufdir.no/Barnevern/Henvisning_v0.8.0",
-			"https://Bufdir/Barnevern/Henvisning/Fosterhjem_v0.8.0"
+			"https://Bufdir.no/Melding_v0.9.0",
+			"https://Bufdir.no/Generelt_v0.9.0", 
+			"https://Bufdir.no/KvitteringsMelding_v0.9.0", 
+			"https://Bufdir.no/Barnevern/Henvisning_v0.9.0",
+			"https://Bufdir/Barnevern/Henvisning/Fosterhjem_v0.9.0"
 		],
 		"skjemaelement": [
 		{
@@ -92,14 +92,14 @@
 		{
 			"navn": "NettverkPlasseringVurdert",
 			"id": "BUF_28F9384B-0D0C-430E-A30A-8CA6BD4F69F3",
-			"ledetekst": "Er mulighet for plassering i slekt eller nettverk undersøkt?",
+			"ledetekst": "Ved flytting ut av hjemmet, er mulighet for plassering i slekt eller nettverk undersøkt?",
 			"veiledning": "",
 			"sortering": 100
 		},
 		{
 			"navn": "NettverkPlasseringVurdering",
 			"id": "BUF_B3707F9C-CF99-433D-B410-A5C98B98DFCC",
-			"ledetekst": "Hvilke vurdering og kartlegging er gjortVed flytting ut av hjemmet?",
+			"ledetekst": "Hvilke vurdering og kartlegging er gjort?",
 			"veiledning": "",
 			"sortering": 100
 		},
@@ -147,7 +147,7 @@
 		{
 			"navn": "PlasseringINettverk",
 			"id": "BUF_73A3AB62-5202-484E-BAA3-48E1B9CDFD0C",
-			"ledetekst": "Vurdering om barnet kan plasseres hos slekt eller nettverk",
+			"ledetekst": "Er det vurdert om barnet kan plasseres hos slekt eller nettverk, og hvilken vurdering og kartlegging er gjort?",
 			"veiledning": "",
 			"sortering": 100
 		},
@@ -161,29 +161,22 @@
 		{
 			"navn": "BarnetsSituasjon",
 			"id": "BUF_CC9A7CDF-B998-415D-995A-6275CBCCA465",
-			"ledetekst": "Barnets nåsituasjon",
-			"veiledning": "Barnets nåsituasjon beskrevet med utgangspunkt i kunnskapsmodellens områder",
+			"ledetekst": "Beskrivelse og vurdering av barnets behov",
+			"veiledning": "",
 			"sortering": 100
 		},
 		{
 			"navn": "BistandSamletBehov",
 			"id": "BUF_D7577E46-86D7-4AFD-B170-E3D4C6D8234D",
 			"ledetekst": "Samlet vurdering av barnets behov for bistand",
-			"veiledning": "Her gjøres den samlede vurderingen av barnets behov for bistand. I dette inngår en totalvurdering av den beskyttelse og risiko som omgir barnet, og av barnets mottagelighet for ønsket tiltak. Dette innebefatter en samlet vurdering av de behov barnet må få tilfredsstilt for å kunne ha god utvikling. Barnets beste skal være et grunnleggende hensyn i dette.",
+			"veiledning": "Her gjøres den samlede vurderingen av barnets behov for bistand. I dette inngår en totalvurdering av den beskyttelsen og risikoen som omgir barnet, ressurser og belastninger som påvirker barnet og barnets utvikling, og av hvor mottakelig barnet er for det ønskede tiltaket. Dette innebefatter også en samlet vurdering av de behovene barnet må få tilfredsstilt for å kunne ha god utvikling. Barnets beste skal være et grunnleggende hensyn i dette. I vurderingen skal også barnets rett til medvirkning tydelig ivaretas. Barnevernstjenestens vurdering av valg av tiltak skal også inngå her.",
 			"sortering": 100
 		},
 		{
 			"navn": "PlanEtterOnsketTiltak",
 			"id": "BUF_3A616CCF-41B9-4E31-AB8B-9496157CDB3F",
-			"ledetekst": "Velg ønsket tiltak",
-			"veiledning": "Hva er kommunens foreløpige plan etter avsluttet tiltak",
-			"sortering": 100
-		},
-		{
-			"navn": "PlanEtterOnsketTiltak",
-			"id": "BUF_3A616CCF-41B9-4E31-AB8B-9496157CDB3F",
-			"veiledning": "Kommunens foreløpige plan etter avslutning av tiltak",
-			"ledetekst": "Videre plan",
+			"ledetekst": "Hva er kommunens foreløpige plan etter avsluttet tiltak",
+			"veiledning": "Velg ønsket tiltak",
 			"sortering": 100
 		},
 		{
@@ -222,22 +215,29 @@
 			"sortering": 100
 		},
 		{
+			"navn": "Dagtilbud",
+			"id": "BUF_C4B6EEC5-231D-4F78-BCAD-49CD094381C0",
+			"ledetekst": "Barnets dagtilbud?",
+			"veiledning": "",
+			"sortering": 100
+		},
+		{
 			"navn": "Type",
 			"id": "BUF_FBD88251-E5D6-4E8E-AF2A-0BD2417C1DA4",
-			"ledetekst": "Type",
+			"ledetekst": "Hva er barnets dagtilbud?",
 			"veiledning": "",
 			"sortering": 100
 		},
 		{
 			"navn": "Beskrivelse",
 			"id": "BUF_B0CF0017-A1B2-4F28-8050-BDC3EAE93457",
-			"ledetekst": "Beskrivelse",
+			"ledetekst": "Beskriv annet dagtilbud",
 			"veiledning": "",
 			"sortering": 100
 		},
 		{
-			"navn": "IndividuellPlanType",
-			"id": "BUF_41E9643E-F727-42C6-A459-3D2E4612306D",
+			"navn": "IndividuellPlan",
+			"id": "BUF_3F888520-7A2D-4BFD-8C77-62ED8F4888CB",
 			"ledetekst": "Individuell plan",
 			"veiledning": "",
 			"sortering": 100
@@ -259,15 +259,15 @@
 		{
 			"navn": "ForeldrenesMedvirkning",
 			"id": "BUF_ABB6710A-BE5B-49B8-ADB2-A7275F714C89",
-			"ledetekst": "Foreldrenes medvirkning",
-			"veiledning": "- Hvordan har barnevernstjenesten sikret at foreldrenes rett til å være involvert er ivaretatt i henvisningsprosessen?\n- På hvilke måter har foreldrene vært involvert i henvisningsprosessen?\n- Hvilke ønsker har foreldrene for barnets opphold på institusjon og for tiden etter endt opphold?\n- Hvilke forhold vil være viktig ved samarbeid med barnets foreldre og øvrig familie?",
+			"ledetekst": "Involvering av foreldre",
+			"veiledning": "- Hvordan har barnevernstjenesten sikret at foreldrenes rett til å være involvert er ivaretatt i henvisningsprosessen? \n - På hvilke måter har foreldrene vært involvert i henvisningsprosessen?\n- Hvilke ønsker har foreldrene for barnets opphold på institusjon og for tiden etter endt opphold?\n- Hvilke forhold vil være viktig ved samarbeid med barnets foreldre og øvrig familie?",
 			"sortering": 100
 		},
 		{
 			"navn": "SamvaerPersoner",
 			"id": "BUF_2893D1A7-FFDF-45C6-BD55-FF00D28EDA2A",
-			"ledetekst": "Hvem skal barnet ha samvær/kontakt med, og hvordan. Og skal det tilrettelegges for dette?",
-			"veiledning": "",
+			"ledetekst": "Samvær og kontakt",
+			"veiledning": "Hvem skal barnet ha samvær og kontakt med, og hvordan skal det tilrettelegges for dette?",
 			"sortering": 100
 		},
 		{
@@ -329,6 +329,13 @@
 		{
 			"navn": "UtenlandskBakgrunn",
 			"id": "BUF_C4315249-A3E6-4D85-8CE3-6B8BEBDA9641",
+			"ledetekst": "Utenlandsk bakgrunn",
+			"veiledning": "",
+			"sortering": 100
+		},
+		{
+			"navn": "UtenlandskBakgrunn",
+			"id": "BUF_820E8E54-A898-41F0-AB80-7425B9FA6551",
 			"ledetekst": "Utenlandsk bakgrunn",
 			"veiledning": "",
 			"sortering": 100
@@ -426,15 +433,15 @@
 		},
 		{
 			"navn": "TiltaksplanType",
-			"id": "BUF_7BA3C032-0BD7-43D3-B7E2-AB36255F6CF7",
-			"ledetekst": "Mål og plan for oppholdet/tiltaket",
+			"id": "BUF_E112D04D-B1E9-4324-8308-5AFE7CB01C4D",
+			"ledetekst": "Hva er kommunens mål og plan for oppholdet/tiltaket",
 			"veiledning": "",
 			"sortering": 100
 		},
 		{
 			"navn": "Beskrivelse",
 			"id": "BUF_41EA2A29-0616-4A60-B862-3D45EA69A6C5",
-			"ledetekst": "Beskriv eller henvis til vedlegg med kommunens plan",
+			"ledetekst": "Beskriv eller henvis til vedlegg med kommunens tiltaksplan",
 			"veiledning": "",
 			"sortering": 100
 		},
@@ -455,15 +462,15 @@
 		{
 			"navn": "Lovhjemmel",
 			"id": "BUF_293BFCD4-B05C-444C-B489-1683C5155FE6",
-			"ledetekst": "Lovhjemmel",
+			"ledetekst": "Velg hjemmel",
 			"veiledning": "",
 			"sortering": 100
 		},
 		{
 			"navn": "Dato",
 			"id": "BUF_16F048A6-0C19-4726-BD48-B7B12B750046",
-			"ledetekst": "Dato",
-			"veiledning": "Dato vedtak fattet",
+			"ledetekst": "Dato vedtak fattet",
+			"veiledning": "",
 			"sortering": 100
 		},
 		{
@@ -485,6 +492,104 @@
 			"id": "BUF_C113BA46-0BFE-4FE7-839B-6F039FEA0197",
 			"ledetekst": "Område",
 			"veiledning": "Område i kunnskapsmodellen",
+			"sortering": 100
+		},
+		{
+			"navn": "SoskenInformasjon",
+			"id": "BUF_E615BE17-D314-4DE8-8FA3-FD27A4F332E9",
+			"ledetekst": "Informasjon om søsken",
+			"veiledning": "",
+			"sortering": 100
+		},
+		{
+			"navn": "SoskenSamplassering",
+			"id": "BUF_13699B3A-F193-4E18-B606-60B8739A0520",
+			"ledetekst": "Om søsken",
+			"veiledning": "Dersom søsken ønskes plassert sammen, oppgi informasjon om hvilke søsken dette gjelder",
+			"sortering": 100
+		},
+		{
+			"navn": "FagsystemAvsender",
+			"id": "BUF_9A2BA0E2-24A8-43ED-B60F-8F7A7C64E66D",
+			"ledetekst": "Fagsystem Avsender",
+			"veiledning": "",
+			"sortering": 100
+		},
+		{
+			"navn": "SendtTidspunkt",
+			"id": "BUF_D12645CF-6FE0-4EA0-86C5-D9A9EFB5F31D",
+			"ledetekst": "Sendt dato",
+			"veiledning": "",
+			"sortering": 100
+		},
+		{
+			"navn": "KontaktInfoAvsender",
+			"id": "BUF_4CF80BAC-32E2-46B9-9257-517E31272F9C",
+			"ledetekst": "Kontaktinformasjon avsender",
+			"veiledning": "",
+			"sortering": 100
+		},
+		{
+			"navn": "OmForeldrene",
+			"id": "BUF_5C3DCC89-B36C-4C28-9B2D-0C67F726D4A8",
+			"ledetekst": "Samarbeid med og involvering av foreldre eller andre omsorgspersoner",
+			"veiledning": "Barnevernet skal legge til rette for samarbeid med barnets foreldre, og skal behandle dem med respekt. Barnevernet skal legge til rette for at barnets familie og nettverk involveres.",
+			"sortering": 100
+		},
+		{
+			"navn": "NemndsbehandlingStatus",
+			"id": "BUF_77751E42-4E85-4B2D-967B-606561A86D15",
+			"ledetekst": "Status for nemndsbehandling",
+			"veiledning": "",
+			"sortering": 100
+		},
+		{
+			"navn": "NemndsbehandlingDato",
+			"id": "BUF_C122795C-C29B-4AFC-93E9-31D6F112C719",
+			"ledetekst": "Dato planlagt nemndsbehandling",
+			"veiledning": "",
+			"sortering": 100
+		},
+		{
+			"navn": "VedtakStatus",
+			"id": "BUF_F4328206-A933-4477-AA37-91CC540DF145",
+			"ledetekst": "Status for vedtak",
+			"veiledning": "",
+			"sortering": 100
+		},
+		{
+			"navn": "Kommuneinfo",
+			"id": "BUF_B50BD657-4F24-46E8-B832-DA2EF456311F",
+			"ledetekst": "Ansvarlig kommune",
+			"veiledning": "",
+			"sortering": 100
+		},
+		{
+			"navn": "EMA",
+			"id": "BUF_B4AAD458-5785-44F5-A0DA-6DAFCAF083B7",
+			"ledetekst": "Enslig mindreårig flykning eller asylsøker",
+			"veiledning": "",
+			"sortering": 100
+		},
+		{
+			"navn": "Bistandsperiode",
+			"id": "BUF_B3FA7714-E438-4739-B288-2C0BA6FC2F59",
+			"ledetekst": "Ønsket bistandsperiode",
+			"veiledning": "",
+			"sortering": 100
+		},
+		{
+			"navn": "Dod",
+			"id": "BUF_CAC47084-DB07-41A8-9619-BECEBDC5D97A",
+			"ledetekst": "Død",
+			"veiledning": "",
+			"sortering": 100
+		},
+		{
+			"navn": "MedvirkningAnnet",
+			"id": "BUF_F8D18C62-FE29-4297-B7FA-E85A9D83A6C7",
+			"ledetekst": "Andre relevante opplysninger om medvirkning, samarbeid og kontakt",
+			"veiledning": "Beskriv andre relevante opplysninger",
 			"sortering": 100
 		}]
 	}
