@@ -2,52 +2,39 @@
 @using DemoApp.Models.Fagsystem
 @model DemoApp.Models.ViewModels.PropertyRendererModel
 @{
-    var enumValues = XsdUtils.GetKodelisteVerdier(Model.Prop);
+    var kodelisteUnfiltered = XsdUtils.GetKodeliste(Model.Prop) 
+        ?? throw new Exception($"Finner ikke kodeliste for type {XsdUtils.GetName(Model.Prop)}");
+    List<Kode> kodeliste = Model.Melding.FilterKodeliste(kodelisteUnfiltered);
     var fixedValue = XsdUtils.GetFixedValue(Model.Prop);
-    var prefilled = TestdataGenerator.GetPrefilledValueFor(Model.Values, Model.GetId());
+    var prefilled = Model.Melding.GetPrefilledValueFor(Model.GetId());
     string value = fixedValue != "" ? fixedValue : ((prefilled?.Value) ?? "");
     bool disable = ((fixedValue != "") || prefilled?.OpenToEdit == false);
     string disableCssClass = (disable) ? "disabled_button" : "";
     string disableStr = (disable) ? "disabled" : "";
-    <span class="ledetekst @disableCssClass">@Model.GetCaption(true)@Html.Raw(Utils.getMandatoryMarker(Model.Mandatory))</span>
+    string changeHandler = (disable) ? "" : "checkDependentControlsActivation(this)";
+    string visibleIdAndName = @Model.GetId() + ((disable) ? "_disabled" : ""); // gi disablet input et navn som gjør at de ikke hentes ut
+    <span class="ledetekst @disableCssClass">@Model.GetCaption(true)@Html.Raw(Utils.getMandatoryMarker(Model))</span>
     @await Html.PartialAsync($"/Pages/Partial/Beskrivelse.cshtml", @Model.GetDescription())
     if (disable)
     {
-        <select class="dropdown" name="@Model.GetId()" id="@Model.GetId()" disabled>
-            <option selected value=""> -- Velg -- </option>
-            @{
-                foreach (var enumValue in enumValues)
-                {
-                    if (enumValue.Key == value)
-                    {
-                        <option value="@enumValue.Key" selected>@enumValue.Value</option>
-                    }
-                    else
-                    {
-                        <option value="@enumValue.Key">@enumValue.Value</option>
-                    }
-                }
-            }
-        </select>
+        <input type="hidden" name="@Model.GetId()" value="@value" />
     }
     else
     {
         Model.CheckAddEnabler();
-        <select class="dropdown" name="@Model.GetId()" id="@Model.GetId()" onchange="checkDependentControlsActivation(this)">
+    }
+    <select class="dropdown" name="@visibleIdAndName" id="@visibleIdAndName" onchange="@changeHandler" @disableStr>
             <option selected value=""> -- Velg -- </option>
-            @{
-                foreach (var enumValue in enumValues)
-                {
-                    if (enumValue.Key == value)
+            @foreach (var kode in kodeliste)
+            {
+                    if (kode.verdi == value)
                     {
-                        <option value="@enumValue.Key" selected>@enumValue.Value</option>
+                        <option value="@kode.verdi" selected>@kode.tekst</option>
                     }
                     else
                     {
-                        <option value="@enumValue.Key">@enumValue.Value</option>
+                        <option value="@kode.verdi">@kode.tekst</option>
                     }
-                }
             }
-        </select>
-    }
+    </select>
 }

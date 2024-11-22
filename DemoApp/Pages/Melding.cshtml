@@ -10,31 +10,50 @@
 
     if (Model.SelectedProtocol != null)
     {
-    @await Html.PartialAsync("/Pages/Partial/MeldingsAksjon.cshtml", Model)
+        @await Html.PartialAsync("/Pages/Partial/MeldingsAksjon.cshtml", Model)
         
-    @await Html.PartialAsync("/Pages/Partial/Skjemavelger.cshtml", Model)
+        @await Html.PartialAsync("/Pages/Partial/Skjemavelger.cshtml", Model)
 
-    @if (!string.IsNullOrEmpty(Model.SelectedSkjemaElementName))
+        @if (!string.IsNullOrEmpty(Model.SelectedSkjemaElementName))
         {
-            var values = Model.PrefillValues;
-    @await Html.PartialAsync("/Pages/Partial/Gruppe.cshtml", new PropertyRendererModel(null, Model, "", Model.SelectedXmlSchemaElement, values))
-                <input name="Send" type="submit" value="Send/Lagre" />
-                <input name="LagHTML" type="submit" value="Lag HTML" />
+            @await Html.PartialAsync("/Pages/Partial/Gruppe.cshtml", new PropertyRendererModel(null, Model, "", Model.SelectedXmlSchemaElement))
+            <input name="Send" type="submit" value="Send/Lagre" />
+            <input type="button" name="LagHTML" onclick="postForm('MeldingLagret?Lagre')" value="Lag HTML" />
         }
+        @if (Model.TestTekster && (XsdUtils.Tekster.missing.Count > 0 || Model.GetNonUsed().Count > 0 || XsdUtils.Tekster.wrongName.Count > 0))
+        {
+        if (XsdUtils.Tekster.missing.Count > 0)
+        {
+            <br />
+            <textarea rows="20" cols="100">Manglende: 
+@string.Join("\n", XsdUtils.Tekster.missing.ToArray())</textarea>
+        }
+        @if (Model.TestTekster && Model.GetNonUsed().Count > 0)
+        {
+            <br />
 
+            <textarea rows="20" cols="100">Ubenyttet:
+@string.Join("\n", Model.GetNonUsed().ToArray())</textarea>
+        }
+        @if (Model.TestTekster && XsdUtils.Tekster.wrongName.Count > 0)
+        {
+            <br />
+            <textarea rows="20" cols="100">Feil navn:
+@string.Join("\n", XsdUtils.Tekster.wrongName.ToArray())</textarea>
+        }
+        }
     }
 }
 
 @section Scripts
 {
-@foreach (ControlEnabler enabler in Model.controlEnablers)
-{
+    @foreach (ControlEnabler enabler in Model.controlEnablers)
+    {
+        <script>
+            registerDependentControl('@enabler.EnabledControlId', '@enabler.ControlId', '@enabler.ControlValue');
+        </script>
+    }
     <script>
-        registerDependentControl('@enabler.EnabledControlId', '@enabler.ControlId', '@enabler.ControlValue');
+        setDependentControlsDefault();
     </script>
 }
-<script>
-    setDependentControlsDefault();
-</script>
-}
-

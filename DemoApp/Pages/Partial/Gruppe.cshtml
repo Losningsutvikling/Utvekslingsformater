@@ -5,11 +5,11 @@
 @model PropertyRendererModel
 @{
     var caption = Model.GetCaption(true);
-    var elements = XsdUtils.GetXsdChildren(Model.Prop);
+    var elements = XsdUtils.GetEnrichedChildren(Model.Prop);
     var description = Model.GetDescription();
     bool synligGruppe = !string.IsNullOrEmpty(caption);
     string cssClass = (synligGruppe) ? "synlig_gruppe" : "anonym_gruppe";
-    var prefilled = TestdataGenerator.GetPrefilledValueFor(Model.Values, Model.GetId());
+    var prefilled = Model.Melding.GetPrefilledValueFor(Model.GetId());
     string collapsedGroupClass = (prefilled?.InitiallyClosed == true) ? "collapsedGroup" : "";
     string closedGroupClass = (prefilled?.InitiallyClosed == true) ? "hidden" : "";
     string onClickHandler = (prefilled?.InitiallyClosed == true) ? "toggleCollapseContainer(this);" : "";
@@ -28,14 +28,15 @@
             
         }
         <div class="collapseContainer @closedGroupClass ">
-        @foreach (var element in elements)
+        @foreach (var enrichedElement in elements)
         {
+            var element = enrichedElement.Element;
             bool skipRender = Model.SkipProp != null && element is XmlSchemaElement el && el.ElementSchemaType == Model.SkipProp;
             if (!skipRender)
             {
-            <div class="variabel">
+                <div class="variabel">
                 @{
-                    var elementModel = new PropertyRendererModel(Model, Model.Melding, $"{Model.GetId()}", element, Model.Values);
+                    var elementModel = new PropertyRendererModel(Model, Model.Melding, $"{Model.GetId()}", element);
                     string controlName = XsdUtils.GetControlNameForProperty(element);
                 }
                 @await Html.PartialAsync($"/Pages/Partial/{controlName}.cshtml", elementModel)

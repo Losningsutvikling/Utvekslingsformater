@@ -2,12 +2,12 @@
 @using DemoApp.Models.Fagsystem
 @model DemoApp.Models.ViewModels.PropertyRendererModel
 @{
-    var prefilled = TestdataGenerator.GetPrefilledValueFor(Model.Values, Model.GetId());
+    var prefilled = Model.Melding.GetPrefilledValueFor(Model.GetId());
     bool disable = (prefilled?.OpenToEdit == false);
     bool check = prefilled?.Value == true.ToString();
     string checkedStr = (check) ? "checked" : "";
 
-    <span class="ledetekst_flervalg">@Model.GetCaption(true)@Html.Raw(Utils.getMandatoryMarker(Model.Mandatory))</span>
+    <span class="ledetekst_flervalg">@Model.GetCaption(true)@Html.Raw(Utils.getMandatoryMarker(Model))</span>
     @await Html.PartialAsync($"/Pages/Partial/Beskrivelse.cshtml", @Model.GetDescription())
     var kodeliste = XsdUtils.GetKodelisteVerdier(Model.Prop);
     foreach (var enumValue in kodeliste)

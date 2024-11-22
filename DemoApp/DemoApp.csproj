@@ -4,60 +4,18 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>b5a41ccb-7643-41dc-a6ce-0ac8a34e6941</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="..\Veiledning_JSON\bfk-schema-3.json" Link="App_data\JSON\bfk-schema-3.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\Veiledning_JSON\Bufdir_barnevern_henvisning_veiledning_v0.9.0.json" Link="App_data\JSON\Bufdir_barnevern_henvisning_veiledning_v0.9.0.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\Veiledning_JSON\HenvisningVeiledning_v0.9.0.schema.json" Link="App_data\JSON\HenvisningVeiledning_v0.9.0.schema.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\XSD\Bufdir_Barnevern_Generelt_kodelister_v0.9.0.xml" Link="App_data\XSD\Bufdir_Barnevern_Generelt_kodelister_v0.9.0.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\XSD\Bufdir_Barnevern_Henvisning_kodelister_v0.9.0.xml" Link="App_data\XSD\Bufdir_Barnevern_Henvisning_kodelister_v0.9.0.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\XSD\Bufdir_Generelt_kodelister_v0.9.0.xml" Link="App_data\XSD\Bufdir_Generelt_kodelister_v0.9.0.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\XSD\Bufdir_Melding_kodelister_v0.9.0.xml" Link="App_data\XSD\Bufdir_Melding_kodelister_v0.9.0.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="App_data\" />
     <Folder Include="App_data\JSON\" />
-    <Folder Include="App_data\XSD\" />
+	  <Folder Include="App_data\XSD\" />
+	  <Folder Include="App_data\testfiler\" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\XSD\Bufdir_Barnevern_Generelt_v0.9.0.xsd" Link="App_data\XSD\Bufdir_Barnevern_Generelt_v0.9.0.xsd">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="..\XSD\Bufdir_Barnevern_Henvisning_Fosterhjem_v0.9.0.xsd" Link="App_data\XSD\Bufdir_Barnevern_Henvisning_Fosterhjem_v0.9.0.xsd">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="..\XSD\Bufdir_Barnevern_Henvisning_v0.9.0.xsd" Link="App_data\XSD\Bufdir_Barnevern_Henvisning_v0.9.0.xsd">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="..\XSD\Bufdir_Generelt_v0.9.0.xsd" Link="App_data\XSD\Bufdir_Generelt_v0.9.0.xsd">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="..\XSD\Bufdir_Kvitteringsmelding_v0.9.0.xsd" Link="App_data\XSD\Bufdir_Kvitteringsmelding_v0.9.0.xsd">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="..\XSD\Bufdir_Melding_v0.9.0.xsd" Link="App_data\XSD\Bufdir_Melding_v0.9.0.xsd">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="..\XSD\Bufdir_TrukketMelding_v0.9.0.xsd" Link="App_data\XSD\Bufdir_TrukketMelding_v0.9.0.xsd">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <PackageReference Include="Azure.Identity" Version="1.13.1" />
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.22.2" />
   </ItemGroup>
 
 </Project>

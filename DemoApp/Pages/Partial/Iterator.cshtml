@@ -3,34 +3,71 @@
 @model PropertyRendererModel
 @{
     var caption = Model.GetCaption(false);
-    var elements = XsdUtils.GetXsdChildren(Model.Prop);
+    var elements = XsdUtils.GetEnrichedChildren(Model.Prop);
     var description = Model.GetDescription();
     bool synligGruppe = !string.IsNullOrEmpty(caption);
     string cssClass = (synligGruppe) ? "synlig_gruppe" : "anonym_gruppe";
     var enumType = Model.GetIterateTypeDefinition()
         ?? throw new Exception($"Could not find type {Model.Prop.ToString()}");
     string enumTypeName = XsdUtils.GetName(enumType) ?? "";
-    var kodeliste = XsdUtils.GetKodeliste(enumType);
+    var enumElement = elements.FirstOrDefault(el => XsdUtils.GetSimpleType(el.Element) == enumType)?.Element ?? Model.Prop;
+
+    if (Model.InnerModel != null)
+    {
+        EnrichedElement insertedEl = new() { Element = Model.InnerModel.Prop };
+        elements.Insert(Model.InnerModelIndex ?? elements.Count, insertedEl);
+    }
+
+    var kodelisteUnfiltered = XsdUtils.GetKodeliste(enumType)!;
+    var kodeliste = (Model.FilterId != "") ? Model.Melding.FilterKodeliste(kodelisteUnfiltered, Model.FilterId, Model.FilterValue) : Model.Melding.FilterKodeliste(kodelisteUnfiltered);
     var isOptional = XsdUtils.GetIsOptional(Model.Prop);
     var cssClassVariable = isOptional ? "hidden" : "";
     var clickActionTemplate = isOptional ? "setHiddenByCheckbox('[id1]', '[id2]')" : "";
-    @foreach (var kode in kodeliste!.koder!)
-        {
-            string id = Model.GetId() + "_" + kode.verdi;
-            string idVariabelDiv = Model.GetId() + "_" + kode.verdi + "__container";
-            string onChangeHandler = clickActionTemplate.Replace("[id1]", id).Replace("[id2]", idVariabelDiv);
-            <div>
-                <input type="checkbox" value="@kode.verdi" id="@id" onchange="@onChangeHandler">
+    if (Model.CustomCaptionPattern == "")
+    {
+        <div class="gruppetekst">@Model.GetCaption(true)@Html.Raw(Utils.getMandatoryMarker(Model))</div>
+    }
+    @foreach (var kode in kodeliste)
+    {
+        string id = Model.GetIdWithItemNo(kode.verdi);
+        string separator = id.EndsWith('.') ? "" : ".";
+        string enumElementName = $"{id}{separator}{XsdUtils.GetName(enumElement)}";
+        string idVariabelDiv = id + "__container";
+        string onChangeHandler = clickActionTemplate.Replace("[id1]", id).Replace("[id2]", idVariabelDiv);
+        <div>
+            @if (isOptional || XsdUtils.IsSimpleType(Model.Prop))
+            {
+                <input type="checkbox" value="@kode.verdi" id="@id" name="@id" onchange="@onChangeHandler">
                 <label class="checkbox_tekst" for="@id">@kode.tekst</label>
-
-                <div id="@idVariabelDiv" class="option_container @cssClassVariable">
-                @foreach (var element in elements)
+            }
+            else
+            {
+                string thiscaption = (Model.CustomCaptionPattern != "") ? string.Format(Model.CustomCaptionPattern, kode.tekst) : kode.tekst;
+                <span class="gruppetekst">@thiscaption</span>
+                @if (!string.IsNullOrEmpty(kode.beskrivelse))
                 {
-                    if (XsdUtils.GetSimpleType(element) != enumType)
+                    @await Html.PartialAsync($"/Pages/Partial/Beskrivelse.cshtml", kode.beskrivelse)
+                }
+            }
+            <input type="hidden" value="@kode.verdi" name="@enumElementName" id="@enumElementName">
+
+            <div id="@idVariabelDiv" class="option_container @cssClassVariable">
+                @foreach (var enrichedElement in elements)
+                {
+                    var element = enrichedElement.Element;
+                    @if (XsdUtils.GetSimpleType(element) != enumType)
                     {
                         <div class="variabel">
                             @{
-                                var elementModel = new PropertyRendererModel(Model, Model.Melding, $"{id}", element, Model.Values, enumType);
+                                string path = (Model.InnerModel != null && Model.InnerModel.Prop == element) ? Model.InnerModel.ParentXPath : id;
+                                var elementModel = new PropertyRendererModel(Model, Model.Melding, $"{path}", element, enumType);
+                                elementModel.FilterId = kodelisteUnfiltered.id;
+                                elementModel.FilterValue = kode.verdi;
+                                elementModel.FilterText = kode.tekst;
+                                if (element == Model.InnerModel?.Prop)
+                                {
+                                    elementModel.CustomCaptionPattern = Model.InnerModel.CustomCaptionPattern;
+                                }
                                 string controlName = XsdUtils.GetControlNameForProperty(element);
                             }
                             @await Html.PartialAsync($"/Pages/Partial/{controlName}.cshtml", elementModel)
@@ -38,7 +75,7 @@
                     }
                 }
                 </div>
-        </div>
+            </div>
     }
 
 }

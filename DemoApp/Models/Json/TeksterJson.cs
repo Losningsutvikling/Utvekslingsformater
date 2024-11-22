@@ -3,6 +3,10 @@
 
     public class TeksterJson
     {
+        public List<string> missing = [];
+        public List<string> used = [];
+        public List<string> wrongName = [];
+
         public string sprak { get; set; }
         public Henvisning henvisning { get; set; }
     }

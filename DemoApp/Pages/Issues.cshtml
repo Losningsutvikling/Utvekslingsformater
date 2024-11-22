@@ -1,18 +1,34 @@
 ﻿@page
 @model DemoApp.Pages.IssuesModel
 @{
+    <h1>Om demo-applikasjonen</h1>
+    <p>
+        Denne applikasjonen viser hvordan datadefinisjonene i henvisningsskjema i XSD-versjon fungerer.
+    </p>
+    <p>
+        Visningen vil ikke gjenspeile hvordan saksbehandlere i 1.-linje barnevern vil se skjemaene, det styres av leverandører av fagsystemer som brukes.
+        Formålet med denne demoapplikasjonen er å teste ut definisjonene, det logiske/informasjonsmessige innholdet og å skape et bilde av den praktiske bruken av definisjonene.
+    </p>
+    <p>
+        For innspill, kontakt gjerne <a href="mailto:bjorge.saether@bufdir.no">Bjørge Sæther</a>
+    </p>
     <h1>Mangler</h1>
     <ul>
-        <li>Indikator for obligatorisk på alle datatyper (fungerer bare for tekst)</li>
-        <li>"Ny (+)" - knapp for repeterbare felt</li>
-        <li>Lagring til XML</li>
-        <li>Listing av sendte meldinger</li>
-        <li>Valg for Ny / oppdater / trekk</li>
+        <li>Sjekk av obligatoriske verdier før lagring</li>
+        <li>Visning av hvilke obligatoriske verdier som ikke er satt</li>
+        <li>Forvirrende størrelser på overskrifter</li>
+        <li>Redigering av allerede lagrede meldinger</li>
+        <li>Håndtering av formatversjoner</li>
     </ul>
 
     <h1>Feil</h1>
     <ul>
-        <li>Viser ikke skjema i format Barnevernregister (mye bruk av attributter)</li>
+        <li>Feiler ved forsøk på lagring</li>
+    </ul>
+
+    <h1>Videreutvikling</h1>
+    <ul>
+        <li>Simulere melsingsutveksling mellom 1.- og 2.-linje barnevern</li>
     </ul>
 
 }

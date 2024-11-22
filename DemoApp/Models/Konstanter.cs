@@ -10,7 +10,6 @@
         public static readonly string MeldingsForbindelseType = "MeldingsForbindelseType";
         public static readonly int DagerFortid = -10000;
         public static readonly int DagerFremtid = 10000;
-        public static readonly string Ledetekst = "ledetekst";
         public static readonly string BufdirMeldingProtokollFilnavn = "bufdir_melding_v";
         public static readonly string MeldingType = "MeldingType";
     }

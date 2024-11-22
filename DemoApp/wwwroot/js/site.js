@@ -33,7 +33,6 @@ function toggleCollapseContainer(element) {
         child = element.children[i];
         if (child.tagName == 'DIV') {
             child.classList.toggle('hidden');
-            break;
         }
     }
     for (i = 0; i < element.children.length; i++) {
@@ -53,17 +52,21 @@ function toggleCollapseContainer(element) {
 }
 
 function checkDependentControlsActivation(element) {
-    foundControl = controlDependencies.find((item) => element && element.hasAttribute('id') && item.activatorControl == element.id);
-    if (foundControl != null) {
-        //window.alert('Fant avhengighet: ControlId:' + foundControl.control + ', verdi:' + foundControl.value);
-        var enabled = element.type == 'checkbox' ? (foundControl.value == (element.checked ? '1' : '0')) : foundControl.value == element.value;
-        //var el = document.getElementById(foundControl.control);
-        //el.disabled = !enabled;
-        el = document.getElementById(foundControl.control);
-        el.disabled = !enabled;
-        el.parentElement.classList.remove('disabled_variable');
-        if (!enabled) {
-            el.parentElement.classList.add('disabled_variable');
+    foundControls = controlDependencies.filter((item) => element && element.hasAttribute('id') && item.activatorControl == element.id);
+    if (foundControls != null && foundControls.length > 0)
+    {
+        for (i = 0; i < foundControls.length; i++) {
+            foundControl = foundControls[i];
+            //window.alert('Fant avhengighet: ControlId:' + foundControl.control + ', verdi:' + foundControl.value);
+            var enabled = element.type == 'checkbox' ? (foundControl.value == (element.checked ? '1' : '0')) : foundControl.value == element.value;
+            //var el = document.getElementById(foundControl.control);
+            //el.disabled = !enabled;
+            el = document.getElementById(foundControl.control);
+            el.disabled = !enabled;
+            el.parentElement.classList.remove('disabled_variable');
+            if (!enabled) {
+                el.parentElement.classList.add('disabled_variable');
+            }
         }
     }
 }
@@ -73,7 +76,7 @@ function createNewFromTemplate(divId) {
     count = parseInt(counterEl.value);
     count++;
     templateElement = document.getElementById(divId + '_template');
-    templateContents = templateElement.innerHTML.replaceAll(':0:template', ':' + count).replaceAll('hidden_template', '');
+    templateContents = templateElement.innerHTML.replaceAll(':0.template', ':' + count).replaceAll('hidden_template', '');
 
     div = document.createElement('div');
     div.classList.add('expanded_template');
@@ -88,5 +91,17 @@ function createNewFromTemplate(divId) {
         buttonElement.disabled = true;
     }
     setDependentControlsDefault();
+}
+
+function chooseChoiceElement(id, selectElementClass) {
+    var choiceElement = document.getElementById(id);
+    var parentElement = choiceElement.parentElement;
+    for (i = 0; i < parentElement.children.length; i++)
+    {
+        ch = parentElement.children[i];
+        if (ch.classList.contains(selectElementClass)) {
+            ch.classList.toggle('hidden');
+        }
+    }
 }
 

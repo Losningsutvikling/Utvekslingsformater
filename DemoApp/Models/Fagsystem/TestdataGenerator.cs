@@ -24,7 +24,7 @@ namespace DemoApp.Models.Fagsystem
                     Fodselsdato = new DateTime(2012, 12, 12),
                     Fodselsnummer = "12121241555",
                     Graderingsnivaa = AdresseGradering.ugradert,
-                    Kjonn = "Mann"
+                    Kjonn = "mann"
                 },
                 new()
                 {
@@ -34,7 +34,7 @@ namespace DemoApp.Models.Fagsystem
                     Fodselsdato = new DateTime(2010, 10, 10),
                     Fodselsnummer = "10101041444",
                     Graderingsnivaa = AdresseGradering.ugradert,
-                    Kjonn = "Kvinne"
+                    Kjonn = "kvinne"
                 },
                 new()
                 {
@@ -44,7 +44,7 @@ namespace DemoApp.Models.Fagsystem
                     Fodselsdato = new DateTime(1990, 10, 10),
                     Fodselsnummer = "10109051455",
                     Graderingsnivaa = AdresseGradering.ugradert,
-                    Kjonn = "Kvinne"
+                    Kjonn = "kvinne"
                 },
                 new()
                 {
@@ -54,7 +54,7 @@ namespace DemoApp.Models.Fagsystem
                     Fodselsdato = new DateTime(1990, 12, 12),
                     Fodselsnummer = "12129051555",
                     Graderingsnivaa = AdresseGradering.ugradert,
-                    Kjonn = "Mann"
+                    Kjonn = "mann"
                 },
                 new()
                 {
@@ -64,7 +64,7 @@ namespace DemoApp.Models.Fagsystem
                     Fodselsdato = new DateTime(1949, 02, 02),
                     Fodselsnummer = "02024953555",
                     Graderingsnivaa = AdresseGradering.ugradert,
-                    Kjonn = "Mann"
+                    Kjonn = "mann"
                 }
                 ];
             return personer;
@@ -184,7 +184,7 @@ namespace DemoApp.Models.Fagsystem
             return new Barneverntjeneste()
             {
                 Navn = "Barneverntjenesten i Asker",
-                Organisasjonsnummer = "974 635 453",
+                Organisasjonsnummer = "974635453",
                 Kommunenummer = "3203",
                 KommuneNavn = "Asker",
                 Bydelsnavn = "",
@@ -211,8 +211,8 @@ namespace DemoApp.Models.Fagsystem
             }
             result.Add(new($"{rotElement}.Meldingshode", "", false, true));
             result.Add(new($"{rotElement}.Meldingshode.Id", Guid.NewGuid().ToString(), false));
-            result.Add(new($"{rotElement}.Meldingshode.MeldingstypeNmsp", "https://Bufdir.no/Barnevern/Henvisning/Fosterhjem_v0.9.0", false));
-            result.Add(new($"{rotElement}.Meldingshode.MeldingstypeXpath", "Bufdir_Barnevern_Henvisning_v0.9.0.xsd", false));
+            result.Add(new($"{rotElement}.Meldingshode.MeldingstypeNmsp", "https://Bufdir.no/Barnevern/Henvisning/Fosterhjem_v0.10.0", false));
+            result.Add(new($"{rotElement}.Meldingshode.MeldingstypeXpath", "Bufdir_Barnevern_Henvisning_v0.10.0.xsd", false));
             result.Add(new($"{rotElement}.Meldingshode.SendtTidspunkt", "2024-01-01", false));
 
             result.Add(new($"{rotElement}.Meldingshode.FagsystemAvsender.Leverandor", "Visma", false));
@@ -230,7 +230,7 @@ namespace DemoApp.Models.Fagsystem
             result.Add(new($"{rotElement}.Meldingshode.Avsender.Kommuneinfo.Bydelsinfo.Bydelsnummer", "", false));
             result.Add(new($"{rotElement}.Meldingshode.Avsender.Kommuneinfo.Bydelsinfo.Bydelsnavn", "", false));
 
-            result.Add(new($"{rotElement}.Meldingshode.Mottaker.Organisasjonsnummer", "986 128 433", false));
+            result.Add(new($"{rotElement}.Meldingshode.Mottaker.Organisasjonsnummer", "986128433", false));
             result.Add(new($"{rotElement}.Meldingshode.Mottaker.Navn", "Barne- ungdoms- og familieetaten", false));
             result.Add(new($"{rotElement}.Meldingshode.Mottaker.Kommuneinfo", false.ToString(), false));
 
@@ -243,23 +243,19 @@ namespace DemoApp.Models.Fagsystem
             result.Add(new($"{rotElement}.KontaktInfoAvsender.KontaktpersonLeder.Navn", "Kenneth Normann Hansen", true));
             result.Add(new($"{rotElement}.KontaktInfoAvsender.KontaktpersonLeder.Telefon", "90909090", true));
             result.Add(new($"{rotElement}.KontaktInfoAvsender.KontaktpersonLeder.epost", "kenneth.hansen@bufdir.no", true));
+            //result.Add(new($"{rotElement}.Klient.Identifikator._CHOICE", "Fodselsnummer", false));
             result.Add(new($"{rotElement}.Klient.Identifikator.Fodselsnummer", barn?.FREG_Person?.Fodselsnummer ?? "---", false));
             result.Add(new($"{rotElement}.Klient.Identifikator.Fodseldato", barn?.FREG_Person?.Fodselsdato.ToString("yyyy-MM-dd") ?? "---", false));
-            result.Add(new($"{rotElement}.Klient.Identifikator.KjonnFreg", barn?.FREG_Person?.Kjonn ?? "---", false));
-            result.Add(new($"{rotElement}.Klient.Identifikator.EMA", false.ToString(), false));
+            result.Add(new($"{rotElement}.Klient.Identifikator.Kjonn", barn?.FREG_Person?.Kjonn ?? "---", false));
+            result.Add(new($"{rotElement}.Klient.Identifikator.EMA_FALSE", false.ToString(), false));
             result.Add(new($"{rotElement}.Klient.Identifikator.TerminDato", "", false));
-            result.Add(new($"{rotElement}.Klient.Identifikator.Kjonn", "", false));
-            result.Add(new($"{rotElement}.Klient.Identifikator.Ufodt", false.ToString(), false));
+            result.Add(new($"{rotElement}.Klient.Identifikator.Ufodt_FALSE", false.ToString(), false));
             result.Add(new($"{rotElement}.Klient.Identifikator.DUFnummer", "", false));
+            result.Add(new($"{rotElement}.Klient.KommunalSaksId", DateTime.Now.Year.ToString() + "-" + barn?.FREG_Person?.Fodselsnummer, false));
             result.Add(new($"{rotElement}Fosterhjem.TiltakHistorikk", @"01.02.2022 - 12.09.2022 Fosterhjem
 12.09.2022 - 20.10.2023 Omsorgsinstitusjon", true));
             return result;
         }
 
-        public static PrefilledValue? GetPrefilledValueFor(List<PrefilledValue>? values, string id)
-        {
-            var hit = values?.FirstOrDefault(p => id.EndsWith(p.Xpath));
-            return hit;
-        }
     }
 }

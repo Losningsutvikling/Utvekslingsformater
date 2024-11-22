@@ -6,15 +6,13 @@ namespace DemoApp.Pages
 {
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     [IgnoreAntiforgeryToken]
-    public class ErrorModel : PageModel
+    public class ErrorModel(Exception ex) : PageModel
     {
         public string? RequestId { get; set; }
 
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 
-        public ErrorModel()
-        {
-        }
+        public Exception Ex { get; set; } = ex;
 
         public void OnGet()
         {

@@ -11,7 +11,7 @@
         <input id="@Model.GetRawId()_minOccurs" type="hidden" value="@minOccurs" />
         <input id="@Model.GetRawId()_maxOccurs" type="hidden" value="@maxOccurs" />
         <div id="@Model.GetRawId()_template" class="hidden_template">
-            <h2>@Model.GetCaption(true):0:template</h2>
+            <h2>@Model.GetCaption(true):0.template</h2>
             @await Html.PartialAsync("Gruppe.cshtml", Model)
         </div>
         @await Html.PartialAsync("Beskrivelse.cshtml", description)

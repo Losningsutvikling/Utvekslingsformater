@@ -11,68 +11,63 @@
         throw new Exception("choiceElements inneholder element hvor (is XmlSchemaElement == false)");
     }
     var choiceElements = rawElements.Cast<XmlSchemaElement>();
-    var prefilled = TestdataGenerator.GetPrefilledValueFor(Model.Values, $"selected_{Model.GetId()}");
-    var selectedValue = Utils.GetRequestValue(Model.Melding.QueryParams, $"selected_{Model.GetId()}");
+    string selectedValue = "";
+    PrefilledValue prefilled = null;
+    foreach (var elem in choiceElements)
+    {
+        var possiblePrefilled = Model.Melding.GetPrefilledValueFor($"{Model.GetId()}{elem.Name}");
+        if (possiblePrefilled != null && possiblePrefilled.Value != "") // if chosen
+        {
+            selectedValue = elem.Name;
+            prefilled = possiblePrefilled;
+        }
+
+    }
     var selectedElement = (selectedValue != "") ? choiceElements.FirstOrDefault(ch => ch.Name == selectedValue) : null;
     string value = (prefilled?.Value) ?? "";
     bool disable = (prefilled?.OpenToEdit == false);
     string disableCssClass = (disable) ? "disabled_button" : "";
     string disableStr = (disable) ? "disabled" : "";
+    int selectedIndex = -1;
+    int index = 0;
     <div>
-        <span class="ledetekst @disableCssClass">@Model.GetCaption(true)@Html.Raw(Utils.getMandatoryMarker(Model.Mandatory))</span>
-    @await Html.PartialAsync($"/Pages/Partial/Beskrivelse.cshtml", @Model.GetDescription())
-        @if(disable)
-        {
-            <select class="dropdown" name="selected_@Model.GetId()" id="selected_@Model.GetId()" onchange="this.form.submit()" disabled>
-                @if (selectedValue == "")
-                {
-                    <option value=""> -- Velg -- </option>
-                }
-                else
-                {
-                    <option selected value=""> -- Velg -- </option>
-                }
-                @foreach (var choiceElement in choiceElements)
-                {
-                    if (choiceElement.Name == selectedValue)
-                    {
-                        <option value="@choiceElement.Name" selected>@XsdUtils.GetCaption(choiceElement, true)</option>
-                    }
-                    else
-                    {
-                        <option value="@choiceElement.Name">@XsdUtils.GetCaption(choiceElement, true)</option>
-                    }
-                }
-            </select>
-        }
-        else
-        {
+        <span class="ledetekst @disableCssClass">@Model.GetCaption(true)@Html.Raw(Utils.getMandatoryMarker(Model))</span>
+        @await Html.PartialAsync($"/Pages/Partial/Beskrivelse.cshtml", @Model.GetDescription())
+        @{
             Model.CheckAddEnabler();
-            <select class="dropdown" name="selected_@Model.GetId()" id="selected_@Model.GetId()" onchange="this.form.submit()">
-                @if (selectedValue == "")
-                {
-                    <option value=""> -- Velg -- </option>
-                }
-                else
-                {
-                    <option selected value=""> -- Velg -- </option>
-                }
-                @foreach (var choiceElement in choiceElements)
-                {
-                    if (choiceElement.Name == selectedValue)
+            bool first = true;
+            <div>
+            @foreach (var choiceElement in choiceElements)
+            {
+                string id = $"{Model.GetId()}_CHOICE_{choiceElement.Name}";
+                    bool isChecked = (selectedValue != "") ? choiceElement.Name == selectedValue : first;
+                    if (isChecked)
                     {
-                        <option value="@choiceElement.Name" selected>@XsdUtils.GetCaption(choiceElement, true)</option>
+                        selectedIndex = index;
                     }
-                    else
+                    string checkedAttr = (isChecked) ? "checked" : "";
+                    first = false;
+
+                    <input type="radio" class="dropdown" name="@Model.GetId()_CHOICE" id="@id" value="@choiceElement.Name" onchange="chooseChoiceElement('@id','choice_container')" @checkedAttr @disableStr />
+                <label class="checkbox_tekst @disableCssClass" for="@id">@XsdUtils.GetCaption(choiceElement, true)</label>
+                index++;
+            }
+
+                @{
+                    index = 0;
+                    foreach (var choiceElement in choiceElements)
                     {
-                        <option value="@choiceElement.Name">@XsdUtils.GetCaption(choiceElement, true)</option>
+                        var elementModel = new PropertyRendererModel(Model, Model.Melding, $"{Model.GetId()}", choiceElement) {UseCaption = false};
+                        string controlName = XsdUtils.GetControlNameForProperty(choiceElement, true);
+                        string displayClass = (index == selectedIndex) ? "" : "hidden";
+                        index++;
+                        <div class="choice_container @displayClass">
+
+                        @await Html.PartialAsync($"/Pages/Partial/{controlName}.cshtml", elementModel)
+                    </div>
                     }
-                }
-            </select>
-        }
-        @if (selectedElement != null)
-        {
-            @await Html.PartialAsync($"/Pages/Partial/Gruppe.cshtml", new PropertyRendererModel(Model, Model.Melding, $"{Model.XPath}", selectedElement, Model.Values))
+            }
+            </div>
         }
     </div>
 }

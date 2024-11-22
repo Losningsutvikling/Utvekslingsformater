@@ -1,9 +1,12 @@
 ﻿@using DemoApp.Models
 @using DemoApp.Models.ViewModels
+@using System.Web
 @model string
 @{
-    @if (Model != "")
+    @if (!string.IsNullOrEmpty(Model))
     {
-        <div class="gruppe_beskrivelse">@Model</div>
+        var value = HtmlEncoder.Encode(Model);
+        value = value.Replace("##", "<br /><b>").Replace("$$", "</b><br />");
+        <div class="gruppe_beskrivelse">@Html.Raw(value)</div>
     }
 }

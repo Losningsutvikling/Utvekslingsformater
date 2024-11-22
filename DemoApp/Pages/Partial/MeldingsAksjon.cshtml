@@ -19,11 +19,11 @@
                 {
                     if (kode.Key == Model.SelectedAksjon)
                     {
-                        <option value="@kode.Key" selected>@kode.Value</option>
+                        <option value="@kode.Key" selected>@kode.Value.Replace("melding", Model.MeldingSynonym)</option>
                     }
                     else
                     {
-                        <option value="@kode.Key">@kode.Value</option>
+                        <option value="@kode.Key">@kode.Value.Replace("melding", Model.MeldingSynonym)</option>
                     }
                 }
         </select>
@@ -35,11 +35,11 @@
             {
                 if (kode.Key == Model.SelectedAksjon)
                 {
-                    <option value="@kode.Key" selected>@kode.Value</option>
+                        <option value="@kode.Key" selected>@kode.Value.Replace("melding", Model.MeldingSynonym)</option>
                 }
                 else
                 {
-                    <option value="@kode.Key">@kode.Value</option>
+                        <option value="@kode.Key">@kode.Value.Replace("melding", Model.MeldingSynonym)</option>
                 }
             }
         </select>

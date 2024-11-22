@@ -1,4 +1,6 @@
-﻿namespace DemoApp.Models
+﻿using DemoApp.Models.ViewModels;
+
+namespace DemoApp.Models
 {
     public static class Utils
     {
@@ -33,9 +35,14 @@
             return GetRequestValue(RequestParams, param);
         }
 
-        public static string getMandatoryMarker(bool mandatory)
+        public static string getMandatoryMarker(PropertyRendererModel model)
         {
-            return (mandatory) ? "<span class='obligatorisk_markor'>*</span>" : "";
+            bool returnMarker = false;
+            if ((XsdUtils.IsSimpleType(model.Prop) && model.Mandatory) || XsdUtils.AllChoiceElementsSimpleAndMandatory(model.Prop))
+                returnMarker = true;
+            else if (XsdUtils.AllChoiceElementsSimpleAndMandatory(model.Prop))
+                returnMarker = true;
+            return (returnMarker) ? "<span class='obligatorisk_markor'>*</span>" : "";
         }
 
     }

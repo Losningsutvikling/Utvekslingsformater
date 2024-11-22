@@ -5,33 +5,18 @@
 @using DemoApp.Models.ViewModels
 @model PropertyRendererModel
 @{
-    var prefilled = TestdataGenerator.GetPrefilledValueFor(Model.Values, Model.GetId());
+    var prefilled = Model.Melding.GetPrefilledValueFor(Model.GetId());
     bool disable = (prefilled?.OpenToEdit == false);
     string disableCssClass = (disable) ? "disabled_button" : "";
     bool check = prefilled?.Value == true.ToString();
     string checkedStr = (check) ? "checked" : "";
+    string disableStr = (disable) ? "disabled" : "";
+    string visibleIdAndName = @Model.GetId() + ((disable) ? "_disabled" : ""); // gi disablet input et navn som gjør at de ikke hentes ut
     if (disable)
     {
-        if (check)
-        {
-            <input type="checkbox" id="@Model.GetId()" disabled checked />
-        }
-        else
-        {
-            <input type="checkbox" id="@Model.GetId()" disabled />
-        }
+        <input type="hidden" name="@Model.GetId()" value="@checkedStr" />
     }
-    else
-    {
-        if (check)
-        {
-            <input type="checkbox" id="@Model.GetId()" checked />
-        }
-        else
-        {
-            <input type="checkbox" id="@Model.GetId()" />
-        }
-    }
-    <label class="checkbox_tekst @disableCssClass" for="@Model.GetId()">@Model.GetCaption(true)</label>
+    <input type="checkbox" id="@visibleIdAndName" name="@visibleIdAndName" @disableStr @checkedStr />
+    <label class="checkbox_tekst @disableCssClass" for="@visibleIdAndName">@Model.GetCaption(true)</label>
     @await Html.PartialAsync($"/Pages/Partial/Beskrivelse.cshtml", @Model.GetDescription())
 }

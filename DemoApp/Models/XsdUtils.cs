@@ -11,6 +11,7 @@ namespace DemoApp.Models
     {
         public static readonly string TrueStringXsd = "true";
 
+        public static Dictionary<string, string> CustomRenderers { get; set; } = [];
         public static List<XmlSchema> XsdSchemasWithRootElement { get; set; } = [];
         public static List<XmlSchema> MeldingsprotokollVersjoner { get; set; } = [];
 
@@ -21,10 +22,15 @@ namespace DemoApp.Models
 
         public static TeksterJson Tekster { get; internal set; }
 
-        private static string GetDefinitionsDirectory(IConfiguration config)
+        public static string GetDefinitionsDirectory(IConfiguration config)
         {
             return config["DefsPath"]
                 ?? throw new Exception("Finner ikke verdi for DefsPath i appsettings");
+        }
+        public static string GetCodelistDirectory(IConfiguration config)
+        {
+            return config["CodelistPath"]
+                ?? throw new Exception("Finner ikke verdi for CodelistPath i appsettings");
         }
         private static void SetPreselectedProtocolVersion(IConfiguration config)
         {
@@ -107,14 +113,15 @@ namespace DemoApp.Models
 
         public static void LoadKodelister(IConfiguration config, IWebHostEnvironment env)
         {
-            string configPath = GetDefinitionsDirectory(config);
+            string configPath = GetCodelistDirectory(config);
             string defsPath = (configPath.StartsWith("..")) ? configPath : Path.Combine(env.ContentRootPath, configPath);
             var serializer = new XmlSerializer(typeof(Kodelister));
             // var files = new DirectoryInfo(defsPath).GetFiles(@"*odeliste*.xml", SearchOption.TopDirectoryOnly/*AllDirectories*/);
             var filnavn = KodelisteFiler.Select(kvp => kvp.Key);
             foreach (var fil in filnavn)
             {
-                string fullName = $"{defsPath}\\{fil}";
+                string pathSeparator = defsPath.Contains('\\') ? "\\" : "/";
+                string fullName = $"{defsPath}{pathSeparator}{fil}";
                 using var reader = new StreamReader(fullName);
                 var innhold = serializer.Deserialize(reader) as Kodelister
                     ?? throw new Exception($"Kunne ikke lese innhold i kodelistefil {fullName}");
@@ -178,6 +185,24 @@ namespace DemoApp.Models
             return GetKodeliste(schema, simpleType.Name!);
         }
 
+        public static List<Kode> GetFilteredKodeliste(Kodeliste kodeliste, string filterId, string filterValue)
+        {
+            List<Kode> result = [];
+            string propName = "";
+            if (kodeliste.kobletKodeliste_1 == filterId)
+                propName = "kobletKodeliste_1";
+            else if (kodeliste.kobletKodeliste_2 == filterId)
+                propName = "kobletKodeliste_2";
+            var prop = typeof(Kode).GetProperty(propName);
+            foreach (var kode in kodeliste.koder)
+            {
+                var propValue = prop.GetValue(kode) ?? "";
+                if (propValue.ToString() == filterValue)
+                    result.Add(kode);
+            }
+            return result;
+        }
+
         public static List<KeyValuePair<string, string>> GetKodelisteVerdier(XmlSchemaAnnotated prop)
         {
             List<KeyValuePair<string, string>> result = [];
@@ -220,6 +245,12 @@ namespace DemoApp.Models
             return XsdSchemasWithRootElement.Where(sch => sch.Namespaces.ToArray().Any(nmsp => nmsp.Namespace.Equals(protocolNmsp))).ToList();
         }
 
+        public static XmlSchema GetSchema(string targetNmsp)
+        {
+            var result = XsdSchemasWithRootElement.First(sch => sch.TargetNamespace == targetNmsp);
+            return result;
+        }
+
         public static void GetXsdElements(XmlSchemaAnnotated prop, bool flat, ref List<XmlSchemaAnnotated> list)
         {
             list.Add(prop);
@@ -250,16 +281,21 @@ namespace DemoApp.Models
         public static List<XmlSchemaAnnotated> GetXsdChildren(XmlSchemaAnnotated prop)
         {
             List<XmlSchemaAnnotated> list = [];
+            XmlSchemaComplexType elementType = null;
             if (prop is XmlSchemaElement element && element.ElementSchemaType is XmlSchemaComplexType complexElement)
+                elementType = complexElement;
+            if (elementType == null && prop is XmlSchemaComplexType compType)
+                elementType = compType;
+            if (elementType != null)
             {
-                if (complexElement.Particle is XmlSchemaSequence sequenceElement)
+                if (elementType.Particle is XmlSchemaSequence sequenceElement)
                 {
                     foreach (XmlSchemaAnnotated child in sequenceElement.Items)
                     {
                         list.Add(child);
                     }
                 }
-                else if (complexElement.ContentTypeParticle is XmlSchemaSequence contentTypeSequence)
+                else if (elementType.ContentTypeParticle is XmlSchemaSequence contentTypeSequence)
                 {
                     foreach (XmlSchemaAnnotated child in contentTypeSequence.Items)
                     {
@@ -297,12 +333,14 @@ namespace DemoApp.Models
             return list;
         }
 
-        public static string GetControlNameForProperty(XmlSchemaAnnotated prop)
+        public static string GetControlNameForProperty(XmlSchemaAnnotated prop, bool isAChoiceOption = false)
         {
+            if (prop.Id != null && CustomRenderers.TryGetValue(prop.Id, out string? customRenderer))
+                return customRenderer;
             string controlName;
             XmlSchemaDatatype? datatype = null;
             var simpleType = GetSimpleType(prop);
-            var hintedControlType = GetAppInfoValue(prop, "controlType");
+            var hintedControlType = GetAppInfoValue(prop, "controlType", false, true);
             if (hintedControlType != "")
                 return hintedControlType;
             if (XsdUtils.GetIsRepeating(prop))
@@ -342,6 +380,9 @@ namespace DemoApp.Models
                 datatype = simpleType?.Datatype ??
                     throw new Exception("simpleType?.Datatype == null");
             }
+
+            if (isAChoiceOption && datatype?.TypeCode == XmlTypeCode.Boolean)
+                return "FixedBoolean";
 
             controlName = datatype?.TypeCode switch
             {
@@ -395,7 +436,7 @@ namespace DemoApp.Models
         {
             if (prop is XmlSchemaElement element)
             {
-                return element.MinOccurs <= 1 && element.MaxOccurs > 1;
+                return element.MaxOccurs > 1;
             }
             return false;
         }
@@ -422,19 +463,37 @@ namespace DemoApp.Models
                 result.Add(item);
             return result;
         }
-        public static bool IsChoiceElement(XmlSchemaElement element)
+
+        public static bool IsSimpleType(XmlSchemaAnnotated prop)
+        {
+            if (prop is XmlSchemaSimpleType)
+                return true;
+            if (prop is XmlSchemaElement element && element.ElementSchemaType is XmlSchemaSimpleType)
+                return true;
+            return false;
+
+        }
+
+        public static bool IsChoiceElement(XmlSchemaComplexType elementType)
         {
             bool anyChoiceChildren = false;
             bool allChildrenChoice = true;
-            if (element.ElementSchemaType is XmlSchemaComplexType compType)
-            {
-                if (compType.Particle is XmlSchemaChoice choice)
-                    anyChoiceChildren = true;
-                else
-                    allChildrenChoice = false;
-            }
+            if (elementType.Particle is XmlSchemaChoice choice)
+                anyChoiceChildren = true;
+            else
+                allChildrenChoice = false;
             return anyChoiceChildren && allChildrenChoice;
         }
+
+        public static bool IsChoiceElement(XmlSchemaElement element)
+        {
+            if (element.ElementSchemaType is XmlSchemaComplexType compType)
+            {
+                return IsChoiceElement(compType);
+            }
+            return false;
+        }
+
         public static XmlSchemaElement? FirstChoiceElement(XmlSchemaElement element)
         {
             bool anyChoiceChildren = false;
@@ -522,7 +581,7 @@ namespace DemoApp.Models
         // aksjon bruker | som separator
         public static bool GetUsedInAksjon(XmlSchemaElement element, string aksjon)
         {
-            var appInfoValue = GetAppInfoValue(element, Konstanter.MeldingsForbindelse);
+            var appInfoValue = GetAppInfoValue(element, Konstanter.MeldingsForbindelse, false, true);
             if (string.IsNullOrEmpty(appInfoValue))
                 return false;
             return $"|{appInfoValue}|".Contains($"|{aksjon}|");
@@ -578,6 +637,14 @@ namespace DemoApp.Models
                 return attrSimpleType;
             return null;
         }
+        public static XmlSchemaComplexType? GetComplexType(XmlSchemaAnnotated prop)
+        {
+            if (prop is XmlSchemaComplexType complexType)
+                return complexType;
+            if (prop is XmlSchemaElement element && element.ElementSchemaType is XmlSchemaComplexType elementComplexType)
+                return elementComplexType;
+            return null;
+        }
 
         public static int GetMinLength(XmlSchemaAnnotated prop)
         {
@@ -628,7 +695,7 @@ namespace DemoApp.Models
             return "";
         }
 
-        private static string GetAppInfoElement(XmlNode?[]? markup, string elementName)
+        private static string GetAppInfoElement(XmlNode?[]? markup, string elementName, bool selectXml)
         {
             if (markup?.Length >= 1)
             {
@@ -636,7 +703,7 @@ namespace DemoApp.Models
                 {
                     if (markup[i]?.Name == elementName)
                     {
-                        return markup[i]!.InnerText.Trim();
+                        return (selectXml) ? markup[i]!.OuterXml : markup[i]!.InnerText.Trim();
                     }
                 }
             }
@@ -645,7 +712,7 @@ namespace DemoApp.Models
 
 
 
-        public static string GetAppInfoValue(XmlSchemaAnnotated? xsdType, string appInfoElement, bool recurse = true)
+        public static string GetAppInfoValue(XmlSchemaAnnotated? xsdType, string appInfoElement, bool selectXml, bool recurse)
         {
             XmlSchemaAnnotation? annotation = xsdType?.Annotation;
             // Hack for å kompensere at XmlSchemaChoice alltid har null i Annotation
@@ -671,7 +738,7 @@ namespace DemoApp.Models
                 {
                     if (item is XmlSchemaAppInfo appInfo)
                     {
-                        string tmpValue = GetAppInfoElement(appInfo.Markup, appInfoElement);
+                        string tmpValue = GetAppInfoElement(appInfo.Markup, appInfoElement, selectXml);
                         if (tmpValue != "")
                             return tmpValue;
                     }
@@ -681,11 +748,11 @@ namespace DemoApp.Models
             {
                 if (xsdType is XmlSchemaElement element)
                 {
-                    return GetAppInfoValue(element!.ElementSchemaType, appInfoElement, false);
+                    return GetAppInfoValue(element!.ElementSchemaType, appInfoElement, false, false);
                 }
                 else if (xsdType is XmlSchemaAttribute attribute)
                 {
-                    return GetAppInfoValue(attribute.AttributeSchemaType, appInfoElement, false);
+                    return GetAppInfoValue(attribute.AttributeSchemaType, appInfoElement, false, false);
                 }
             }
             return "";
@@ -696,16 +763,44 @@ namespace DemoApp.Models
             if (prop == null) return
                     "<Prop=null>";
             var element = Tekster.henvisning.skjemaelement.Where(el => el.id == prop.Id).FirstOrDefault();
+            if (element == null)
+            {
+                string entry = $"{prop.Id} - {GetName(prop)}";
+                if (Tekster.missing.IndexOf(entry) < 0)
+                    Tekster.missing.Add(entry);
+            }
             if (element != null && element.ledetekst != "")
             {
+                string entry = $"{prop.Id} - {GetName(prop)}";
+                if (Tekster.used.IndexOf(entry) < 0)
+                    Tekster.used.Add(entry);
+                else if (element.navn != GetName(prop) && Tekster.wrongName.IndexOf(entry) < 0)
+                    Tekster.wrongName.Add(entry);
                 return element.ledetekst;
             }
-            var result = XsdUtils.GetAppInfoValue(prop, Konstanter.Ledetekst);
-            if (result == "" && fallbackToName)
+            if (fallbackToName)
             {
                 return GetName(prop) + suffix;
             }
-            return result + suffix;
+            return "";
+        }
+
+        public static List<EnrichedElement> GetEnrichedChildren(XmlSchemaAnnotated prop)
+        {
+            List<EnrichedElement> result = [];
+            var elements = XsdUtils.GetXsdChildren(prop);
+            for (int i = 0; i < elements.Count; i++)
+            {
+                var element = Tekster.henvisning.skjemaelement.Where(el => el.id == elements[i].Id).FirstOrDefault();
+                EnrichedElement enriched = new()
+                {
+                    OrigSort = i,
+                    SortOrder = element?.sortering ?? 100,
+                    Element = elements[i]
+                };
+                result.Add(enriched);
+            }
+            return result.OrderBy(e => e.SortOrder).ThenBy(e => e.OrigSort).ToList();
         }
 
         public static string? GetName(XmlSchemaAnnotated prop)
@@ -863,6 +958,40 @@ namespace DemoApp.Models
                 return element.veiledning;
             }
             return "";
+        }
+
+        internal static string GetQualifiedNamespace(XmlSchemaAnnotated elementType)
+        {
+            if (elementType is XmlSchemaElement schemaElement)
+                return schemaElement.QualifiedName.Namespace;
+            return "";
+        }
+
+        internal static void SetCustomRenderers()
+        {
+            CustomRenderers["BUF_CC9A7CDF-B998-415D-995A-6275CBCCA465"] = "ElementSpecific/BarnetsSituasjon";
+        }
+
+        internal static bool AllChoiceElementsSimpleAndMandatory(XmlSchemaAnnotated prop)
+        {
+            if (prop is XmlSchemaElement schemaElement)
+            {
+                bool allChildrenMandatory = true;
+                if (IsChoiceElement(schemaElement))
+                {
+                    var children = GetXsdChildren(schemaElement);
+                    foreach (var child in children)
+                    {
+                        if (!PropIsMandatory(child))
+                        {
+                            allChildrenMandatory = false;
+                            break;
+                        }
+                    }
+                    return allChildrenMandatory;
+                }
+            }
+            return false;
         }
     }
 }

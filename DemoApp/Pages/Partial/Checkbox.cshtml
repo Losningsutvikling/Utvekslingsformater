@@ -2,35 +2,27 @@
 @using DemoApp.Models.Fagsystem
 @model DemoApp.Models.ViewModels.PropertyRendererModel
 @{
-    var prefilled = TestdataGenerator.GetPrefilledValueFor(Model.Values, Model.GetId());
+    var prefilled = Model.Melding.GetPrefilledValueFor(Model.GetId());
     var fixedValue = XsdUtils.GetFixedValue(Model.Prop);
     bool disable = (prefilled?.OpenToEdit == false || fixedValue != "");
+    string disableStr = (disable) ? "disabled" : "";
     string disableCssClass = (disable) ? "disabled_button" : "";
     bool check = (prefilled?.Value == XsdUtils.TrueStringXsd) || (fixedValue == XsdUtils.TrueStringXsd);
+    string checkedStr = (check) ? "checked" : "";
+    string visibleIdAndName = @Model.GetId() + ((disable) ? "_disabled" : ""); // gi disablet input et navn som gjør at de ikke hentes ut
+
     if (disable)
     {
-        @if (check)
-        {
-            <input type="hidden" id="@Model.GetId()" name="@Model.GetId()" value="checked" />
-            <input type="checkbox" disabled checked />
-        }
-        else
-        {
-            <input type="checkbox" disabled />
-        }
+        <input type="hidden" id="@Model.GetId()" name="@Model.GetId()" value="@checkedStr" />
     }
     else
     {
         Model.CheckAddEnabler();
-        if (check)
-        {
-            <input type="checkbox" id="@Model.GetId()" checked onchange="checkDependentControlsActivation(this)" />
-        }
-        else
-        {
-            <input type="checkbox" id="@Model.GetId()" onchange="checkDependentControlsActivation(this)" />
-        }
+        string hiddenCheckName = $"{visibleIdAndName}_FALSE";
+        <input type="hidden" id="@hiddenCheckName" name="@hiddenCheckName" value="false" />
     }
-    <label class="checkbox_tekst @disableCssClass" for="@Model.GetId()">@Model.GetCaption(true)</label>
+    <input type="checkbox" id="@visibleIdAndName" name="@visibleIdAndName" onchange="checkDependentControlsActivation(this)" @checkedStr @disableStr />
+
+    <label class="checkbox_tekst @disableCssClass" for="@visibleIdAndName">@Model.GetCaption(true)</label>
     @await Html.PartialAsync($"/Pages/Partial/Beskrivelse.cshtml", @Model.GetDescription())
 }

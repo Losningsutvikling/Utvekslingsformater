@@ -90,6 +90,15 @@ body {
     display: none;
 }
 
+.choice_container {
+    display: inline;
+    margin: 0px;
+    padding: 0px;
+    border: none;
+}
+.choice_container .hidden {
+    display: none;
+}
 
 .gruppetekst {
     font-weight: bold;

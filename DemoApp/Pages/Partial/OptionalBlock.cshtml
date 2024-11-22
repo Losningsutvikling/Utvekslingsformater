@@ -2,37 +2,24 @@
 @using System.Xml.Schema;
 @model DemoApp.Models.ViewModels.PropertyRendererModel
 @{
-    var prefilled = TestdataGenerator.GetPrefilledValueFor(Model.Values, Model.GetId());
-    bool anyValuesInOptionalGroup = Model.Values.Any(v => v.Xpath.StartsWith(Model.XPath)); // Må være mer nøyaktig!!!!
+    var prefilled = Model.Melding.GetPrefilledValueFor(Model.GetId());
+    bool anyValuesInOptionalGroup = Model.Melding.PrefillValues.Any(v => v.Xpath.StartsWith(Model.XPath)); // Må være mer nøyaktig!!!!
     string hiddenClass = anyValuesInOptionalGroup ? "" : "hidden";
     bool disableCheck = (prefilled != null) ? !anyValuesInOptionalGroup : false;
+    string onchangeHandler = (disableCheck) ? "" : $"setHiddenByCheckbox('optional_{Model.GetId()}', 'optionContainer_{Model.GetId()}')";
+    string checkedStr = (anyValuesInOptionalGroup) ? "checked" : "";
+    string disabledStr = (disableCheck) ? "disabled" : "";
+    string visibleIdAndName = @Model.GetId() + ((disableCheck) ? "_disabled" : ""); // gi disablet input et navn som gjør at de ikke hentes ut
     <div class="optional_gruppe">
-        @if (anyValuesInOptionalGroup)
+        @if (disableCheck)
         {
-            <label class="custom-checkbox">
-                <input type="checkbox" name="optional_@Model.GetId()" id="optional_@Model.GetId()" checked onchange="setHiddenByCheckbox('optional_@Model.GetId()', 'optionContainer_@Model.GetId()')" />
-                <img class="checkbox-image" src="../img/arrow-right.png" alt="Checkbox image">
-            </label>
-
+            
         }
-        else
-        {
-            if (disableCheck)
-            {
-                <label class="custom-checkbox">
-                    <input type="checkbox" name="optional_@Model.GetId()" id="optional_@Model.GetId()" disabled />
-                    <img class="checkbox-image" src="../img/arrow-right.png" alt="Checkbox image">
-                </label>
-            }
-            else
-            {
-                <label class="custom-checkbox">
-                    <input type="checkbox"   name="optional_@Model.GetId()" id="optional_@Model.GetId()" onchange="setHiddenByCheckbox('optional_@Model.GetId()', 'optionContainer_@Model.GetId()')" />
-                    <img class="checkbox-image" src="../img/arrow-right.png" alt="Checkbox image">
-                </label>
-            }
-        }
-        <label class="checkbox_tekst" for="optional_@Model.GetId()">@Model.GetCaption(true)</label>
+        <label class="custom-checkbox">
+            <input type="checkbox" name="optional_@visibleIdAndName" id="optional_@visibleIdAndName" onchange="@onchangeHandler" @checkedStr @disabledStr />
+            <img class="checkbox-image" src="../img/arrow-right.png" alt="Checkbox image">
+        </label>
+        <label class="checkbox_tekst" for="optional_@visibleIdAndName">@Model.GetCaption(true)</label>
         <div id="optionContainer_@Model.GetId()" class="option_container @hiddenClass">
             @await Html.PartialAsync($"/Pages/Partial/Gruppe.cshtml", Model)
         </div>

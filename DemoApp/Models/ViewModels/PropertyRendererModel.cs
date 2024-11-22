@@ -1,21 +1,39 @@
-﻿using DemoApp.Models.Fagsystem;
-using DemoApp.Pages;
+﻿using DemoApp.Pages;
 using System.Xml.Schema;
 namespace DemoApp.Models.ViewModels
 {
-    public class PropertyRendererModel(PropertyRendererModel? parent, MeldingModel melding, string parentXPath, XmlSchemaAnnotated prop, List<PrefilledValue>? values, XmlSchemaAnnotated? skipProp = null)
+    public class PropertyRendererModel(PropertyRendererModel? parent, MeldingModel melding, string parentXPath, XmlSchemaAnnotated prop,
+        XmlSchemaAnnotated? skipProp = null, PropertyRendererModel? InnerPropertyRendererModel = null, int? InnerPropertyModelInsertIndex = 0)
     {
         public MeldingModel Melding { get { return melding; } }
         public PropertyRendererModel? ParentModel { get; set; } = parent;
-        public string XPath { get; } = $"{parentXPath}.{XsdUtils.GetName(prop)}";
+        public string XPath
+        {
+            get
+            {
+                string separator = parentXPath.EndsWith(':') ? "" : (parentXPath.EndsWith('.') ? "" : ".");
+                return $"{parentXPath}{separator}{XsdUtils.GetName(prop)}";
+            }
+        }
+
+        public string ParentXPath
+        {
+            get
+            {
+                return parentXPath;
+            }
+        }
         public XmlSchemaAnnotated Prop { get { return prop; } }
-        public List<PrefilledValue>? Values { get; } = values;
+
+        public PropertyRendererModel InnerModel { get { return InnerPropertyRendererModel; } }
+        public int? InnerModelIndex { get { return InnerPropertyModelInsertIndex; } }
 
         public XmlSchemaAnnotated? SkipProp { get; } = skipProp;
 
         public string? GetCaption(bool fallbackToName)
         {
-            return XsdUtils.GetCaption(Prop, fallbackToName);
+            string caption = (CustomCaptionPattern != "") ? "" : XsdUtils.GetCaption(Prop, fallbackToName) ?? "";
+            return (FilterText != "") ? caption.Replace("{tekst}", FilterText) : caption;
         }
 
         public bool UseItemCount
@@ -33,7 +51,15 @@ namespace DemoApp.Models.ViewModels
             }
         }
 
+        public bool UseCaption { get; set; } = true;
+
         public DateTime Start { get; set; } = DateTime.Now.Date;
+
+        public string FilterId { get; set; } = "";
+        public string FilterValue { get; set; } = "";
+        public string FilterText { get; set; } = "";
+
+        public string CustomCaptionPattern { get; set; } = "";
 
         public string GetDescription()
         {
@@ -47,7 +73,7 @@ namespace DemoApp.Models.ViewModels
             string id = "";
             if (propId != "")
                 id = $"{parentXPath}.{propId}";
-            else if (Prop is XmlSchemaElement || Prop is XmlSchemaAttribute)
+            else if (Prop is XmlSchemaElement || Prop is XmlSchemaAttribute || prop is XmlSchemaChoice)
                 id = XPath;
             return id.TrimStart('.');
         }
@@ -55,7 +81,13 @@ namespace DemoApp.Models.ViewModels
         {
             string id = GetRawId(propId);
             if (UseItemCount)
-                id += ":0:template";
+                id += ":0.template";
+            return id;
+        }
+        public string GetIdWithItemNo(string itemNo, string propId = "")
+        {
+            string id = GetRawId(propId);
+            id += $":{itemNo}";
             return id;
         }
 
@@ -78,7 +110,7 @@ namespace DemoApp.Models.ViewModels
 
         public void CheckAddEnabler()
         {
-            string aktiveringExpression = XsdUtils.GetAppInfoValue(Prop, "enable", false);
+            string aktiveringExpression = XsdUtils.GetAppInfoValue(Prop, "enable", false, false);
             if (aktiveringExpression != "")
             {
                 string[] parts = aktiveringExpression.Split("=");
@@ -88,8 +120,8 @@ namespace DemoApp.Models.ViewModels
                 {
                     for (int i = 1; i <= int.Min(XsdUtils.GetMaxOccurs(ParentModel.Prop), 10); i++)
                     {
-                        string id = GetId("").Replace(":0:template", $":{i}");
-                        Melding.controlEnablers.Add(new(id, GetId(parts[0]).Replace(":0:template", $":{i}"), aktiveringValue));
+                        string id = GetId("").Replace(":0.template", $":{i}");
+                        Melding.controlEnablers.Add(new(id, GetId(parts[0]).Replace(":0.template", $":{i}"), aktiveringValue));
                     }
                 }
                 else

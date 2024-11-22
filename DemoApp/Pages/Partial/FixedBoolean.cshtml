@@ -1,0 +1,11 @@
+﻿@using DemoApp.Models
+@using DemoApp.Models.Fagsystem
+@model DemoApp.Models.ViewModels.PropertyRendererModel
+@{
+    var prefilled = Model.Melding.GetPrefilledValueFor(Model.GetId());
+    var fixedValue = XsdUtils.GetFixedValue(Model.Prop);
+    bool check = (prefilled?.Value == XsdUtils.TrueStringXsd) || (fixedValue == XsdUtils.TrueStringXsd);
+    string checkedStr = (check) ? "checked" : "";
+    <input type="hidden" id="@Model.GetId()" name="@Model.GetId()" value="@checkedStr" />
+    @await Html.PartialAsync($"/Pages/Partial/Beskrivelse.cshtml", @Model.GetDescription())
+}

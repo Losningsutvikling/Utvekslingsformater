@@ -1,0 +1,19 @@
+﻿@page
+@model DemoApp.Pages.MeldingLagretModel
+@{
+    <h1>Melding lagret!</h1>
+}
+
+@{
+    <h2>Meldinger sendt</h2>
+}
+
+@foreach (var meldingshode in Model.MeldingsHodeListe)
+{
+    <h2>Melding: @meldingshode.Key</h2>
+    //@meldingshode["mld:Id"]
+    @foreach (var elem in meldingshode.Value)
+    {
+        <div>@elem.Key.Substring(elem.Key.IndexOf(':') + 1) :  @elem.Value</div> 
+    }
+}
