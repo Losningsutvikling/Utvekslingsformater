@@ -785,6 +785,18 @@ namespace DemoApp.Models
             return "";
         }
 
+        public static string GetKodelisteBeskrivelseFromVeiledning(string kodeliste_id, string element_id, string verdi)
+        {
+            var tekstelement = Tekster.henvisning.kodelistetekster.Where(el => el.id == kodeliste_id && el.element_id == element_id).FirstOrDefault();
+            if (tekstelement != null)
+            {
+                var kodelisteverdi = tekstelement.verdier.Where(kv => kv.verdi == verdi).FirstOrDefault();
+                if (kodelisteverdi != null && !string.IsNullOrEmpty(kodelisteverdi.beskrivelse))
+                    return kodelisteverdi.beskrivelse;
+            }
+            return "";
+        }
+
         public static List<EnrichedElement> GetEnrichedChildren(XmlSchemaAnnotated prop)
         {
             List<EnrichedElement> result = [];

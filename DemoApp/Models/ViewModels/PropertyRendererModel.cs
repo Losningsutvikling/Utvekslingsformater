@@ -58,11 +58,14 @@ namespace DemoApp.Models.ViewModels
         public string FilterId { get; set; } = "";
         public string FilterValue { get; set; } = "";
         public string FilterText { get; set; } = "";
+        public string CustomText { get; set; } = "";
 
         public string CustomCaptionPattern { get; set; } = "";
 
         public string GetDescription()
         {
+            if (!string.IsNullOrEmpty(CustomText))
+                return CustomText;
             if (Prop == null) return
                     "<Prop=null>";
             return XsdUtils.GetDescription(Prop);

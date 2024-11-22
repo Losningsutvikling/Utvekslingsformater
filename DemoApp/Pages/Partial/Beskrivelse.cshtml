@@ -6,7 +6,7 @@
     @if (!string.IsNullOrEmpty(Model))
     {
         var value = HtmlEncoder.Encode(Model);
-        value = value.Replace("##", "<br /><b>").Replace("$$", "</b><br />");
+        value = value.Replace("#$", "<br /><b>").Replace("$#", "</b><br />");
         <div class="gruppe_beskrivelse">@Html.Raw(value)</div>
     }
 }

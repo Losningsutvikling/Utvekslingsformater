@@ -63,7 +63,9 @@
                                 var elementModel = new PropertyRendererModel(Model, Model.Melding, $"{path}", element, enumType);
                                 elementModel.FilterId = kodelisteUnfiltered.id;
                                 elementModel.FilterValue = kode.verdi;
-                                elementModel.FilterText = kode.tekst;
+                                string veiledningTekst = XsdUtils.GetKodelisteBeskrivelseFromVeiledning(kodelisteUnfiltered.id, element.Id, kode.verdi);
+                                elementModel.CustomText = veiledningTekst;
+                                elementModel.FilterText = (veiledningTekst != "") ? veiledningTekst : kode.tekst;
                                 if (element == Model.InnerModel?.Prop)
                                 {
                                     elementModel.CustomCaptionPattern = Model.InnerModel.CustomCaptionPattern;
