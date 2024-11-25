@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kodelister versjon="0.10.0" nmsp="https://Bufdir.no/Barnevern/Generelt_v0.10.0">
+
+<kodeliste navn="DagtilbudTypeType" id="BUF_B5FF17B2-B04D-4AC0-857B-11517C84A541">
+	<kode verdi="1" tekst="Ingen dagtilbud"/>
+	<kode verdi="2" tekst="Dagmamma"/>
+	<kode verdi="3" tekst="Barnehage" gyldigFra="" />
+	<kode verdi="4" tekst="Barneskole"/>
+	<kode verdi="5" tekst="Ungdomskole"/>
+	<kode verdi="6" tekst="Videregående skole"/>
+	<kode verdi="7" tekst="Jobb"/>
+	<kode verdi="9" tekst="Annet"/>
+</kodeliste>
+
+<kodeliste navn="IndividuellPlanStatusType" id="BUF_02847FD3-74E7-4658-9295-90FEDCCA71BB">
+	<kode verdi="1" tekst="Foreligger"/>
+	<kode verdi="2" tekst="Under arbeid"/>
+	<kode verdi="3" tekst="Vurderes"/>
+	<kode verdi="4" tekst="Ikke aktuell"/>
+</kodeliste>
+
+<kodeliste navn="KontaktFrekvensType" id="BUF_7D99356E-191B-40E5-A583-2EEE4059E354">
+	<kode verdi="1" tekst="Regelmessig"/>
+	<kode verdi="2" tekst="Sporadisk"/>
+	<kode verdi="3" tekst="Ingen"/>
+</kodeliste>
+
+<kodeliste navn="KunnskapsmodellDimensjonType" id="BUF_68013692-AF12-4731-905F-44CC1218BB02">
+	<kode verdi="1" tekst="Barnets utvikling" />
+	<kode verdi="2" tekst="Foreldrenes omsorg" />
+	<kode verdi="3" tekst="Familie og miljø" />
+</kodeliste>
+
+<kodeliste navn="KunnskapsmodellOmradeType" id="BUF_C113BA46-0BFE-4FE7-839B-6F039FEA0197" kobletKodeliste_1="BUF_68013692-AF12-4731-905F-44CC1218BB02">
+	<kode verdi= "1.1" tekst="Helse"							kobletKodeliste_1="1" beskrivelse="Dette området gir kunnskap om barnets fysiske og psykiske helse, samt barnets tilgang til helsehjelp. Her inngår barnets allmenne helsetilstand, helseutfordringer, tannhelse, oppfølging av helsekontroller samt kontakt med helsetjenester"/>
+	<kode verdi= "1.2" tekst="Barnehage og skole"				kobletKodeliste_1="1" beskrivelse="Dette området gir kunnskap om barnets læring, mestring og trivsel i skole og barnehage og eventuelle andre dagtilbud. Her inngår barnets relasjoner til jevnaldrende og voksne, og hvordan barnehage/skole/dagtilbud legger til rette for barnets behov for læring og utvikling"/>
+	<kode verdi= "1.3" tekst="Følelser og uttrykk"			kobletKodeliste_1="1" beskrivelse="Dette området gir kunnskap om barnets følelsesmessige og atferdsmessige utvikling. Det vil si hvordan barnet uttrykker seg gjennom handlinger og følelsesuttrykk"/>
+	<kode verdi= "1.4" tekst="Venner og fritid"				kobletKodeliste_1="1" beskrivelse="Dette området gir kunnskap om barnets relasjoner til barn og voksne på ulike arenaer, det vil si lek og samhandling med andre utover nærmeste omsorgspersoner. Dette kan være i nabolag, fritidsaktiviteter og tilgang på disse, hobbyer og interesser, relasjoner til andre barn og voksne, barnets digitale hverdag, osv."/>
+	<kode verdi= "2.1" tekst="Grunnleggende omsorg"			kobletKodeliste_1="2" beskrivelse="Dette området gir kunnskap om barnets behov for ivaretakelse av fysisk og materiell omsorg. Det handler om barnets behov for regelmessig stell, søvn, mat, klær, god hygiene, et trygt sted å bo og rutiner i hverdagen."/>
+	<kode verdi= "2.2" tekst="Følelsesmessig tilgjengelighet"	kobletKodeliste_1="2" beskrivelse="Dette området gir kunnskap om barnets behov for omsorgspersoners regulering av sine følelser i samhandling med barnet, og hvordan omsorgspersoner gir støtte, varme og nærhet i møte med barnets følelsesmessige behov. "/>
+	<kode verdi= "2.3" tekst="Stimulering og veiledning"		kobletKodeliste_1="2" beskrivelse="Dette området gir kunnskap om barnets behov for stimulering, grensesetting og veiledning. Veiledning handler om omsorgspersonens strategier for å hjelpe barnet å forstå sosiale og kulturelle normer slik at det blir i stand til å delta i fellesskapet. Stimulering og engasjement handler om ivaretagelse av barnets behov for lek, samspill og felles oppmerksomhet. "/>
+	<kode verdi= "2.4" tekst="Beskyttelse"					kobletKodeliste_1="2" beskrivelse="Dette området gir kunnskap om barnets behov for beskyttelse og tilsyn. Dette handler om barnets behov for beskyttelse mot farer i hverdagen, og de grep omsorgspersoner tar for å hindre at barnet utsettes for eller er vitne til vold og omsorgssvikt."/>
+	<kode verdi= "3.1" tekst="Familieforhold"					kobletKodeliste_1="3" beskrivelse="Dette området gir kunnskap om barnets plass i familien, om familiens situasjon og samspillet innad i familien. Hvem barnet bor sammen med, hvem barnet tilbringer tid sammen med (fysisk eller digitalt), hvem som er barnets omsorgspersoner, hvordan medlemmene i familien kommuniserer, og hva familien gjør sammen. Her inngår også familiens historikk."/>
+	<kode verdi="3.2" tekst="Bolig, økonomi og arbeid"		kobletKodeliste_1="3" beskrivelse="Dette området gir kunnskap om de erfaringer barnet har med familiens økonomiske og fysiske rammebetingelser, samt foreldrenes tilhørighet til arbeidslivet. "/>
+	<kode verdi="3.3" tekst="Nettverk og sosial integrering"	kobletKodeliste_1="3" beskrivelse="Dette området gir kunnskap om kontakten familien har med privat nettverk (storfamilie, venner, nabolag, religiøse arenaer, organisasjoner) og profesjonelt nettverk. Her inngår også barnets og familiemedlemmenes tilhørighet til ulike sosiale, etniske, religiøse, kulturelle og språklige fellesskap."/>
+</kodeliste>
+
+<kodeliste navn="LovType" id="BUF_365F5EFF-E99A-41EF-9BD3-A84493366067">
+	<kode verdi="1" tekst="BVL 1992" gyldigTil="31.12.2022"/>
+	<kode verdi="2" tekst="BVL 2021" gyldigFra="01.01.2023"/>
+</kodeliste>
+
+<kodeliste navn="MorsmalType" id="BUF_EC3036F2-A7F4-42A2-86DC-106C0CC020FD">
+	<kode verdi="1" tekst="Norsk"/>
+	<kode verdi="999" tekst="Annet"/>
+</kodeliste>
+
+<kodeliste navn="OmsorgsrelasjonType" id="BUF_EDA6F43C-5280-4A9C-8016-5C7B6A924BAB">
+	<kode verdi="1" tekst="Mor" gyldigFra="1970.01.01" gyldigTil="2024.12.31" />
+	<kode verdi="2" tekst="Far"/>
+	<kode verdi="3" tekst="Verge"/>
+	<kode verdi="9" tekst="Annet"/>
+</kodeliste>
+
+<kodeliste navn="OmsorgType" id="BUF_006637AF-CE1A-46A2-AE58-065F13754203">
+	<kode verdi="1" tekst="Ingen"/>
+	<kode verdi="2" tekst="Daglig omsorg"/>
+	<kode verdi="3" tekst="Delt omsorg"/>
+	<kode verdi="4" tekst="Samvær"/>
+</kodeliste>
+
+<kodeliste navn="SoskenRelasjonType" id="BUF_DCC037FD-2382-4459-A1D0-549B5A3C1E1A">
+	<kode verdi="1" tekst="Søster"/>
+	<kode verdi="2" tekst="Bror"/>
+	<kode verdi="9" tekst="Annet"/>
+</kodeliste>
+
+<kodeliste navn="StatsborgerskapType" id="BUF_A5204974-A743-4CC9-83E7-13FADDD7ADB1">
+	<kode verdi="1" tekst="Norsk"/>
+	<kode verdi="999" tekst="Annet"/>
+</kodeliste>
+
+<kodeliste navn="VedtakBakgrunnType" id="BUF_116E83C7-DA5F-44B0-8A14-4B680FBB8B45">
+	<kode verdi="1" tekst="Forhold ved omsorgen i hjemmet "/>
+	<kode verdi="2" tekst="Alvorlige atferdsvansker"/>
+	<kode verdi="3" tekst="Vedvarende rusmisbruk"/>
+</kodeliste>
+
+<kodeliste navn="VedtakHenvisningParagrafType" id="BUF_1E902327-85D7-4C70-B63C-893F4542757C" kobletKodeliste_1="BUF_D960BB0E-3A3E-4F81-AA5A-DDEA3F51061E">
+	<kode verdi="1" tekst="§ 2-3. Utredning i senter for foreldre og barn" />
+	<kode verdi="2" tekst="§ 2-6. Tverrfaglig helsekartlegging" />
+	<kode verdi="3" tekst="§ 3-1. Frivillig hjelpetiltak" />
+	<kode verdi="4" tekst="§ 3-2. Fosterhjem og barnevernsinstitusjon som frivillig hjelpetiltak" kobletKodeliste_1="1" />
+	<kode verdi="5" tekst="§ 3-4. Pålegg om hjelpetiltak" />
+	<kode verdi="6" tekst="§ 3-5. Foreldrestøttende hjelpetiltak uten barnets samtykke" />
+	<kode verdi="7" tekst="§ 3-6. Hjelpetiltak til ungdom over 18 år" />
+	<kode verdi="8" tekst="§ 4-1. Akuttvedtak om hjelpetiltak dersom barn er uten omsorg" />
+	<kode verdi="9" tekst="§ 4-2. Akuttvedtak om omsorgsovertakelse" kobletKodeliste_1="1" />
+	<kode verdi="10" tekst="§ 4-3. Vedtak om midlertidig flytteforbud" />
+	<kode verdi="11" tekst="§ 4-4. Akuttvedtak om plassering i barnevernsinstitusjon" />
+	<kode verdi="12" tekst="§ 4-5. Akuttvedtak om plassering av barn i institusjon når det er fare for menneskehandel" />
+	<kode verdi="13" tekst="§ 5-1. Vedtak om omsorgsovertakelse bokstav a-g" kobletKodeliste_1="1" />
+	<kode verdi="14" tekst="§ 6-1. Vedtak om opphold i barnevernsinstitusjon etter samtykke" />
+	<kode verdi="15" tekst="§ 6-2. Vedtak om plassering i barnevernsinstitusjon uten samtykke" />
+	<kode verdi="16" tekst="§ 6-3. Plassering i fosterhjem med særlige forutsetninger eller i institusjoner med hjem" />
+	<kode verdi="17" tekst="§ 6-6. Vedtak om plassering i institusjon når det er fare for at barnet kan utnyttes til menneskehandel" />
+	<kode verdi="18" tekst="§ 11-1. Opphold på omsorgssenter for enslige mindreårige asylsøkere" />
+</kodeliste>
+
+<kodeliste navn="VedtakInstansType" id="BUF_13F44734-E1A3-49E7-A629-405CED5ACA28">
+	<kode verdi="1" tekst="Domstol"/>
+	<kode verdi="2" tekst="Kommune"/>
+	<kode verdi="3" tekst="Barneverns- og helsenemda"/>
+	<kode verdi="4" tekst="Politi/barnevernsvakt"/>
+	<kode verdi="5" tekst="Utlendingsdirektoratet(UDI)"/>
+</kodeliste>
+
+<kodeliste navn="VedtakStatusType" id="BUF_F0A9CE46-BE05-454F-A04C-61C3CD18DA35">
+	<kode verdi="1" tekst="Vedtak fattet"/>
+	<kode verdi="2" tekst="Vil bli fattet når tiltak foreligger"/>
+	<kode verdi="3" tekst="Avventer nemdsbehandling"/>
+</kodeliste>
+
+<kodeliste navn="NemndsbehandlingStatusType" id="BUF_77751E42-4E85-4B2D-967B-606561A86D15">
+	<kode verdi="1" tekst="Planlagt nemndsbehandling"/>
+	<kode verdi="2" tekst="Sak fremmet, ikke dato"/>
+	<kode verdi="3" tekst="Sak fremmet, familie i samtaleprosess"/>
+</kodeliste>
+
+
+</kodelister>

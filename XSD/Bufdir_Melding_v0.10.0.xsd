@@ -1,0 +1,131 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:bg="https://Bufdir.no/Generelt_v0.10.0" xmlns="https://Bufdir.no/Melding_v0.10.0" xmlns:kodelister="Bufdir_Melding_kodelister_v0.10.0.xml" targetNamespace="https://Bufdir.no/Melding_v0.10.0" elementFormDefault="qualified" version="0.10.0">
+	<xs:import namespace="https://Bufdir.no/Generelt_v0.10.0" schemaLocation="Bufdir_Generelt_v0.10.0.xsd"/>
+	<xs:complexType name="FagsystemType" id="BUF_32C0FA0C-2703-4E8F-983F-5E3678D4F0C1">
+		<xs:sequence>
+			<xs:element name="Leverandor" type="bg:Enlinje" id="BUF_B7F75A62-0280-412E-B707-BB61A28335B7">
+				<xs:annotation>
+					<xs:documentation>Leverandørnavn fagsystem. Eksempler: 'Visma', 'Acos', 'Netcompany', 'Bufdir'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Navn" type="bg:Enlinje" id="BUF_A2ED2B17-C0F5-4A07-B106-784F4D4E5BA5">
+				<xs:annotation>
+					<xs:documentation>Navn fagsystem. Eksempel: 'Familia', 'BiRK'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Versjon" type="bg:VersjonType" id="BUF_092CDC42-C004-40F8-AB99-BC8D740129D4">
+				<xs:annotation>
+					<xs:documentation>Versjonsnavn fagsystem. Eksempel: 'v1.2.3'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="KontaktInfoType" id="BUF_CF6FF3A6-E14A-449B-BBF5-F9D96B188D6B">
+		<xs:sequence>
+			<xs:element name="Kontaktperson" type="bg:KontaktpersonType" id="BUF_135B6A86-99D6-4A2A-BD9E-692B670A96F1">
+				<xs:annotation/>
+			</xs:element>
+			<xs:element name="KontaktpersonLeder" type="bg:KontaktpersonType" id="BUF_3E9352C3-C977-499A-967E-8B8E090F5E6D"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="OppfolgingAvMeldingType" id="BUF_D4333341-F7B5-469D-8537-F354E0D604A2">
+		<xs:annotation>
+			<xs:documentation>
+				 Brukes for alle meldinger som ikke er 'nye', dvs. at de ikke er relatert til tidligere melding
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="MeldingsForbindelse" type="MeldingsForbindelseType" id="BUF_8F30E319-067B-409B-82A7-24C4ED74F147" minOccurs="1">
+				<xs:annotation>
+					<xs:documentation/>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="StartMeldingId" type="bg:UUIDType" id="BUF_B19C5F5D-D146-4521-A772-698F53809FBC" minOccurs="1">
+				<xs:annotation>
+					<xs:documentation>
+						Første meldingsid i denne konversasjonen
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MeldingId" type="bg:UUIDType" id="BUF_525C26E4-E23E-4045-966C-DE6F996CB8D8" minOccurs="1">
+				<xs:annotation>
+					<xs:documentation>
+						Gjelder tidligere melding med denne id
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MottakersRef" type="bg:ReferanseType" id="BUF_196E5FDD-6876-4DFE-97EE-50FEAD50CEC8" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MeldingshodeType" id="BUF_88B047B1-05DD-46DF-8827-19A2981ACF7B">
+		<xs:sequence>
+			<xs:element name="Id" type="bg:UUIDType" id="BUF_7F4D17A6-765F-4B89-8362-0A5E7190B129" minOccurs="1"/>
+			<xs:element name="OppfolgingAvMelding" type="OppfolgingAvMeldingType" id="BUF_1DFCE9C1-F608-4E80-A32E-5B3765F55C56" minOccurs="0"/>
+			<xs:element name="MeldingstypeNmsp" type="xs:string" id="BUF_8F21452E-E1DD-47D6-B9A0-F7810BF2FC1A" minOccurs="1">
+				<xs:annotation>
+					<xs:documentation>
+						Namespace for meldingsdefinisjon
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MeldingstypeXpath" type="xs:string" id="BUF_91755FE9-F957-42D0-9D81-0A622FFF351C" minOccurs="1">
+				<xs:annotation>
+					<xs:documentation>
+						XPathuttrykk for meldingsdefinisjon
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Meldingstype" type="xs:string" id="BUF_1B1A3C65-1F73-40FB-A03C-46CAEFAA1E4E" minOccurs="1">
+				<xs:annotation>
+					<xs:documentation>
+						Klartekst beskrivelse av meldingstype, kan hentes fra JSON fil som elementets Ledetekst (identifisert på id)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FagsystemAvsender" type="FagsystemType" id="BUF_9A2BA0E2-24A8-43ED-B60F-8F7A7C64E66D" minOccurs="1"/>
+			<xs:element name="SendtTidspunkt" type="xs:date" id="BUF_D12645CF-6FE0-4EA0-86C5-D9A9EFB5F31D" minOccurs="1"/>
+			<xs:element name="Avsender" type="bg:OrganisasjonType" id="BUF_B0306846-CEB0-483F-A8C5-568B1AE3652A" minOccurs="1"/>
+			<xs:element name="Mottaker" type="bg:OrganisasjonType" id="BUF_DC79120D-91CE-47FB-B616-0EC9765C7A4F" minOccurs="1"/>
+			<xs:element name="AvsendersRef" type="bg:ReferanseType" id="BUF_21BDA3F9-911D-430F-AAD0-F1632B6F0E88" minOccurs="0"/>
+			<xs:element name="KontaktInfoAvsender" type="KontaktInfoType" id="BUF_4CF80BAC-32E2-46B9-9257-517E31272F9C" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MeldingType" id="BUF_8E63B786-D63F-47E5-9C40-31A2881D833F">
+		<xs:annotation>
+			<xs:documentation>
+Abstrakt basetype for Bufdir-meldinger. Konkrete meldingstyper defineres som extensions av denne, f.eks.:
+			- xs:complexType name="HenvisningMeldingType"
+				- xs:complexContent
+					- xs:extension base="buf:MeldingType"
+						- xs:sequence
+							- xs:element name="Henvisning" type="HenvisningType" /
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Meldingshode" type="MeldingshodeType" id="BUF_A96CA391-9868-4416-9C06-896EC995098C"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- enum - definisjoner -->
+	<xs:simpleType name="MeldingsForbindelseType" id="BUF_30F7A6FE-6D88-4C5A-9881-12A69821780D">
+		<xs:annotation>
+			<xs:documentation>
+			   ([Ny] melding brukes ikke, melding er 'ny' når den ikke er relatert til tidligere melding)
+				[Oppdatering] til tidligere melding
+				[Tillegg] til melding, f.eks. vedlegg
+				[Trukket] melding (det melding gjalt er ikke aktuelt mer)
+				[Slettet] melding (melding var sendt ved feiltakelse, skal slettes hos mottaker)
+				[ApplikasjonsKvittering] på mottatt melding - sendt av fagsystem
+				[SaksbehandlerKvittering] på mottatt melding - sendt av saksbehandler
+				[Svar] på mottatt melding
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Oppdatering"/>
+			<xs:enumeration value="Tillegg"/>
+			<xs:enumeration value="Trukket"/>
+			<xs:enumeration value="Slettet"/>
+			<xs:enumeration value="ApplikasjonsKvittering"/>
+			<xs:enumeration value="SaksbehandlerKvittering"/>
+			<xs:enumeration value="Svar"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

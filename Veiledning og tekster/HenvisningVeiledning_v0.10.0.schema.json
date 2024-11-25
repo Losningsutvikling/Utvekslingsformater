@@ -1,0 +1,180 @@
+{
+	"$id": "bufdir-veiledning-schema.json",
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"title": "Bufdir - Tekster og veiledning til XSD-definisjoner",
+	"description": "Tekster og veiliedning til henvisningsskjema til Bufetats tjenester",
+	"type": "object",
+	"properties": {
+		"sprak": 
+		{
+			"description": "Språkform for denne filen.  nb-NO, nn-NO, en, osv.",
+			"type": "string"
+		},
+		"henvisning": {
+			"$ref": "#/definitions/Henvisning"
+		}
+	},
+	"required": [
+		"sprak",
+		"henvisning"
+	],
+	"definitions": {
+		"Henvisning": {
+			"description": "Veiledning til henvisning",
+			"type": "object",
+			"properties": {
+				"versjon": {
+					"type": "string"
+				},
+				"versjonsInformasjon": {
+					"type": "string"
+				},
+				"gjelderFra": {
+					"type": "string",
+					"format": "date"
+				},
+				"xsd":
+				{
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/xsd"
+					}
+				},
+				"skjemaelement":
+				{
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/SkjemaElement"
+					}
+				},
+				"kodelistetekster":
+				{
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/KodelisteTekster"
+					}
+				},
+				"begrep": {
+					"type": "array",
+					"items": {
+						"$ref": "bfk-schema-3.json#/definitions/Begrep"
+					}
+				},
+				"kunnskapstekst": {
+					"type": "array",
+					"items": {
+						"$ref": "bfk-schema-3.json#/definitions/Kunnskapstekst"
+					}
+				},
+				"kilde": {
+					"type": "array",
+					"items": {
+						"$ref": "bfk-schema-3.json#/definitions/Kilde"
+					}
+				},
+				"publikasjon": {
+					"type": "array",
+					"items": {
+						"$ref": "bfk-schema-3.json#/definitions/Publikasjon"
+					}
+				}
+			},
+			"required": [
+				"versjon",
+				"versjonsInformasjon"
+			]
+		},
+		"xsd": {
+			"type": "string",
+			"description": "Namespace for xsd'er som refereres i SkjemaElementer"
+		},
+		"SkjemaElement": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"description": "referanse-id til definisjonen i xsd",
+					"type": "string"
+				},
+				"navn": {
+					"type": "string"
+				},
+				"xpath": {
+					"type": "string"
+				},
+				"ledetekst": {
+					"type": "string"
+				},
+				"veiledning": {
+					"type": "string"
+				},
+				"sortering": {
+					"description": "brukes for å sortere element i UI når rekkefølge i definisjonen ikke gir en god rekkefølge i UI",
+					"type": "integer"
+				},
+				"tekstreferanser": {
+					"description": "Referanse til #/definitions/Kunnskapstekst eller #/definitions/Kilde",
+					"type": "array",
+					"items": {
+						"$ref": "bfk-schema-3.json#/definitions/Objektreferanse"
+					}
+				}
+			},
+			"required": [
+				"id",
+				"navn",
+				"sortering"
+			]
+		},
+		"KodelisteTekster": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"description": "referanse-id til kodeliste i xsd/kodeliste-XML",
+					"type": "string"
+				},
+				"navn": {
+					"description": "navn til kodeliste i xsd/kodeliste-XML",
+					"type": "string"
+				},
+				"element_id": {
+					"description": "referanse-id til elementet hvor disse kodelisteverdiene skal brukes",
+					"type": "string"
+				},
+				"element_navn": {
+					"description": "navn til elementet som bruker disse kodelistetekstene",
+					"type": "string"
+				},
+				"verdier": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/KodelisteVerdi"
+					}
+				}
+			},
+			"required": [
+				"id",
+				"navn"
+			]
+		},
+		"KodelisteVerdi": {
+			"type": "object",
+			"properties": {
+				"verdi": {
+					"description": "verdi kodeliste",
+					"type": "string"
+				},
+				"tekst": {
+					"description": "tekst som brukes i en konkret forekomst av kodelisteverdien (overstyrer standard)",
+					"type": "string"
+				},
+				"beskrivelse": {
+					"description": "veiledning som brukes i en konkret forekomst av kodelisteverdien (overstyrer standard)",
+					"type": "string"
+				}
+			},
+			"required": [
+				"verdi"
+			]
+		}		
+	}
+}

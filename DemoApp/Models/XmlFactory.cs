@@ -11,10 +11,6 @@ namespace DemoApp.Models
         {
             Dictionary<string, string> ns = [];
 
-            //ReadXMl2(config, "974635453/sendt");
-
-
-
             string selectedProtocolName = Utils.GetRequestValue(qp, Konstanter.SelectedProtocol);
             var meldingsProtokoll = XsdUtils.MeldingsprotokollVersjoner.FirstOrDefault(v => v.Version == selectedProtocolName);
             var skjemaRotElementName = Utils.GetRequestValue(qp, Konstanter.SelectedSkjema);
@@ -49,8 +45,6 @@ namespace DemoApp.Models
 
             Dictionary<string, string> rootElementAttributes = [];
 
-
-
             foreach (XmlSchema sch in schemaSet.Schemas())
             {
                 foreach (var nms2 in sch.Namespaces.ToArray().ToList())
@@ -81,11 +75,9 @@ namespace DemoApp.Models
             // schemalocation må legges til etter rotelement har xsi namespace for kunne få xsi prefix
             rootDocumentElement.SetAttribute("schemaLocation", "http://www.w3.org/2001/XMLSchema-instance", xsdSchema.TargetNamespace + " " + schemaLoc);
 
-            var xmlString = xmlDoc.OuterXml;
+            BlobShareReaderWriter.SaveFile(config, fileName, xmlDoc);
 
-            BlobShareReaderWriter.SaveFileContents(config, fileName, xmlString);
-
-            //ValidateXml(fileName, config, env);
+            ValidateXml(fileName, config, env);
 
             return true;
         }
@@ -194,7 +186,7 @@ namespace DemoApp.Models
             settings.ValidationType = ValidationType.Schema;
             settings.ValidationEventHandler += new ValidationEventHandler(ErrorHandler);
 
-            var xmlfile = BlobShareReaderWriter.GetFileStream(config, xmlDoc).Result;
+            var xmlfile = BlobShareReaderWriter.GetFileStreamFromBlob(config, xmlDoc).Result;
 
             Console.WriteLine("validation result of file: ");
             XmlReader xReader = XmlReader.Create(xmlfile, settings);
@@ -218,15 +210,23 @@ namespace DemoApp.Models
         public static Dictionary<string, Dictionary<string, string>> ReadXMlElement(IConfiguration config, string folder)
         {
             var fileInfoList = new Dictionary<string, Dictionary<string, string>>(); // dict av dict med filnavn som key
-
             var files = BlobShareReaderWriter.GetAllFiles(config, folder);
-
 
             foreach (var file in files)
             {
                 var fileInfo = new Dictionary<string, string>();
-                var xmlfile = BlobShareReaderWriter.GetFileStream(config, file).Result;
-                var reader = XmlReader.Create(xmlfile);
+                XmlReader reader;
+
+                if (string.IsNullOrEmpty(config["StorageAccountConnectString"]) && string.IsNullOrEmpty(config["StorageAccountClientId"]))
+                {
+                    reader = XmlReader.Create(file);
+
+                }
+                else
+                {
+                    var xmlfile = BlobShareReaderWriter.GetFileStreamFromBlob(config, file).Result;
+                    reader = XmlReader.Create(xmlfile);
+                }
 
                 while (reader.Read())
                 {
@@ -242,7 +242,6 @@ namespace DemoApp.Models
                             if (!reader.IsStartElement() && text != "")
                             {
                                 fileInfo[reader.Name] = text;
-
                             }
                         }
                         break;
@@ -266,7 +265,7 @@ namespace DemoApp.Models
 
 
             List<PrefilledValue> result = [];
-            var xmlfile = BlobShareReaderWriter.GetFileStream(config, filename).Result;
+            var xmlfile = BlobShareReaderWriter.GetFileStreamFromBlob(config, filename).Result;
             var doc = new XmlDocument();
             doc.Load(xmlfile);
             var rootelem = doc.ChildNodes[1] as XmlElement;
@@ -356,44 +355,5 @@ namespace DemoApp.Models
             }
 
         }
-
-
-
-
-
-        public static List<PrefilledValue> ReadXMLFile2(IConfiguration config, string filename, string root, bool editMode)
-        {
-            List<PrefilledValue> result = [];
-            var xmlfile = BlobShareReaderWriter.GetFileStream(config, filename).Result;
-            var reader = XmlReader.Create(xmlfile);
-            string xpath = "";
-            string value;
-
-
-            while (reader.Read())
-            {
-                var name = reader.LocalName;
-                switch (reader.NodeType)
-                {
-                    case XmlNodeType.Element:
-                        xpath += name + ".";
-                        break;
-
-                    case XmlNodeType.EndElement:
-                        xpath = xpath.Substring(0, xpath.Length - (name.Length + 1));
-                        break;
-
-                    case XmlNodeType.Text:
-                        value = reader.Value;
-                        Console.WriteLine(name);
-                        var path = xpath.Substring(0, xpath.Length - 1);
-                        result.Add(new(path, value, true, true));
-                        break;
-                }
-            }
-
-            return result;
-        }
-
     }
 }
