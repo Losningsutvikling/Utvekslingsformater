@@ -9,16 +9,9 @@
 
 ## Status
 
-- Versjon 0.9.0 er oppdatert så langt som vi er kommet med definisjonene
-- Versjon 0.8.0 skal vise formatet for meldinger, kodelister og tilhørende tekster.
+- Versjon 1.0.0 av henvisning for fosterhjem og institusjon er publisert
 
-Frem mot neste hovedversjon vil vi:
-
-- Kvalitetssikre innholdet. 
-- Gå gjennom og om nødvendig justere begrepsbruk/navngiving
-- Dokumentere XSD bedre
-
-Det er i første omgang *Henvisning til fosterhjem* som skal utvikles ferdig, de andre meldingstypene som ligger i definisjonene er lagt med for å illustrerre hvordan en mer komplett digital samhandling vil fungere.
+Det er i første omgang *Henvisning til fosterhjem* som skal testes i bruk, de andre meldingstypene kommer i bruk når implementasjon av fosterhjem-henvisningen er testet og fungerer.
 
 ## Feil, spørsmål, innvendinger og forslag
 
