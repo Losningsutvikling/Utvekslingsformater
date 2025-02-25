@@ -1,55 +1,62 @@
 ﻿@using DemoApp.Models
-@using DemoApp.Models.Fagsystem
+@using DemoApp.Models.Simulator
 @using DemoApp.Models.ViewModels
 @using System.Xml.Schema
 @model PropertyRendererModel
 @{
+
     var caption = Model.GetCaption(true);
     var elements = XsdUtils.GetEnrichedChildren(Model.Prop);
     var description = Model.GetDescription();
     string cssClass = "synlig_gruppe";
     var prefilled = Model.Melding.GetPrefilledValueFor(Model.GetId());
     string collapsedGroupClass = (prefilled?.InitiallyClosed == true) ? "collapsedGroup" : "";
-    string onClickHandler = (prefilled?.InitiallyClosed == true) ? "toggleCollapseContainer(this);" : "";
+    string onClickHandler = (prefilled?.InitiallyClosed == true) ? $"toggleCollapseContainer('{@Model.GetId()}');" : "";
+
     // Spesifikke properties for BarnetsSituasjon
-    var outerElement = elements.FirstOrDefault(el => el.Element.Id == "BUF_CCD23FB1-1CEE-4F26-AB89-4E45FCF6214A"); // DimensjonVurdering
-    var innerElement = elements.FirstOrDefault(el => el.Element.Id == "BUF_5E9BDD35-9188-4C44-9921-F557F4E8BB08"); // OmradeBeskrivelse
-                                                                                                          //
+
+    var outerElement = elements.FirstOrDefault(el => el.Element.Id == "BUF_CCD23FB1-1CEE-4F26-AB89-4E45FCF6214A") // DimensjonVurdering
+        ?? throw new Exception("Finner ikke element 'DimensjonVurdering')");
+    var innerElement = elements.FirstOrDefault(el => el.Element.Id == "BUF_5E9BDD35-9188-4C44-9921-F557F4E8BB08") // OmradeBeskrivelse
+        ?? throw new Exception("Finner ikke element 'OmradeBeskrivelse')");
+    //
     <div class="@cssClass @collapsedGroupClass" id="@Model.GetId()" onclick="@onClickHandler">
         <span class="gruppetekst">@caption</span>
         @await Html.PartialAsync($"/Pages/Partial/Beskrivelse.cshtml", description)
         <div class="collapseContainer">
-        @foreach (var enrichedElement in elements)
-        {
-            var element = enrichedElement.Element;
-            if (element == outerElement.Element)
+            @foreach (var enrichedElement in elements)
             {
-                var innerElementModel = new PropertyRendererModel(Model, Model.Melding, $"{Model.GetId()}", innerElement.Element);
-                innerElementModel.CustomCaptionPattern = "Område: {0}";
-                var outerElementModel = new PropertyRendererModel(Model, Model.Melding, $"{Model.GetId()}", element, null, innerElementModel, 0);
-                outerElementModel.CustomCaptionPattern = "Dimensjon: {0}";
-                string outerControlName = XsdUtils.GetControlNameForProperty(element);
-                @await Html.PartialAsync($"/Pages/Partial/{outerControlName}.cshtml", outerElementModel)
-            }
-            else if (element == innerElement.Element)
-            {
-                    // skip, er rendret i elementet over
-            }
-            else
-            {
-                bool skipRender = Model.SkipProp != null && element is XmlSchemaElement el && el.ElementSchemaType == Model.SkipProp;
-                if (!skipRender)
+                var element = enrichedElement.Element;
+                if (element == outerElement.Element)
                 {
-                    <div class="variabel">
-                    @{
-                        var elementModel = new PropertyRendererModel(Model, Model.Melding, $"{Model.GetId()}", element);
-                        string controlName = XsdUtils.GetControlNameForProperty(element);
+                    var innerElementModel = new PropertyRendererModel(Model, Model.Melding, $"{Model.GetId()}", innerElement.Element);
+                    innerElementModel.CustomCaptionPattern = "Område: {0}";
+                    var outerElementModel = new PropertyRendererModel(Model, Model.Melding, $"{Model.GetId()}", element, null, innerElementModel, 0);
+                    outerElementModel.CustomCaptionPattern = "Dimensjon: {0}";
+                    outerElementModel.CustomCaptionStyle = "dimensjon_tittel";
+                    outerElementModel.KodelisteFilterVariabel = "dimensjon";
+                    string outerControlName = XsdUtils.GetControlNameForProperty(element);
+                    @await Html.PartialAsync($"/Pages/Partial/{outerControlName}.cshtml", outerElementModel)
+                }
+                else if (element == innerElement.Element)
+                {
+                    // skip, er rendret i elementet over
+                }
+                else
+                {
+                    bool skipRender = Model.SkipProp != null && element is XmlSchemaElement el && el.ElementSchemaType == Model.SkipProp;
+                    if (!skipRender)
+                    {
+                        <div class="variabel">
+                        @{
+                            var elementModel = new PropertyRendererModel(Model, Model.Melding, $"{Model.GetId()}", element);
+                            string controlName = XsdUtils.GetControlNameForProperty(element);
+                        }
+                        @await Html.PartialAsync($"/Pages/Partial/{controlName}.cshtml", elementModel)
+                        </div>
                     }
-                    @await Html.PartialAsync($"/Pages/Partial/{controlName}.cshtml", elementModel)
-                    </div>
                 }
             }
-        }
         </div>
     </div>
 }

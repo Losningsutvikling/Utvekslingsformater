@@ -1,22 +1,19 @@
-﻿@using DemoApp.Models.Fagsystem
-@using DemoApp.Models;
+﻿@using DemoApp.Models.Simulator
+@using DemoApp.Models
 @model DemoApp.Models.ViewModels.PropertyRendererModel
 @{
     var prefilled = Model.Melding.GetPrefilledValueFor(Model.GetId());
     string value = (prefilled?.Value) ?? "";
     bool disable = (prefilled?.OpenToEdit == false);
+    bool addMandatoryNoMatter = (disable) ? false : Model.CheckAddEnabler();
     string disableCssClass = (disable) ? "disabled_button" : "";
     string disableStr = (disable) ? "disabled" : "";
     string visibleIdAndName = @Model.GetId() + ((disable) ? "_disabled" : ""); // gi disablet input et navn som gjør at de ikke hentes ut
-    <span class="ledetekst @disableCssClass">@Model.GetCaption(true)@Html.Raw(Utils.getMandatoryMarker(Model))</span>
+    <span class="ledetekst @disableCssClass">@Model.GetCaption(true)@Html.Raw(Utils.getMandatoryMarker(Model, false, addMandatoryNoMatter))</span>
     @await Html.PartialAsync($"/Pages/Partial/Beskrivelse.cshtml", @Model.GetDescription())
     if (disable)
     {
         <input type="hidden" name="@Model.GetId()" value="@value" />
     }
-    else
-    {
-        Model.CheckAddEnabler();
-    }
-    <input id="@visibleIdAndName" name="@visibleIdAndName" type="date" class="dato" min="@DateTime.Now.AddDays(Konstanter.DagerFortid).ToString("yyyy-MM-dd")" max="@DateTime.Now.AddDays(Konstanter.DagerFremtid).ToString("yyyy-MM-dd")" value="@value" @disableStr />
+    <input id="@visibleIdAndName" title="@Model.GetId()" name="@visibleIdAndName" type="date" class="dato" min="@DateTime.Now.AddDays(Konstanter.DagerFortid).ToString("yyyy-MM-dd")" max="@DateTime.Now.AddDays(Konstanter.DagerFremtid).ToString("yyyy-MM-dd")" value="@value" @disableStr />
 }

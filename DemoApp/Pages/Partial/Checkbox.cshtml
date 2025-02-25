@@ -1,5 +1,5 @@
 ﻿@using DemoApp.Models
-@using DemoApp.Models.Fagsystem
+@using DemoApp.Models.Simulator
 @model DemoApp.Models.ViewModels.PropertyRendererModel
 @{
     var prefilled = Model.Melding.GetPrefilledValueFor(Model.GetId());
@@ -21,8 +21,8 @@
         string hiddenCheckName = $"{visibleIdAndName}_FALSE";
         <input type="hidden" id="@hiddenCheckName" name="@hiddenCheckName" value="false" />
     }
-    <input type="checkbox" id="@visibleIdAndName" name="@visibleIdAndName" onchange="checkDependentControlsActivation(this)" @checkedStr @disableStr />
+    <input type="checkbox" title="@Model.GetId()" id="@visibleIdAndName" name="@visibleIdAndName" onchange="checkDependentControlsActivation(this)" @checkedStr @disableStr />
 
-    <label class="checkbox_tekst @disableCssClass" for="@visibleIdAndName">@Model.GetCaption(true)</label>
+    <label title="@Model.GetId()" class="checkbox_tekst @disableCssClass" for="@visibleIdAndName">@Model.GetCaption(true)</label>
     @await Html.PartialAsync($"/Pages/Partial/Beskrivelse.cshtml", @Model.GetDescription())
 }

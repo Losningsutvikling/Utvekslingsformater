@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns="https://Bufdir.no/Barnevern/Henvisning/Fosterhjem_v1.0.0" 
+	targetNamespace="https://Bufdir.no/Barnevern/Henvisning/Fosterhjem_v1.0.0" 
+	xmlns:bv="https://Bufdir.no/Barnevern/Generelt_v1.0.0" 
+	xmlns:henv="https://Bufdir.no/Barnevern/Henvisning_v1.0.0" 
+	xmlns:mld="https://Bufdir.no/Melding_v1.0.0" 
+	xmlns:kodelister="Bufdir_Barnevern_Henvisning_kodelister_v1.0.0.xml" 
+	elementFormDefault="qualified" 
+	version="1.0.0">
+
+	<xs:import namespace="https://Bufdir.no/Barnevern/Henvisning_v1.0.0" schemaLocation="Bufdir_Barnevern_Henvisning_v1.0.0.xsd"/>
+	<xs:import namespace="https://Bufdir.no/Barnevern/Generelt_v1.0.0" schemaLocation="Bufdir_Barnevern_Generelt_v1.0.0.xsd"/>
+
+	<xs:complexType name="HenvisningFosterhjemVedtakType" id="BUF_653C0E1D-E638-4FC7-99D9-2861878D0099">
+		<xs:complexContent>
+			<xs:extension base="bv:VedtakOmsorgType">
+				<xs:sequence>
+					<xs:element name="Lovhjemmel" type="henv:HenvisningLovparagrafFosterhjemType" id="BUF_DFBB27FC-E5EC-4EA5-BE8B-CF9FAC78766D">
+						<xs:annotation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>	
+	</xs:complexType>
+
+	<xs:complexType name="HenvisningFosterhjemType" id="BUF_3BDAE573-2546-41F4-AB46-8B5875D9ADDB">
+		<xs:complexContent>
+			<xs:extension base="henv:OmsorgstiltakHenvisningType">
+				<xs:sequence>
+					<xs:element name="ForespurtBistand" type="henv:HenvisningForespurtBistandType" fixed="1" id="BUF_47527EE2-8683-4262-AC1A-C14C5DDB8DA8"/>
+					<xs:element name="Vedtak" type="HenvisningFosterhjemVedtakType" id="BUF_A4E5D820-ADD0-48C7-A348-294CCFE08F81"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>	
+	</xs:complexType>
+	
+<!-- Element-definisjon -->	
+
+	<xs:element name="Henvisning" type="HenvisningFosterhjemType" id="BUF_9984DF44-4D83-4F82-BEE4-0E0672234956">
+		<xs:annotation>
+			<xs:appinfo>
+				<MeldingsForbindelse>Ny|Oppdatering</MeldingsForbindelse>
+				<Aktor>1.Linje</Aktor>
+			</xs:appinfo>
+		</xs:annotation>
+	</xs:element>
+	
+</xs:schema>

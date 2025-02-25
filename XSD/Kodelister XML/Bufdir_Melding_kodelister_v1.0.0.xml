@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kodelister versjon="1.0.0" nmsp="https://Bufdir.no/Melding_v1.0.0">
+
+<kodeliste navn="MeldingsForbindelseType" id="BUF_30F7A6FE-6D88-4C5A-9881-12A69821780D">
+	<variabel navn="retning" beskrivelse="'sendt'=melding er koblet til tidligere sendt melding, 'mottatt'=meldingen er et svar på melding mottatt fra annen aktør" id="BUF_3FF75323-A986-4FEC-98FD-069181CDEB3D" />
+	<kode verdi="Duplikat"	  tekst="Samme melding sendt igjen (av tekniske årsaker)">				<variabel navn="retning" verdi="sendt"/></kode>
+	<kode verdi="Oppdatering" tekst="Oppdatering av tidligere melding">							 	<variabel navn="retning" verdi="sendt"/></kode> 
+	<kode verdi="Tillegg" 	  tekst="Tillegg til melding, f.eks. vedlegg">						 	<variabel navn="retning" verdi="sendt"/></kode> 
+	<kode verdi="Trukket" 	  tekst="Trukket melding (det melding gjalt er ikke aktuelt mer)"> 		<variabel navn="retning" verdi="sendt"/></kode> 
+	<kode verdi="Slettet" 	  tekst="Slettet melding (feiltakelse, skal slettes hos mottaker)">		<variabel navn="retning" verdi="sendt"/></kode> 
+	<kode verdi="ApplikasjonsKvittering" tekst="Kvittering på mottatt melding (fra fagsystem)">		<variabel navn="retning" verdi="mottatt"/></kode> 
+	<kode verdi="SaksbehandlerKvittering" tekst="Kvittering på mottatt melding (fra saksbehandler)"><variabel navn="retning" verdi="mottatt"/></kode>
+	<kode verdi="Svar" 		  tekst="Svar på mottatt melding">										<variabel navn="retning" verdi="mottatt"/></kode>
+	<kode verdi="Feil" 		  tekst="Mottatt melding kan ikke behandles" >							<variabel navn="retning" verdi="mottatt"/></kode>
+</kodeliste>
+
+</kodelister>

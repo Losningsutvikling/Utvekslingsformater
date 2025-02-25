@@ -15,7 +15,7 @@
     <form method="post">
         <header>
             @{
-                bool isSelected = Utils.GetRequestValue(this.Context.Request, "barn_id") != "";
+                bool isSelected = Utils.GetRequestValue(this.Context.Request, Konstanter.SelectedSak) != "";
                 string selectedBarnCss = (isSelected) ? "" : "disabled_button";
                 string jsSelectedBarnFunc = (isSelected) ? "postForm" : "dummyPost";            
             }
@@ -36,8 +36,14 @@
                                 <button class="nav-link text-dark @selectedBarnCss" onclick="@jsSelectedBarnFunc ('/Barn')">Barn</button>
                         </li>
                         <li class="nav-item">
-                                <button class="nav-link text-dark @selectedBarnCss" onclick="@jsSelectedBarnFunc ('/Melding')">Henvisning</button>
+                                <button class="nav-link text-dark @selectedBarnCss" onclick="@jsSelectedBarnFunc ('/MeldingListe')">Liste</button>
                         </li>
+                            <li class="nav-item">
+                                <button class="nav-link text-dark @selectedBarnCss" onclick="@jsSelectedBarnFunc ('/Melding')">Ny konversasjon</button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link text-dark" onclick="postForm('/TestSchema')">Test XSD</button>
+                            </li>
                         </ul>
                 </div>
                     <a class="navbar-brand" asp-area="" asp-page="/Issues">  Om/Status</a>

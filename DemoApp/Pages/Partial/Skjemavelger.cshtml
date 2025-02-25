@@ -4,7 +4,7 @@
 @model DemoApp.Pages.MeldingModel
 @{
     var schemasInProtocolVersion = XsdUtils.GetSchemasForProtocol(Model.SelectedProtocol!.TargetNamespace!);
-    bool disable = false;// !string.IsNullOrEmpty(Model.SelectedSkjemaElement);
+    bool disable = Model.SelectedSkjemaDisabled == true;// !string.IsNullOrEmpty(Model.SelectedSkjemaElement);
     string disableCssClass = (disable) ? "disabled_button" : "";
     string disableStr = (disable) ? "disabled" : "";
         <div>
@@ -13,37 +13,32 @@
             <option value="">- velg skjema / melding -</option>
             @foreach (XmlSchema schema in schemasInProtocolVersion)
             {
-                var availableSkjema = XsdUtils.ElementsExtending(schema, Konstanter.MeldingType);
-                if (availableSkjema.Count > 0)
+                var rotElement = XsdUtils.GetRootElement(schema);
+                if (rotElement != null)
                 {
-                    <optgroup label="@schema.TargetNamespace"></optgroup>
-                    foreach (XmlSchemaElement rotElement in availableSkjema)
-                    {
                         bool disabledOption = !XsdUtils.GetUsedInAksjon(rotElement, Model.SelectedAksjon);
                         bool selected = false;
-                        if (Model.SelectedSkjemaElementName == rotElement.QualifiedName.ToString())
+                        if (Model.SelectedSchema?.TargetNamespace == schema.TargetNamespace?.ToString())
                         {
                                 selected = true;
-//                                header = XsdUtils.GetMeldingshode(XsdUtils.GetXsdChildren(rotElement), true);
                         }
-                        string? caption = XsdUtils.GetCaption(rotElement, true);
+                        string? caption = $"{XsdUtils.GetCaption(rotElement, true)} [{schema.Version}]";
                         if (disabledOption)
                         {
-                            <option value="@rotElement.QualifiedName" disabled>@caption</option>
+                            <option value="@schema.TargetNamespace" disabled>@caption</option>
                         }
                         else
                         {
                             if (selected)
                             {
-                                <option value="@rotElement.QualifiedName" selected>@caption</option>
+                                <option value="@schema.TargetNamespace" selected>@caption</option>
                             }
                             else
                             {
-                                <option value="@rotElement.QualifiedName">@caption</option>
+                                <option value="@schema.TargetNamespace">@caption</option>
                             }
                         }
 
-                    }
                 }
             }
             </select>

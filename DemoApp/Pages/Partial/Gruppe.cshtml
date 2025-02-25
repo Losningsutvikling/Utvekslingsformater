@@ -1,5 +1,5 @@
 ﻿@using DemoApp.Models
-@using DemoApp.Models.Fagsystem
+@using DemoApp.Models.Simulator
 @using DemoApp.Models.ViewModels
 @using System.Xml.Schema
 @model PropertyRendererModel
@@ -12,20 +12,22 @@
     var prefilled = Model.Melding.GetPrefilledValueFor(Model.GetId());
     string collapsedGroupClass = (prefilled?.InitiallyClosed == true) ? "collapsedGroup" : "";
     string closedGroupClass = (prefilled?.InitiallyClosed == true) ? "hidden" : "";
-    string onClickHandler = (prefilled?.InitiallyClosed == true) ? "toggleCollapseContainer(this);" : "";
-    <div class="@cssClass @collapsedGroupClass" id="@Model.GetId()" onclick="@onClickHandler">
+    string onClickHandler = (prefilled?.InitiallyClosed == true) ? $"toggleCollapseContainer('{Model.GetId()}');" : "";
+    <div class="@cssClass @collapsedGroupClass" id="@Model.GetId()">
         @if (synligGruppe)
         {
-            if (prefilled?.InitiallyClosed == true)
+            <div id="toggleControl_@Model.GetId()" onclick="@onClickHandler">
+            @if (prefilled?.InitiallyClosed == true)
             {
-                <img class="collapse-image" src="../img/arrow-right.png" alt="collapse image">
-
+                string imgName = "../img/arrow-right.png";
+                <img class="collapse-image" src="@imgName" alt="collapse image">
             }
             <span class="gruppetekst">@caption</span>
-            @await Html.PartialAsync($"/Pages/Partial/Beskrivelse.cshtml", description)
-
-            
-            
+            @if (Model.UseDescription)
+            {
+                @await Html.PartialAsync($"/Pages/Partial/Beskrivelse.cshtml", description)
+            }
+            </div>
         }
         <div class="collapseContainer @closedGroupClass ">
         @foreach (var enrichedElement in elements)
@@ -39,6 +41,7 @@
                     var elementModel = new PropertyRendererModel(Model, Model.Melding, $"{Model.GetId()}", element);
                     string controlName = XsdUtils.GetControlNameForProperty(element);
                 }
+                <a name="@elementModel.GetId()"></a>
                 @await Html.PartialAsync($"/Pages/Partial/{controlName}.cshtml", elementModel)
                 </div>
             }

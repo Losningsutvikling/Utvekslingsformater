@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kodelister versjon="1.0.0" nmsp="https://Bufdir.no/Barnevern/Henvisning_v1.0.0" >
+
+<kodeliste navn="HenvisningForespurtBistandType" id="BUF_D960BB0E-3A3E-4F81-AA5A-DDEA3F51061E">
+	<kode verdi="1" tekst="Fosterhjem"									/>
+	<kode verdi="2" tekst="Behandlingsinstitusjon"						/>
+	<kode verdi="3" tekst="Omsorgsinstitusjon"							/>
+	<kode verdi="4" tekst="Omsorgsinstitusjon/Spesialisert fosterhjem"	/>
+	<kode verdi="5" tekst="Senter for foreldre og barn - Utredning"		/>
+	<kode verdi="6" tekst="Senter for foreldre og barn - Hjelpetiltak"	/>
+	<kode verdi="7" tekst="Hjelpetiltak i hjemmet - RFT"				/>
+	<kode verdi="8" tekst="Hjelpetiltak i hjemmet - MST"				/>
+	<kode verdi="9" tekst="Hjelpetiltak i hjemmet - Annet"				/>
+	<kode verdi="10" tekst="Familieråd"									/>
+	<kode verdi="11" tekst="Tverrfaglig helsekartlegging"				/>
+</kodeliste>
+
+<kodeliste navn="KanPlasseresINettverkType" id="BUF_AAFE640D-9200-4089-B70F-51B7FA117724">
+	<kode verdi="0" 	tekst="Nei"	/>
+	<kode verdi="1" 	tekst="Ja" 	/>
+	<kode verdi="9" 	tekst="Uavklart"/>
+</kodeliste>
+
+
+<kodeliste navn="PlanEtterTiltakType" id="BUF_AF2116C4-C312-4ED2-82B4-2C697DBADF3F">
+	<kode verdi="2" tekst="Fosterhjem"/>
+	<kode verdi="3" tekst="Behandlingsinstitusjon"/>
+	<kode verdi="4" tekst="Omsorgsinstitusjon"/>
+	<kode verdi="5" tekst="Omsorgsinstitusjon / spesialisert fosterhjem"/>
+	<kode verdi="6" tekst="Hjelpetiltak i hjemmet"/>
+	<kode verdi="7" tekst="Etableres i egen bolig"/>
+	<kode verdi="9" tekst="Annet"/>
+</kodeliste>
+
+</kodelister>

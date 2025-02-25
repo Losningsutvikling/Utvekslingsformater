@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<validering xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" nmsp="https://Bufdir_Valideringsregler_v1.0.0.xsd">
+	<valideringsregel id="BUF_E76F9D7C-87AE-42A8-8563-C59FD7A843FE">
+		<beskrivelse>Meldingen som refereres i Meldingshode/OppfolgingAvMelding/Id må finnes</beskrivelse>
+		<valideringtype>Intermelding</valideringtype>
+		<regel>
+			<xpath>Meldingshode/OppfolgingAvMelding/Id</xpath>
+			<verdi>[MeldingEksisterer]</verdi>
+		</regel>
+		<betingelse>
+			<xpath>Meldingshode/OppfolgingAvMelding</xpath>
+			<verdi>!null</verdi>
+		</betingelse>
+	</valideringsregel>
+	<valideringsregel id="BUF_A8CF8BC0-4EE7-47B2-8ECD-6D859541FC76">
+		<beskrivelse>Meldingen som refereres i Meldingshode/OppfolgingAvMelding/StartMeldingId må finnes</beskrivelse>
+		<valideringtype>Intermelding</valideringtype>
+		<regel>
+			<xpath>Meldingshode/OppfolgingAvMelding/StartMeldingId</xpath>
+			<verdi>[MeldingEksisterer]</verdi>
+		</regel>
+		<betingelse>
+			<xpath>Meldingshode/OppfolgingAvMelding</xpath>
+			<verdi>!null</verdi>
+		</betingelse>
+	</valideringsregel>
+	<valideringsregel id="BUF_0F57392D-D438-4FBC-9199-B3F40AAA8FBC">
+		<beskrivelse>Meldingens SendtTidspunkt må være senere enn i melding det refereres i OppfolgingAvMelding/Id</beskrivelse>
+		<valideringtype>Intermelding</valideringtype>
+		<regel>
+			<xpath>Meldingshode/SendtTidspunkt</xpath>
+			<verdi>Meldingshode/SendtTidspunkt > [Meldingshode/OppfolgingAvMelding/Id]/Meldingshode/SendtTidspunkt</verdi>
+		</regel>
+		<betingelse>
+			<xpath>Meldingshode/OppfolgingAvMelding</xpath>
+			<verdi>!null</verdi>
+		</betingelse>
+	</valideringsregel>
+</validering>

@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:bg="https://Bufdir.no/Generelt_v1.0.0" 
+	xmlns:bv="https://Bufdir.no/Barnevern/Generelt_v1.0.0" 
+	xmlns:mld="https://Bufdir.no/Melding_v1.0.0" 
+	xmlns="https://Bufdir.no/Barnevern/Henvisning_v1.0.0" 
+	xmlns:kodelister="Bufdir_Barnevern_Henvisning_kodelister_v1.0.0.xml" 
+	targetNamespace="https://Bufdir.no/Barnevern/Henvisning_v1.0.0" elementFormDefault="qualified" version="1.0.0">
+	<xs:import namespace="https://Bufdir.no/Barnevern/Generelt_v1.0.0" schemaLocation="Bufdir_Barnevern_Generelt_v1.0.0.xsd"/>
+	<xs:import namespace="https://Bufdir.no/Generelt_v1.0.0" schemaLocation="Bufdir_Generelt_v1.0.0.xsd"/>
+	<xs:import namespace="https://Bufdir.no/Melding_v1.0.0" schemaLocation="Bufdir_Melding_v1.0.0.xsd"/>
+	
+	<xs:complexType name="OmsorgspersonType" id="BUF_1C17DEEA-AA35-4568-AAB3-810103511C49">
+		<xs:sequence>
+			<xs:element name="Fornavn" type="bg:EnlinjeObligatorisk" id="BUF_935D58C7-B110-4D3F-9C21-D9FDCBE9EB47"/>
+			<xs:element name="Etternavn" type="bg:Enlinje" minOccurs="0" id="BUF_660166D5-4E2D-40BA-9FB2-8D6C0E758D0E"/>
+			<xs:element name="Relasjon" type="bv:OmsorgsrelasjonType" id="BUF_8EF675E0-923D-4A92-B823-C2C8F34731AB"/>
+			<xs:element name="RelasjonAnnet" type="bg:Enlinje" minOccurs="0" id="BUF_A01FF1AC-6F13-4AC8-80C3-5F34DC312FBF">
+				<xs:annotation>
+					<xs:appinfo>
+						<enable>Relasjon=9</enable>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Dod" type="xs:boolean" id="BUF_CAC47084-DB07-41A8-9619-BECEBDC5D97A"/>
+			<xs:element name="Omsorg" type="bv:OmsorgType"  minOccurs="0" id="BUF_BC98557F-A19A-401B-B83C-EEE2EC10FA83">
+				<xs:annotation>
+					<xs:appinfo>
+						<enable>Dod=0</enable>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="KontaktFrekvens" type="bv:KontaktFrekvensType" minOccurs="0" id="BUF_D9894232-2B77-4D67-A6BA-72AC558FD354">
+				<xs:annotation>
+					<xs:appinfo>
+						<enable>Dod=0</enable>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Foreldreansvar" type="xs:boolean" minOccurs="0" id="BUF_384F33C5-9925-4224-9207-BADD1AACEA21">
+				<xs:annotation>
+					<xs:appinfo>
+						<enable>Dod=0</enable>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+
+	<xs:complexType name="BarnetsOmsorgspersonerType" id="BUF_1BC0AD78-4524-47D7-AE76-CF25E605C86C">
+		<xs:sequence>
+			<xs:element name="Person" type="OmsorgspersonType" minOccurs="0" maxOccurs="unbounded" id="BUF_A7950F28-0B95-42EE-ADE1-AB21F3F240B1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+
+	<xs:complexType name="OnsketBistandsPeriodeType" id="BUF_2CEE2E0A-9474-47E7-A2D3-8BC288C90E56">
+		<xs:annotation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="DatoFra" type="xs:date" id="BUF_EF489DB6-24CD-4A05-9F44-16F772134B62">
+				<xs:annotation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Varighet" type="bg:Enlinje" minOccurs="0" id="BUF_97884515-3B1F-4B07-9BB2-3BA6C1926D3F">
+				<xs:annotation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="PlasseringINettverkType" id="BUF_E0211971-7C41-438B-BAE6-F3BF80ADB5B1">
+		<xs:sequence>
+			<xs:element name="KanPlasseresINettverk" type="KanPlasseresINettverkType" id="BUF_60BAC853-168E-4FF2-B9F0-FED3CA8291A9">
+				<xs:annotation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Vurdering" type="bg:FritekstObligatorisk" minOccurs="1" id="BUF_B3707F9C-CF99-433D-B410-A5C98B98DFCC">
+				<xs:annotation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	
+	<xs:complexType name="BarnetsSoskenSamplasseringType" id="BUF_9333F71C-4116-4895-BBA7-4919AE265DC5">
+		<xs:sequence>
+			<xs:element name="Sosken" type="SoskenSamplasseringType" minOccurs="0" maxOccurs="unbounded" id="BUF_46F692C1-9F7C-4E2D-831B-B1421ECC1383"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="SoskenSamplasseringType" id="BUF_6660CE9F-A771-46ED-A2CF-F4A1C6F10648">
+		<xs:sequence>
+			<xs:element name="SoskenRelasjon" type="bv:SoskenRelasjonType" id="BUF_3E816ABE-9127-4EF2-8EC9-0057A60F0CED">
+				<xs:annotation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SoskenRelasjonAnnet" type="bg:Enlinje"  minOccurs="0" id="BUF_5043F20E-37F1-4F9A-BA32-32E6347E0332">
+				<xs:annotation>
+					<xs:appinfo>
+						<enable>SoskenRelasjon=9</enable>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice>
+				<xs:element name="Fodselsnummer" type="bg:FodselsnummerType" minOccurs="1" id="BUF_4C6A5262-44CE-4E89-872F-F35EC5D5AF1B">
+					<xs:annotation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="DUFnummer" type="bg:DUFNummerType" id="BUF_FAD2EC94-35A4-4725-83BA-2562F929DBA8">
+					<xs:annotation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="HenvisningMeldingsId" type="bg:UUIDType" minOccurs="0" maxOccurs="1" id="BUF_0D907ADF-CB49-4B1D-BE8C-A1819AE119AD">
+				<xs:annotation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="YtterligereBistandType" id="BUF_5CC8E325-C679-4409-8280-40BF8A17E5D0">
+		<xs:sequence>
+			<xs:element name="Familierad" type="xs:boolean" id="BUF_EBBF6A1F-9FD9-4BC0-B6A1-4B66B4106A0C" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="YtterligereBistandOmsorgstiltakType" id="BUF_4A97D336-5B4D-4875-9559-F17ECE49C065">
+		<xs:complexContent>
+			<xs:extension base="YtterligereBistandType">
+				<xs:sequence>	
+					<xs:element name="TverrfagligHelsekartlegging" type="xs:boolean" id="BUF_6C377FF2-522C-49D8-B51E-AD4C3646F1C8" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<!-- Henvisninger -->
+
+	<xs:complexType name="HenvisningMeldingType" id="BUF_79115CBB-1BB6-492F-AC47-F44F657413D5">
+			<xs:annotation>
+				<xs:documentation>
+					Elementet 'Klient' må legges til i aktuell henvisningstype
+				</xs:documentation>
+			</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="mld:MeldingType">
+				<xs:sequence>
+					<xs:element name="Bistandsperiode" type="OnsketBistandsPeriodeType" id="BUF_B3FA7714-E438-4739-B288-2C0BA6FC2F59"/>
+					<xs:element name="ForeldreOgOmsorgspersoner" type="BarnetsOmsorgspersonerType" id="BUF_B4EC7A38-CAAD-4820-9FBC-8E3B1499EF3D"/>
+					<xs:element name="TiltakHistorikk" type="bg:Fritekst" minOccurs="0" id="BUF_CF961F26-2624-4DFB-BF7D-BADEB828C7F8"/>
+					<xs:element name="Dagtilbud" type="bv:DagtilbudType" id="BUF_C4B6EEC5-231D-4F78-BCAD-49CD094381C0"/>
+					<xs:element name="PlanForTiltaket" type="bv:KommunensPlanForTiltaketType" id="BUF_E112D04D-B1E9-4324-8308-5AFE7CB01C4D"/>
+					<xs:element name="IndividuellPlan" type="bv:IndividuellPlanType" minOccurs="1" id="BUF_3F888520-7A2D-4BFD-8C77-62ED8F4888CB"/>
+					<xs:element name="MedvirkningOgInvolvering" type="MedvirkningOgInvolveringType" id="BUF_D66C796C-91F0-4DF4-9185-782321BCC966"/>
+					<xs:element name="PlanEtterOnsketTiltak" minOccurs="1" maxOccurs="1" id="BUF_CC17878B-D89D-40AA-AA43-A94D94141ACA">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:choice>
+									<xs:element name="Plan" type="ViderePlanType" id="BUF_3A616CCF-41B9-4E31-AB8B-9496157CDB3F" />
+									<xs:element name="IngenPlan" type="xs:boolean" id="BUF_52E6C969-A0BA-4236-A76E-D46895134E54" />
+								</xs:choice>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Vedlegg" type="bg:VedleggType" minOccurs="0" maxOccurs="10" id="BUF_C4705C17-35AB-443E-B574-2B03826495F9">
+						<xs:annotation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="MedvirkningOgInvolveringType">
+		<xs:sequence>
+			<xs:element name="BarnetsMedvirkning" type="bv:BarnetsMedvirkningType" id="BUF_06D131AB-A289-4F7F-9878-F7498F2F1012"/>
+			<xs:element name="ForeldreInvolvering" type="bv:ForeldreInvolveringType" id="BUF_5C3DCC89-B36C-4C28-9B2D-0C67F726D4A8"/>
+			<xs:element name="MedvirkningOgInvolveringAnnet" type="bg:FritekstObligatorisk" id="BUF_F8D18C62-FE29-4297-B7FA-E85A9D83A6C7"/>
+		</xs:sequence>	
+	</xs:complexType>
+	
+	<xs:complexType name="OmsorgstiltakHenvisningType" id="BUF_9BEB012A-6B23-40F7-9127-B0D887BF7E0A">
+		<xs:complexContent>
+			<xs:extension base="HenvisningMeldingType">
+				<xs:sequence>
+					<xs:element name="Klient" type="bv:KlientBarnevernMedEMAType" id="BUF_E838A6AF-DF52-40BA-86F7-F20563C6F405"/>
+					<xs:element name="SoskenSamplassering" type="BarnetsSoskenSamplasseringType" id="BUF_13699B3A-F193-4E18-B606-60B8739A0520" />
+					<xs:element name="YtterligereBistand" type="YtterligereBistandOmsorgstiltakType" id="BUF_E35239C9-7183-4685-9BEE-5667204C5B6A" />
+					<xs:element name="PlasseringINettverk" type="PlasseringINettverkType" id="BUF_73A3AB62-5202-484E-BAA3-48E1B9CDFD0C"/>
+					<xs:element name="BarnetsBehovOgSituasjon" type="bv:KunnskapsmodellBarnetsSituasjonOgBehovType" id="BUF_CC9A7CDF-B998-415D-995A-6275CBCCA465" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="ViderePlanType" id="BUF_AC8C82F4-5130-43D0-84C2-2AD6BBFD0CDD">
+		<xs:sequence>
+			<xs:element name="PlanType" type="PlanEtterTiltakType" id="BUF_70880F3E-4DD0-4F67-AA9A-702CF3D54857" minOccurs="0" maxOccurs="unbounded" >
+				<xs:unique name="unikPlanType">
+					<xs:selector xpath="."/>
+					<xs:field xpath="."/>
+				</xs:unique>
+			</xs:element>
+			<xs:element name="Annet" type="bg:Fritekst" minOccurs="0" id="BUF_3320A163-64CA-4993-92FA-7CE96B923E59" >
+				<xs:annotation>
+					<xs:appinfo>
+						<enable>PlanType=9</enable>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- Enum - Bufdir_barnevern_henvisning_kodelister_v1.0.0.xml -->
+
+	<xs:simpleType name="HenvisningForespurtBistandType" id="BUF_D960BB0E-3A3E-4F81-AA5A-DDEA3F51061E">
+		<xs:annotation>
+			<xs:documentation>
+				1 = Fosterhjem
+				2 = Behandlingsinstitusjon
+				3 = Omsorgsinstitusjon
+				4 = Omsorgsinstitusjon/Spesialisert fosterhjem
+				5 = Senter for foreldre og barn - Utredning
+				6 = Senter for foreldre og barn - Hjelpetiltak
+				7 = Hjelpetiltak i hjemmet - RFT
+				8 = Hjelpetiltak i hjemmet - MST
+				9 = Hjelpetiltak i hjemmet - Annet
+				10 = Familieråd
+				11 = Tverrfaglig helsekartlegging
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="4"/>
+			<xs:enumeration value="5"/>
+			<xs:enumeration value="6"/>
+			<xs:enumeration value="7"/>
+			<xs:enumeration value="8"/>
+			<xs:enumeration value="9"/>
+			<xs:enumeration value="10"/>
+			<xs:enumeration value="11"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+
+	<xs:simpleType name="HenvisningForespurtBistandInstitusjonType" id="BUF_C2A78A74-6554-4E10-92A8-766FFD0A1F07">
+		<xs:annotation>
+			<xs:documentation>
+			    Subset av HenvisningForespurtBistandType:
+				2 = Behandlingsinstitusjon
+				3 = Omsorgsinstitusjon
+				4 = Omsorgsinstitusjon/Spesialisert fosterhjem
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="HenvisningForespurtBistandType">
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="HenvisningForespurtBistandHjelpetiltakType" id="BUF_2C0F2DB8-2CAA-46D4-97E9-10B496E8D985">
+		<xs:annotation>
+			<xs:documentation>
+			    Subset av HenvisningForespurtBistandType:
+				7 = Hjelpetiltak i hjemmet - RFT
+				8 = Hjelpetiltak i hjemmet - MST
+				9 = Hjelpetiltak i hjemmet - Annet
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="HenvisningForespurtBistandType">
+			<xs:enumeration value="7"/>
+			<xs:enumeration value="8"/>
+			<xs:enumeration value="9"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="HenvisningLovparagrafFosterhjemType" id="BUF_0122297D-7C00-4FD6-82CD-17B3A673FFF3">
+		<xs:annotation>
+			<xs:documentation>
+			    Subset av VedtakHenvisningParagrafType:
+				4  = § 3-2. Fosterhjem og barnevernsinstitusjon som frivillig hjelpetiltak
+				13 = § 5-1. Vedtak om omsorgsovertakelse bokstav a-g
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="bv:VedtakHenvisningParagrafType">
+			<xs:enumeration value="4"/>
+			<xs:enumeration value="13"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="HenvisningLovparagrafInstitusjonType" id="BUF_054C86D0-F6E2-4979-B417-09B36927AC3B">
+		<xs:annotation>
+			<xs:documentation>
+			    Subset av VedtakHenvisningParagrafType:
+				 4 = § 3-2. Fosterhjem og barnevernsinstitusjon som frivillig hjelpetiltak
+				13 = § 5-1. Vedtak om omsorgsovertakelse bokstav a-g
+				14 = § 6-1. Vedtak om opphold i barnevernsinstitusjon etter samtykke
+				15 = § 6-2. Vedtak om plassering i barnevernsinstitusjon uten samtykke
+				17 = § 6-6. Vedtak om plassering i institusjon når det er fare for at barnet kan utnyttes til menneskehandel
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="bv:VedtakHenvisningParagrafType">
+			<xs:enumeration value="4"/>
+			<xs:enumeration value="13"/>
+			<xs:enumeration value="14"/>
+			<xs:enumeration value="15"/>
+			<xs:enumeration value="17"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="HenvisningLovparagrafHjelpetiltakType" id="BUF_1AD457E5-E43C-4A08-A88F-EF00D2FB046D">
+		<xs:annotation>
+			<xs:documentation>
+			    Subset av VedtakHenvisningParagrafType:
+				3 = § 3-1.Frivillig hjelpetiltak
+				5 = § 3-4.Pålegg om hjelpetiltak
+				6 = § 3-5.Foreldrestøttende hjelpetiltak uten barnets samtykke (mulig denne utgår)			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="bv:VedtakHenvisningParagrafType">
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="5"/>
+			<xs:enumeration value="6"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	
+	<xs:simpleType name="KanPlasseresINettverkType" id="BUF_AAFE640D-9200-4089-B70F-51B7FA117724">
+		<xs:annotation>
+			<xs:documentation>
+				0 = Nei
+				1 = Ja 
+				9 = Uavklart
+            </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="0"/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="9"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="PlanEtterTiltakType" id="BUF_AF2116C4-C312-4ED2-82B4-2C697DBADF3F">
+		<xs:annotation>
+			<xs:documentation>
+				2 = Fosterhjem
+				3 = Behandlingsinstitusjon
+				4 = Omsorgsinstitusjon
+				5 = Omsorgsinstitusjon / spesialisert fosterhjem
+				6 = Hjelpetiltak i hjemmet
+				7 = Etableres i egen bolig
+				9 = Annet
+            </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="4"/>
+			<xs:enumeration value="5"/>
+			<xs:enumeration value="6"/>
+			<xs:enumeration value="7"/>
+			<xs:enumeration value="9"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

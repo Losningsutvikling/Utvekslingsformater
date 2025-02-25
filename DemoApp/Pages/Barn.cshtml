@@ -1,19 +1,19 @@
 ﻿@page
-@using DemoApp.Models.Fagsystem
+@using DemoApp.Models.Simulator
 @model DemoApp.Pages.BarnModel
 @{
     ViewData["Title"] = "Barn";
     @if(Model.selectedBarn != null)
     {
     <h2>Barn</h2>
-    <div class="variabel"><span class="ledetekst">Navn</span><span class="tekst_verdi">@Model.selectedBarn.FREG_Person.Fornavn @Model.selectedBarn.FREG_Person.Etternavn</span></div>
+    <div class="variabel"><span class="ledetekst">Navn</span><span class="tekst_verdi">@Model.selectedBarn!.FREG_Person!.Fornavn @Model.selectedBarn.FREG_Person.Etternavn</span></div>
     <div class="variabel"><span class="ledetekst">Fødselsnr.</span><span class="tekst_verdi">@Model.selectedBarn.FREG_Person.Fodselsnummer</span></div>
     <div class="variabel"><span class="ledetekst">Kjønn</span><span class="tekst_verdi">@Model.selectedBarn.FREG_Person.Kjonn</span></div>
         <div class="variabel"><span class="ledetekst">Nettverk</span></div>
-            @foreach (NettverkPerson person in @Model.selectedBarn.Nettverk)
+            @foreach (NettverkPerson person in @Model.selectedBarn!.Nettverk!)
                 {
                     <div class="variabel">
-                        <span class="ledetekst"></span><span class="tekst_verdi">@person.fREG_Person.Fornavn @person.fREG_Person.Etternavn</span>
+                        <span class="ledetekst"></span><span class="tekst_verdi">@person.fREG_Person!.Fornavn @person.fREG_Person.Etternavn</span>
                           (<span class="tekst_verdi">@person.NettverkRelasjon</span>)
                     </div>
                 }

@@ -1,4 +1,5 @@
-﻿using DemoApp.Pages;
+﻿using DemoApp.Models.Simulator;
+using DemoApp.Pages;
 using System.Xml.Schema;
 namespace DemoApp.Models.ViewModels
 {
@@ -52,16 +53,20 @@ namespace DemoApp.Models.ViewModels
         }
 
         public bool UseCaption { get; set; } = true;
+        public bool UseDescription { get; set; } = true;
 
         public DateTime Start { get; set; } = DateTime.Now.Date;
 
-        public string FilterId { get; set; } = "";
-        public string FilterValue { get; set; } = "";
+        //        public string FilterId { get; set; } = "";
+        //        public string[] FilterValues { get; set; } = [""];
         public string FilterText { get; set; } = "";
         public string CustomText { get; set; } = "";
 
         public string CustomCaptionPattern { get; set; } = "";
+        public string CustomCaptionStyle { get; set; } = "";
 
+        public string KodelisteFilterVariabel { get; set; } = "";
+        public string KodelisteFilterVerdi { get; set; } = "";
         public string GetDescription()
         {
             if (!string.IsNullOrEmpty(CustomText))
@@ -84,9 +89,21 @@ namespace DemoApp.Models.ViewModels
         {
             string id = GetRawId(propId);
             if (UseItemCount)
-                id += ":0.template";
+            {
+                if (ItemNo > 0)
+                    id += $":{ItemNo}";
+                else
+                    id += ":0.template";
+            }
             return id;
         }
+        public string GetNameChoice(string propId = "")
+        {
+            if (Prop is XmlSchemaChoice)
+                return $"{XPath}{XsdUtils.GetChoiceElementNames(prop as XmlSchemaChoice)}";
+            return "";
+        }
+
         public string GetIdWithItemNo(string itemNo, string propId = "")
         {
             string id = GetRawId(propId);
@@ -111,41 +128,38 @@ namespace DemoApp.Models.ViewModels
             return null;
         }
 
-        public void CheckAddEnabler()
+        public int ItemNo { get; set; } = 0;
+
+        public bool CheckAddEnabler()
         {
+            int numPre = Melding.controlEnablers.Count;
             string aktiveringExpression = XsdUtils.GetAppInfoValue(Prop, "enable", false, false);
             if (aktiveringExpression != "")
             {
                 string[] parts = aktiveringExpression.Split("=");
-                string aktiveringControlID = GetId(parts[0]);
+                bool isInverted = parts[0].EndsWith('!');
+                string controlId = parts[0].TrimEnd('!');
+                string aktiveringControlID = GetId(controlId);
                 string aktiveringValue = (parts.Length > 0) ? parts[1] : "";
                 if (ParentModel?.UseItemCount == true)
                 {
                     for (int i = 1; i <= int.Min(XsdUtils.GetMaxOccurs(ParentModel.Prop), 10); i++)
                     {
                         string id = GetId("").Replace(":0.template", $":{i}");
-                        Melding.controlEnablers.Add(new(id, GetId(parts[0]).Replace(":0.template", $":{i}"), aktiveringValue));
+                        Melding.controlEnablers.Add(new(id, GetId(controlId).Replace(":0.template", $":{i}"), aktiveringValue, isInverted));
                     }
                 }
                 else
                 {
-                    Melding.controlEnablers.Add(new(GetId(), aktiveringControlID, aktiveringValue));
+                    Melding.controlEnablers.Add(new(GetId(), aktiveringControlID, aktiveringValue, isInverted));
                 }
             }
+            return Melding.controlEnablers.Count > numPre;
         }
 
-        public XmlSchemaSimpleType? GetIterateTypeDefinition()
+        public List<List<PrefilledValue>> GetPrefilledItems(string xPath)
         {
-            var constraint = XsdUtils.GetUniqueConstraint(prop);
-            if (constraint != null)
-            {
-                var iteratorProp = constraint.Selector!.XPath
-                    ?? throw new Exception($"Ingen selector i unique constraint i element {XsdUtils.GetName(prop)}");
-                var enumProp = (iteratorProp == ".") ? prop : XsdUtils.GetChildByPath(prop, iteratorProp);
-                if (enumProp != null)
-                    return XsdUtils.GetSimpleType(enumProp);
-            }
-            return null;
+            return Melding.GetPrefilledValuesMultiple(xPath.Replace(":0.template", ":"));
         }
 
     }

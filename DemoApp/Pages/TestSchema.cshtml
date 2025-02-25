@@ -1,0 +1,47 @@
+﻿@page
+@using DemoApp.Models
+@model TestSchemaModel
+@{
+    ViewData["Title"] = "Test Xsd-er, kodelister og JSON-tekster";
+    <h3>Kodelister</h3>
+    @foreach (string feil in Model.Kodelistefeil)
+    {
+        <div>@feil</div>
+    }
+
+    <h3>Tekster (JSON)</h3>
+    @foreach (string feil in Model.Tekstfeil)
+    {
+        <div>@feil</div>
+    }
+
+    <h3>Feil fra gammel test:</h3>
+    @if (XsdUtils.Tekster.missing.Count > 0 || Model.GetNonUsed().Count > 0 || XsdUtils.Tekster.wrongName.Count > 0)
+    {
+        if (XsdUtils.Tekster.missing.Count > 0)
+        {
+            <br />
+            <textarea rows="20" cols="100">Manglende: 
+@string.Join("\n", XsdUtils.Tekster.missing.ToArray())</textarea>
+        }
+        @if (Model.GetNonUsed().Count > 0)
+        {
+            <br />
+
+            <textarea rows="20" cols="100">Ubenyttet:
+@string.Join("\n", Model.GetNonUsed().ToArray())</textarea>
+        }
+        @if (XsdUtils.Tekster.wrongName.Count > 0)
+        {
+            <br />
+            <textarea rows="20" cols="100">Feil navn:
+@string.Join("\n", XsdUtils.Tekster.wrongName.ToArray())</textarea>
+        }
+    }
+
+    <h3>Id-Feil:</h3>
+    @if (Model.Idfeil.Count > 0)
+    {
+        <textarea rows="20" cols="100">@string.Join("\n", Model.Idfeil.ToArray())</textarea>
+    }
+}

@@ -1,5 +1,6 @@
 ﻿@using DemoApp.Models
 @using DemoApp.Models.ViewModels
+@using System.Xml.Schema
 @model PropertyRendererModel
 @{
     var caption = Model.GetCaption(false);
@@ -7,43 +8,48 @@
     var description = Model.GetDescription();
     bool synligGruppe = !string.IsNullOrEmpty(caption);
     string cssClass = (synligGruppe) ? "synlig_gruppe" : "anonym_gruppe";
-    var enumType = Model.GetIterateTypeDefinition()
+    var enumType = XsdUtils.GetIterateTypeDefinition(Model.Prop)
         ?? throw new Exception($"Could not find type {Model.Prop.ToString()}");
     string enumTypeName = XsdUtils.GetName(enumType) ?? "";
     var enumElement = elements.FirstOrDefault(el => XsdUtils.GetSimpleType(el.Element) == enumType)?.Element ?? Model.Prop;
 
+    Model.CheckAddEnabler();
+
     if (Model.InnerModel != null)
     {
-        EnrichedElement insertedEl = new() { Element = Model.InnerModel.Prop };
+        EnrichedElement insertedEl = new(Model.InnerModel.Prop);
         elements.Insert(Model.InnerModelIndex ?? elements.Count, insertedEl);
     }
-
-    var kodelisteUnfiltered = XsdUtils.GetKodeliste(enumType)!;
-    var kodeliste = (Model.FilterId != "") ? Model.Melding.FilterKodeliste(kodelisteUnfiltered, Model.FilterId, Model.FilterValue) : Model.Melding.FilterKodeliste(kodelisteUnfiltered);
+    Kodeliste kodeliste = XsdUtils.GetKodeliste(enumType)
+        ?? throw new Exception($"Kodeliste for enumType '{enumType.Name}' ikke funnet"); ;
+    var koder = (Model.KodelisteFilterVariabel != "") ? XsdUtils.GetFilteredKodeliste(kodeliste, Model.KodelisteFilterVariabel, Model.KodelisteFilterVerdi) : kodeliste.koder!.ToList();
     var isOptional = XsdUtils.GetIsOptional(Model.Prop);
     var cssClassVariable = isOptional ? "hidden" : "";
     var clickActionTemplate = isOptional ? "setHiddenByCheckbox('[id1]', '[id2]')" : "";
+    var prefilledItems = Model.GetPrefilledItems(Model.GetId());
     if (Model.CustomCaptionPattern == "")
     {
-        <div class="gruppetekst">@Model.GetCaption(true)@Html.Raw(Utils.getMandatoryMarker(Model))</div>
+        <div class="gruppetekst @Model.CustomCaptionStyle">@Model.GetCaption(true)@Html.Raw(Utils.getMandatoryMarker(Model))</div>
     }
-    @foreach (var kode in kodeliste)
+    @foreach (var kode in koder)
     {
-        string id = Model.GetIdWithItemNo(kode.verdi);
+        string id = Model.GetIdWithItemNo(kode.verdi!.Replace(".", "-"));
         string separator = id.EndsWith('.') ? "" : ".";
         string enumElementName = $"{id}{separator}{XsdUtils.GetName(enumElement)}";
         string idVariabelDiv = id + "__container";
-        string onChangeHandler = clickActionTemplate.Replace("[id1]", id).Replace("[id2]", idVariabelDiv);
+        string onChangeHandler = (clickActionTemplate.Replace("[id1]", id).Replace("[id2]", idVariabelDiv) + ";checkDependentControlsActivation(this)").TrimStart(';');
         <div>
             @if (isOptional || XsdUtils.IsSimpleType(Model.Prop))
             {
-                <input type="checkbox" value="@kode.verdi" id="@id" name="@id" onchange="@onChangeHandler">
+                var prefilledValue = prefilledItems.Where(l => l.Where(p => p.Value == kode.verdi).Count() > 0);
+                string checkedValue = (prefilledValue.Count() > 0) ? "checked" : ""; 
+                <input type="checkbox" value="@kode.verdi" id="@id" name="@id" onchange="@onChangeHandler" @checkedValue>
                 <label class="checkbox_tekst" for="@id">@kode.tekst</label>
             }
             else
             {
-                string thiscaption = (Model.CustomCaptionPattern != "") ? string.Format(Model.CustomCaptionPattern, kode.tekst) : kode.tekst;
-                <span class="gruppetekst">@thiscaption</span>
+                string thiscaption = (Model.CustomCaptionPattern != "") ? string.Format(Model.CustomCaptionPattern, kode.tekst) : kode.tekst ?? "";
+                <span class="gruppetekst @Model.CustomCaptionStyle">@thiscaption</span>
                 @if (!string.IsNullOrEmpty(kode.beskrivelse))
                 {
                     @await Html.PartialAsync($"/Pages/Partial/Beskrivelse.cshtml", kode.beskrivelse)
@@ -54,18 +60,20 @@
             <div id="@idVariabelDiv" class="option_container @cssClassVariable">
                 @foreach (var enrichedElement in elements)
                 {
-                    var element = enrichedElement.Element;
+                    XmlSchemaAnnotated element = enrichedElement.Element;
+                    if (string.IsNullOrEmpty(element.Id))
+                        throw new Exception($"Element med navn={XsdUtils.GetName(element)} har ingen id...");
                     @if (XsdUtils.GetSimpleType(element) != enumType)
                     {
                         <div class="variabel">
                             @{
                                 string path = (Model.InnerModel != null && Model.InnerModel.Prop == element) ? Model.InnerModel.ParentXPath : id;
                                 var elementModel = new PropertyRendererModel(Model, Model.Melding, $"{path}", element, enumType);
-                                elementModel.FilterId = kodelisteUnfiltered.id;
-                                elementModel.FilterValue = kode.verdi;
-                                string veiledningTekst = XsdUtils.GetKodelisteBeskrivelseFromVeiledning(kodelisteUnfiltered.id, element.Id, kode.verdi);
+                                elementModel.KodelisteFilterVariabel = Model.KodelisteFilterVariabel;
+                                elementModel.KodelisteFilterVerdi = kode.verdi;
+                                string veiledningTekst = XsdUtils.GetKodelisteBeskrivelseFromVeiledning(kodeliste.id!, element.Id, kode.verdi);
                                 elementModel.CustomText = veiledningTekst;
-                                elementModel.FilterText = (veiledningTekst != "") ? veiledningTekst : kode.tekst;
+                                elementModel.FilterText = (veiledningTekst != "") ? veiledningTekst : (kode.tekst ?? kode.verdi);
                                 if (element == Model.InnerModel?.Prop)
                                 {
                                     elementModel.CustomCaptionPattern = Model.InnerModel.CustomCaptionPattern;

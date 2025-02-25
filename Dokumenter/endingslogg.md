@@ -1,5 +1,289 @@
 # Endringslogg for bufdirs meldingsformater
 
+# Versjon 1.0.0 - 20.02.2025
+
+- Generelt:
+
+  - Henvisningene er noe omstrukturert for å tilfredsstille et krav om at alle henvisninger skal kunne lastes inn i en "sum-struktur", dvs. at element som har samme betydning vil hete det samme (og ha samme XPath-uttrykk) uansett hvilken henvisning de forekommer i. Dette er løst delvis gjennom arv (extensions).
+  
+  - Obligatoriske tekstelement er endret fra <xs:string> til en-eller flerlinje typer med minLength=2. Årsaken er at validering ikke fanger opp et tomt tekstelement når det ikke er satt en minLength-verdi.
+  
+  - Felt som enables ved verdi i annet felt (typisk "Annet, spesifiser") er gjort ikke-obligatoriske for ikke å feile i XSD-validering
+  
+  - En del navneendringer som følge av intern gjennomgang
+  
+  - <kodelistefilter> benyttes ikke lenger
+  
+- Valideringsregler - tillegg:
+
+Det er lagt ut en ***Bufdir_Melding_v1.0.0_validering.XSD*** som er vårt format for å angi valideringsregler som ikke kan spesifiseres i XSD. Formatet er ment å skulle være maskinlesbart, men funksjonalitet må sannsynligvis delvis mappes manuelt i kode ved implementering.
+Som et minimum vil disse reglene representere en oversikt over hvilke feilmeldinger en vil kunne motta fra Bufdir. 
+
+## Bufdir_Generelt_v1.0.0.xsd
+
+- Nye elementtyper:
+
+  - ***EnlinjeObligatorisk***: Brukes ved minOccurs > 0, minLength=2
+  
+  - ***LandkodeType***: ISO 3166 landkoder
+  
+  - ***SprakType***: ISO 639-1 språkkoder
+  
+  - ***VedleggTypeType***: enum type, foreløpig kun to verdier - vil utvides med kjente vedleggtyper
+
+- Endrede elementer/typer:
+
+  - ***Enlinje***: Endret maxLength fra 150 til 255 tegn
+  
+  - ***FritekstObligatorisk***: endret minLength fra 20 til 2, fått manglende ***id*** (og endret navn)
+  
+  - ***FulltNavnType***: Fått minLength = 2
+  
+  - ***VedleggType***:
+  
+    - ***Filnavn***: Lagt til \<unique\> constraint
+	
+	- ***VedleggType***: Nytt element (se ny type ***VedleggTypeType***)
+	
+- Navneendringer:
+
+  - ***FritekstMinLengde***: Nytt navn ***FritekstObligatorisk***
+
+## Bufdir_Melding_v1.0.0.xsd
+
+- Endrede elementer/typer:
+
+  - ***MeldingshodeType***:
+  
+    - ***MeldingstypeXpath***: Fjernet, ikke nødvendig da alle XSD'er har maks 1 rotelement
+	
+	- ***SendtTidspunkt***: Type endret til xs:dateTime
+
+  - ***MeldingsForbindelseType***: Nye enum-verdier ***Duplikat*** og ***Feil***
+  
+  
+## Bufdir_Barnevern_Generelt_v1.0.0.xsd
+
+- Nye elementtyper:
+
+  - ***DagtilbudType/DagtilbudAnnet***
+  
+  - ***KunnskapsmodellBarnetsSituasjonOgBehovType***: Se endring for ***BarnetsSituasjonOgBehovType*** 
+  
+  - ***KlientBarnevernMedEMAType***: Se endring beskrevet for ***KlientIdentifikatorType*** nedenfor
+  
+  - ***VedtakOmsorgType***: Se endring beskrevet for ***VedtakType*** nedenfor
+  
+  - ***VedtakStatusIkkeOmsorgType*** Se endring beskrevet for ***VedtakType*** nedenfor
+  
+
+- Endrede elementer/typer:
+  
+  - ***BarnetsSituasjonOgBehovType***: Elementet er nå en basistype som kun inneholder beskrivelse av samlet behov, arves og utvides med dimensjon-/områdebeskrivelser for henvisninger der disse benyttes. Elementet som nå tilsvarer den tidligere strukturen heter nå ***KunnskapsmodellBarnetsSituasjonOgBehovType***
+  
+  - ***DagtilbudType/Beskrivelse***: Var tidligere enablet ved "Annet" i dagtilbud, er nå et selvstendig, ikke-obligatorisk beskrivelsesfelt
+    
+  - ***IndividuellPlanType/Koordinator***: Har fått <enable> - uttrykk, kun relevant når det er angitt at individuell plan er relevant.
+  
+  - ***SamarbeidMedForeldreType***: Nytt navn ***ForeldreInvolveringType***
+  
+    - ***SamvaerPersoner***: Nytt navn ***SamvaerOgKontakt***
+	
+  - ***KlientIdentifikatorType***: Er blitt en basistype, uten EMA/Ufødt - elementene, disse er overført til typen ***KlientBarnevernType***
+  
+  - ***KlientIdentifikatorType/Fodseldato***: Fjernet, hentes fra FREG
+  
+  - ***KlientIdentifikatorType/Kjonn***: Fjernet, hentes fra FREG
+  
+  - ***KlientBarnevernType***: 
+    
+    - ***Ufodt***, ***TerminDato***: Nye element (se ***KlientIdentifikatorType***)
+	  
+	- ***Bosted***: Nytt element - beskrivelse av bosted (om avvikende fra FREG)
+
+    - ***Bostedsadresse***: Utgår, hentes fra FREG
+	
+	- ***UtenlandskBakgrunn***: Navn endret til ***BehovForTolk***
+	
+  - ***BarnetsMedvirkningType***:
+    
+	- ***Rammer***: Endret navn til ***RammerForGjennomforing***
+	
+	- ***BarnetsBetraktning***: Endret navn til ***BarnetsSynspunkter***
+	
+  - ***UtenlandskBakgrunnType***: Endret navn til ***BehovForTolkType***
+  
+    - ***Statsborgerskap***: Endret navn til ***Sprak***
+	
+	- ***BehovForTolkBeskrivelse***: Nytt element
+	
+  - ***VedtakType***: Er blitt basistype som utvides med aktuelle element for ***Lovhjemmel*** og ***Vedtakstatus***. Dette er element som vil gå igjen i alle arvede typer, men enum-listene vil være ulike.
+
+    - ***NemndsbehandlingStatus*** og ***NemndsbehandlingDato***: Tatt ut, da de kun er aktuelle for omsorgstiltak
+	
+  - ***MorsmalType***: Utgår, erstattes av ***StatsborgerskapType*** i Bufdir_Generelt
+  
+  - ***OmsorgType***: Ny kode 9=Annet
+
+- Slettede elementer:
+
+  - ***LovhjemmelType***: Har ikke vært i bruk (tilsvarer struktur i BVR)
+
+## Bufdir_Barnevern_Henvisning_v1.0.0
+  
+- Nye elementtyper:
+
+  - ***YtterligereBistandOmsorgstiltakType***: Den utvidede varianten av ***YtterligereBistandType***
+  
+  - ***HenvisningForespurtBistandInstitusjonType***: Utvalg av enum - koder fra ***HenvisningForespurtBistandType***
+  
+  - ***KanPlasseresINettverkType***: Ja/Nei/Uavklart
+  
+- Endrede elementer/typer:
+
+  - ***OmsorgspersonType***: 
+  
+    - ***Etternavn***: Nytt element
+	
+	- ***KontaktFrekvens***: Har fått <enable> - betingelse til ***Dod***=0
+	
+    - ***Foreldreansvar***: Har fått <enable> - betingelse til ***Dod***=0
+
+  - ***OnsketBistandsPeriodeType***: ***DatoTil*** fjernet, erstattet med tekstfelt ***Varighet***
+  
+  - ***PlasseringINettverkType***: Element ***Vurdert*** erstattet med ***KanPlasseresINettverk***
+  
+  - ***SoskenSamplasseringType: 
+  
+    - ***Fodselsnummer***: Endret ***id***, var ved en feil et duplikat
+
+    - ***DUFnummer***: Endret ***id***, var ved en feil et duplikat
+  
+  - ***TilleggstjenesterType***: Tatt vekk elementet ***TverrfagligHelsekartlegging***, dette ligger nå i typen ***YtterligereBistandOmsorgstiltakType***
+  
+  - ***HenvisningMeldingType***: Flytting av elementer mellom denne typen, ***OmsorgstiltakHenvisningType*** og ***FosterhjemHenvisningType*** for å passe med flere, nye henvisningstyper
+  
+  - ***ViderePlanType***: enum-verdi "Ikke nye tiltak" tatt ut av liste, løses ved annet element (i <choice>)
+
+- Navneendringer:
+  
+  - ***TilleggstjenesterType*** => ***YtterligereBistandType***
+  
+  - ***MedvirkningHenvisningType*** => ***MedvirkningOgInvolveringType***
+  
+  - ***MedvirkningHenvisningType***:
+  
+    - ***OmForeldrene*** => ***ForeldreInvolvering***
+
+    - ***MedvirkningAnnet*** => ***MedvirkningOgInvolveringAnnet***
+  
+  - ***ViderePlanType*** => ***PlanEtterTiltakType***
+  
+## Bufdir_Barnevern_Henvisning_Fosterhjem_v1.0.0
+  
+- Nye elementtyper:
+
+  - ***HenvisningFosterhjemVedtakType***: Dette elementet er "trukket ut" av tidligere standard henvisning fordi lovhjemmel-listene er ulike for ulike tiltak. Tidligere var dette løst ved å oppgi filtre på gyldige enum-verdier, nå løses det med enum-definisjoner som er utdrag av basistypen.
+
+- Endrede elementer/typer:
+
+  - ***HenvisningFosterhjemType***: Nytt element ***Vedtak***, flyttet fra tidligere struktur (se ***HenvisningFosterhjemVedtakType***)
+
+ - Navneendringer:
+
+  - ***HenvisningFosterhjem*** => ***Henvisning***
+
+## Bufdir_Barnevern_Henvisning_Institusjon_v1.0.0.xsd
+
+- Nesten 100% identisk med Fosterhjem, avvikende kodelister på vedtak/tjeneste
+  
+## Bufdir_Barnevern_Henvisning_Familierad_v0.9.0.xsd
+
+- Ny, ikke produksjonsklar
+
+## Bufdir_Barnevern_Henvisning_Hjelpetiltak_v0.9.0.xsd
+
+- Ny, ikke produksjonsklar
+
+## Bufdir_Kvitteringsmelding_v1.0.0
+
+- ingen endringer
+  
+## Bufdir_TrukjketMelding_v1.0.0
+
+- ingen endringer
+  
+# Kodelister:
+
+## Generelt
+
+- Tilleggsvariabler ligger nå som element i stedet for tidligere som attributter
+
+- Det er laget en XSD for kodelister: Bufdir_kodelister_v1.0.0.xsd
+
+## Bufdir_Generelt_kodelister_v1.0.0
+
+- Nye kodelister:
+
+  - ***LandkodeType***
+  
+  - ***SprakType***
+  
+  - ***VedleggTypeType***
+
+## Bufdir_Melding_kodelister_v1.0.0
+
+- ***MeldingsForbindelseType***: 
+    
+  - Nye koder "Duplikat" og "Feil"
+
+  - variabel ***retning*** viser om verdien indikerer et svar eller en oppfølging av egen melding 
+	
+## Bufdir_Barnevern_Generelt_kodelister_v1.0.0
+	
+- ***KunnskapsmodellOmradeType***: Endringer i tekst og variabler
+
+- ***MorsmalType*** fjernet, erstattet av ***SprakType*** i Bufdir_Generelt
+
+- ***OmsorgsrelasjonType***: Fjernet gyldigFra/gyldigTil-verdier (var tidligere en testverdi) i verdi=1
+
+- ***StatsborgerskapType*** fjernet, erstattet av ***LandkodeType*** i Bufdir_Generelt
+
+- ***VedtakHenvisningParagrafType***: Fjernet attributter, lagt til variabler
+
+- ***VedtakInstansType***: Rettet skrivefeil => "Barneverns- og helsenemnda"
+
+- ***NemndsbehandlingStatusType***: Rettet feil ***id***
+
+- ***VedtakStatusType***: 
+
+  - Rettet skrivefeil => "Avventer nemndsbehandling"
+  
+  - Ny kode: verdi="4" tekst="Ikke aktuelt"
+  
+- ***OmsorgType***: Ny kode   
+
+## Bufdir_Barnevern_Henvisning_kodelister_v1.0.0
+
+- ***KanPlasseresINettverkType***: Ny kodeliste
+
+- ***ViderePlanType***: 
+
+  - Nytt navn ***PlanEtterTiltakType***
+  
+  - Fjernet kode med verdi=1
+  
+# Veiledningstekster:
+
+## HenvisningVeiledning_v0.10.0.schema.json
+
+- ingen endring
+  
+## Bufdir_barnevern_henvisning_veiledning_v0.10.0.json
+
+- Oppdatert iht. endringer i XSD-element
+
+    
 # Versjon 0.10.0 - 25.11.2024
 
 ## Bufdir_Generelt_v0.10.0.xsd

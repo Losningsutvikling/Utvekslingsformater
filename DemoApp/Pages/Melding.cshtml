@@ -1,6 +1,6 @@
 ﻿@page
 @using DemoApp.Models
-@using DemoApp.Models.Fagsystem
+@using DemoApp.Models.Simulator
 @using DemoApp.Models.ViewModels
 @using System.Xml.Schema
 @using System.Xml
@@ -10,37 +10,18 @@
 
     if (Model.SelectedProtocol != null)
     {
-        @await Html.PartialAsync("/Pages/Partial/MeldingsAksjon.cshtml", Model)
-        
         @await Html.PartialAsync("/Pages/Partial/Skjemavelger.cshtml", Model)
 
-        @if (!string.IsNullOrEmpty(Model.SelectedSkjemaElementName))
+        @if (Model.SelectedSchema != null)
         {
-            @await Html.PartialAsync("/Pages/Partial/Gruppe.cshtml", new PropertyRendererModel(null, Model, "", Model.SelectedXmlSchemaElement))
-            <input name="Send" type="submit" value="Send/Lagre" />
-            <input type="button" name="LagHTML" onclick="postForm('MeldingLagret?Lagre')" value="Lag HTML" />
-        }
-        @if (Model.TestTekster && (XsdUtils.Tekster.missing.Count > 0 || Model.GetNonUsed().Count > 0 || XsdUtils.Tekster.wrongName.Count > 0))
-        {
-        if (XsdUtils.Tekster.missing.Count > 0)
-        {
-            <br />
-            <textarea rows="20" cols="100">Manglende: 
-@string.Join("\n", XsdUtils.Tekster.missing.ToArray())</textarea>
-        }
-        @if (Model.TestTekster && Model.GetNonUsed().Count > 0)
-        {
-            <br />
-
-            <textarea rows="20" cols="100">Ubenyttet:
-@string.Join("\n", Model.GetNonUsed().ToArray())</textarea>
-        }
-        @if (Model.TestTekster && XsdUtils.Tekster.wrongName.Count > 0)
-        {
-            <br />
-            <textarea rows="20" cols="100">Feil navn:
-@string.Join("\n", XsdUtils.Tekster.wrongName.ToArray())</textarea>
-        }
+            var fileName = Model.SelectedSchema.TargetNamespace;
+            @await Html.PartialAsync("/Pages/Partial/Gruppe.cshtml", new PropertyRendererModel(null, Model, "", XsdUtils.GetRootElement(Model.SelectedSchema)))
+            <input type="button" name="Send" onclick="postForm('LagreMelding', 'sendt')" value="Send" />
+            <input type="button" name="Lagre" onclick="postForm('LagreMelding', 'lagret')" value="Lagre" />
+            <input type="hidden" name="actionParam" id="actionParam" value="">
+            <input type="hidden" name="XSD_FIL" id="XSD_FIL" value="@fileName">
+            <input type="hidden" name="@Konstanter.XmlFil" id="@Konstanter.XmlFil" value="@Model.ExistingFile">
+            <input type="hidden" name="Redigert">
         }
     }
 }
@@ -50,7 +31,7 @@
     @foreach (ControlEnabler enabler in Model.controlEnablers)
     {
         <script>
-            registerDependentControl('@enabler.EnabledControlId', '@enabler.ControlId', '@enabler.ControlValue');
+            registerDependentControl('@enabler.EnabledControlId', '@enabler.ControlId', '@enabler.ControlValue', @(enabler.IsInverted ? 1 : 0));
         </script>
     }
     <script>

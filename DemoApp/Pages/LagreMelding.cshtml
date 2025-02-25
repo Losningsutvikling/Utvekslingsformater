@@ -1,0 +1,45 @@
+﻿@page
+@using DemoApp.Models
+@using System.Xml.Schema
+@model DemoApp.Pages.LagreMeldingModel
+@{
+    <h3>Fil (@Model.Action)</h3>
+    <div>@Model.FileName</div>
+    @if (Model.Errors.Count > 0)
+    {
+        <b>Valideringsfeil: @Model.Errors.Count</b><br/>
+        <ul>
+            @foreach (var error in Model.Errors)
+            {
+                string elementName;
+                List<XmlSchemaElement> childElements = [];
+                if (error.Element == null)
+                {
+                    elementName = $"Skjema (full systemvalidering)";
+                }
+                else if (error.Element is XmlSchemaChoice choiceElement)
+                {
+                    elementName = $"En av feltene [{XsdUtils.GetChoiceElementNames(choiceElement, ", ")}]";
+                }
+                else
+                {
+                    elementName = XsdUtils.GetName(error.Element as XmlSchemaAnnotated);
+                    childElements = XsdUtils.GetXsdChildElements(error.Element as XmlSchemaAnnotated).Where(el => !XsdUtils.GetIsOptional(el)).ToList();
+                }
+                <li class="error_li"><div class="error_element">@elementName</div><i>@error.ErrorText</i>
+                @if (childElements.Count > 0)
+                {
+                    <ul>
+                    @foreach (var child in childElements)
+                    {
+                        <li class="error_li_child"><div class="error_element">@XsdUtils.GetName(child)</div><i>Mangler</i></li>
+                    }
+                    </ul>
+                }
+                </li>
+            }
+        </ul>
+    }
+
+
+}

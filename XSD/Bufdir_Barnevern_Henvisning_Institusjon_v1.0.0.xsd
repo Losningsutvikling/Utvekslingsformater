@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns="https://Bufdir.no/Barnevern/Henvisning/Institusjon_v1.0.0" 
+	targetNamespace="https://Bufdir.no/Barnevern/Henvisning/Institusjon_v1.0.0" 
+	xmlns:bv="https://Bufdir.no/Barnevern/Generelt_v1.0.0" 
+	xmlns:henv="https://Bufdir.no/Barnevern/Henvisning_v1.0.0" 
+	xmlns:mld="https://Bufdir.no/Melding_v1.0.0" 
+	xmlns:kodelister="Bufdir_Barnevern_Henvisning_kodelister_v1.0.0.xml" 
+	elementFormDefault="qualified" 
+	version="1.0.0">
+
+	<xs:import namespace="https://Bufdir.no/Barnevern/Henvisning_v1.0.0" schemaLocation="Bufdir_Barnevern_Henvisning_v1.0.0.xsd"/>
+	<xs:import namespace="https://Bufdir.no/Barnevern/Generelt_v1.0.0" schemaLocation="Bufdir_Barnevern_Generelt_v1.0.0.xsd"/>
+
+	<xs:complexType name="HenvisningInstitusjonVedtakType" id="BUF_653C0E1D-E638-4FC7-99D9-2861878D0099">
+		<xs:complexContent>
+			<xs:extension base="bv:VedtakOmsorgType">
+				<xs:sequence>
+					<xs:element name="Lovhjemmel" type="henv:HenvisningLovparagrafInstitusjonType" id="BUF_FB059DC3-BC4E-4BF1-AD17-81E193879DF0">
+						<xs:annotation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>	
+	</xs:complexType>
+
+
+	<xs:complexType name="HenvisningInstitusjonType" id="BUF_6C3034A4-4596-4E14-8F3F-4D4E39F22473">
+		<xs:complexContent>
+			<xs:extension base="henv:OmsorgstiltakHenvisningType">
+				<xs:sequence>
+					<xs:element name="ForespurtBistand" type="henv:HenvisningForespurtBistandInstitusjonType" id="BUF_C0A2B9A6-86CE-452B-8121-928091AE4736"/>
+					<xs:element name="Vedtak" type="HenvisningInstitusjonVedtakType" id="BUF_EF5E6649-D2E3-49EA-869B-A7D910BA1A3F"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>	
+	</xs:complexType>
+	
+<!-- Element-definisjon -->	
+
+	<xs:element name="Henvisning" type="HenvisningInstitusjonType" id="BUF_0A755807-50A8-46CE-B890-10979092C3CF">
+		<xs:annotation>
+			<xs:appinfo>
+				<MeldingsForbindelse>Ny|Oppdatering</MeldingsForbindelse>
+				<Aktor>1.Linje</Aktor>
+			</xs:appinfo>
+		</xs:annotation>
+	</xs:element>
+	
+</xs:schema>

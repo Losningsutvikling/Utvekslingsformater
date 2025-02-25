@@ -1,24 +1,26 @@
 ﻿@using DemoApp.Models
-@using DemoApp.Models.Fagsystem
+@using DemoApp.Models.Simulator
 @model DemoApp.Models.ViewModels.PropertyRendererModel
 @{
+
     var minLength = Model.GetMinLength();
     var maxLength = Model.GetMaxLength();
-    bool flerlinje = maxLength > 150;
+    bool flerlinje = maxLength > 255;
     string cssClassCaption = (flerlinje) ? "ledetekst_flerlinje" : "ledetekst";
     var prefilled = Model.Melding.GetPrefilledValueFor(Model.GetId());
     string value = (prefilled?.Value) ?? "";
     bool disable = (prefilled?.OpenToEdit == false);
+    bool addMarkerAnyway = false;
     if (!disable)
     {
-        Model.CheckAddEnabler();
+        addMarkerAnyway = Model.CheckAddEnabler();
     }
     string visibleIdAndName = @Model.GetId() + ((disable) ? "_disabled" : ""); // gi disablet input et navn som gjør at de ikke hentes ut
     string disableCssClass = (disable) ? "disabled_button" : "";
     string disableStr = (disable) ? "disabled" : "";
     if (Model.UseCaption)
     {
-        <div class="@cssClassCaption @disableCssClass">@Model.GetCaption(true)@Html.Raw(Utils.getMandatoryMarker(Model))</div>
+        <div class="@cssClassCaption @disableCssClass">@Model.GetCaption(true)@Html.Raw(Utils.getMandatoryMarker(Model, false, addMarkerAnyway))@Html.Raw(Utils.getMinLengthMarker(Model))</div>
     }
     if (disable)
     {
@@ -27,11 +29,11 @@
     if (flerlinje)
     {
         @await Html.PartialAsync($"/Pages/Partial/Beskrivelse.cshtml", @Model.GetDescription())
-        <textarea class="flerlinjetekst @disableCssClass" name="@visibleIdAndName" id="@visibleIdAndName" @disableStr >@value</textarea>
+        <textarea title="@Model.GetId()" class="flerlinjetekst @disableCssClass" name="@visibleIdAndName" id="@visibleIdAndName" @disableStr >@value</textarea>
     }
     else
     {
-        <input type="text" class="enlinjetekst @disableCssClass" name="@visibleIdAndName" id="@visibleIdAndName" value="@value" @disableStr />
+        <input title="@Model.GetId()" type="text" class="enlinjetekst @disableCssClass" name="@visibleIdAndName" id="@visibleIdAndName" value="@value" @disableStr />
         @await Html.PartialAsync($"/Pages/Partial/Beskrivelse.cshtml", @Model.GetDescription())
     }
 }

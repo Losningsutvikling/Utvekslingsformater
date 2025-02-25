@@ -1,10 +1,10 @@
 ﻿@using DemoApp.Models
-@using DemoApp.Models.Fagsystem
+@using DemoApp.Models.Simulator
 @model DemoApp.Models.ViewModels.PropertyRendererModel
 @{
-    var kodelisteUnfiltered = XsdUtils.GetKodeliste(Model.Prop) 
+    var kodeliste = XsdUtils.GetKodeliste(Model.Prop) 
         ?? throw new Exception($"Finner ikke kodeliste for type {XsdUtils.GetName(Model.Prop)}");
-    List<Kode> kodeliste = Model.Melding.FilterKodeliste(kodelisteUnfiltered);
+    List<Kode> koder = kodeliste.koder.ToList();
     var fixedValue = XsdUtils.GetFixedValue(Model.Prop);
     var prefilled = Model.Melding.GetPrefilledValueFor(Model.GetId());
     string value = fixedValue != "" ? fixedValue : ((prefilled?.Value) ?? "");
@@ -23,9 +23,9 @@
     {
         Model.CheckAddEnabler();
     }
-    <select class="dropdown" name="@visibleIdAndName" id="@visibleIdAndName" onchange="@changeHandler" @disableStr>
+    <select title="@Model.GetId()" class="dropdown" name="@visibleIdAndName" id="@visibleIdAndName" onchange="@changeHandler" @disableStr>
             <option selected value=""> -- Velg -- </option>
-            @foreach (var kode in kodeliste)
+            @foreach (var kode in koder)
             {
                     if (kode.verdi == value)
                     {

@@ -6,7 +6,7 @@ namespace DemoApp.Models
 {
     public class BlobShareReaderWriter
     {
-        public BlobServiceClient blobServiceClient { get; set; }
+        public BlobServiceClient? blobServiceClient { get; set; }
         public static BlobContainerClient GetBlobStorageClient(IConfiguration config)
         {
             BlobContainerClient blobClient;
@@ -18,7 +18,8 @@ namespace DemoApp.Models
             }
             /*Bruker System assigned managed identity med tildelte rettigheter 'Storage Blob Data Contributor'*/
             //Hvis det er aktuelt å bruke 'User assigned managed identities' brukes ["StorageAccountClientId"]:
-            string clientId = config["StorageAccountClientId"];
+            string clientId = config["StorageAccountClientId"]
+                ?? throw new Exception($"Mangler config-verdi for StorageAccountClientId");
             DefaultAzureCredential credential;
             if (!string.IsNullOrEmpty(clientId))
             {
@@ -46,7 +47,7 @@ namespace DemoApp.Models
             }
         }
 
-        public static async Task SaveFileContents(IConfiguration config, string fileName, string contents)
+        public static async Task SaveFileContentsToBlob(IConfiguration config, string fileName, string contents)
         {
             var client = GetBlobStorageClient(config);
             var blobClient = client.GetBlobClient(fileName);
@@ -59,7 +60,7 @@ namespace DemoApp.Models
             //var val = result.Value;
         }
 
-        public static List<string> GetAllFiles(IConfiguration config, string folder)
+        public static List<string> GetAllFilesFromBlob(IConfiguration config, string folder)
         {
             try
             {
@@ -79,7 +80,7 @@ namespace DemoApp.Models
         }
 
 
-        public static async Task<MemoryStream> GetFileStream(IConfiguration config, string name)
+        public static async Task<MemoryStream> GetFileStreamFromBlob(IConfiguration config, string name)
         {
             var client = GetBlobStorageClient(config);
             var blobClient = client.GetBlobClient(name);
@@ -90,6 +91,8 @@ namespace DemoApp.Models
             stream.Position = 0;
             return await Task.FromResult(stream);
         }
+
+
 
         public static async Task<string> GetFileContents(IConfiguration config, string name)
         {
@@ -103,6 +106,70 @@ namespace DemoApp.Models
             var reader = new StreamReader(stream);
             var content = await reader.ReadToEndAsync();
             return content;
+        }
+
+        public static async Task SaveFile(IConfiguration config, string fileName, string content)
+        {
+            if (string.IsNullOrEmpty(config["StorageAccountConnectString"]) && string.IsNullOrEmpty(config["StorageAccountClientId"]))
+            {
+                string configPath = config["TestFilePath"]
+                    ?? throw new Exception($"Mangler config-verdi for TestFilePath");
+                string path = Path.Combine(configPath, fileName).Replace("/", "\\");
+                File.WriteAllText(path, content);
+            }
+
+            else
+            {
+                await SaveFileContentsToBlob(config, fileName, content);
+            }
+
+        }
+
+        public static async Task SaveFile(IConfiguration config, string fileName, XmlDocument xmlDoc)
+        {
+            if (string.IsNullOrEmpty(config["StorageAccountConnectString"]) && string.IsNullOrEmpty(config["StorageAccountClientId"]))
+            {
+                string configPath = config["TestFilePath"]
+                    ?? throw new Exception($"Mangler config-verdi for TestFilePath");
+                string path = Path.Combine(configPath, fileName).Replace("/", "\\");
+                xmlDoc.Save(path);
+            }
+
+            else
+            {
+                string contents = xmlDoc.OuterXml;
+                await SaveFileContentsToBlob(config, fileName, contents);
+            }
+
+        }
+
+        public static List<string> GetAllFiles(IConfiguration config, string folder)
+        {
+            if (string.IsNullOrEmpty(config["StorageAccountConnectString"]) && string.IsNullOrEmpty(config["StorageAccountClientId"]))
+            {
+                string configPath = config["TestFilePath"]
+                    ?? throw new Exception($"Mangler config-verdi for TestFilePath");
+                List<string> files = new();
+                var dir = new DirectoryInfo(configPath).GetFiles(@"*.xml", SearchOption.AllDirectories);
+                foreach (FileInfo file in dir)
+                {
+                    files.Add(file.FullName);
+                }
+                //dir.AllFiles.Add(folder);
+                return files;
+            }
+
+            else
+            {
+                return GetAllFilesFromBlob(config, folder);
+            }
+
+        }
+
+        internal static void DeleteFile(IConfiguration config, string fileName)
+        {
+            BlobContainerClient blobClient = GetBlobStorageClient(config);
+            blobClient.DeleteBlob(fileName);
         }
     }
 }

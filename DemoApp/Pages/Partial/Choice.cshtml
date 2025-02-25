@@ -1,5 +1,5 @@
 ﻿@using DemoApp.Models
-@using DemoApp.Models.Fagsystem
+@using DemoApp.Models.Simulator
 @using System.Xml.Schema
 @using DemoApp.Models.ViewModels
 @model DemoApp.Models.ViewModels.PropertyRendererModel
@@ -12,13 +12,15 @@
     }
     var choiceElements = rawElements.Cast<XmlSchemaElement>();
     string selectedValue = "";
-    PrefilledValue prefilled = null;
+    PrefilledValue? prefilled = null;
     foreach (var elem in choiceElements)
     {
+        if (elem == null)
+            throw new Exception($"'elem' == null'");
         var possiblePrefilled = Model.Melding.GetPrefilledValueFor($"{Model.GetId()}{elem.Name}");
         if (possiblePrefilled != null && possiblePrefilled.Value != "") // if chosen
         {
-            selectedValue = elem.Name;
+            selectedValue = elem.Name ?? "?";
             prefilled = possiblePrefilled;
         }
 
@@ -31,27 +33,36 @@
     int selectedIndex = -1;
     int index = 0;
     <div>
-        <span class="ledetekst @disableCssClass">@Model.GetCaption(true)@Html.Raw(Utils.getMandatoryMarker(Model))</span>
+        <span class="ledetekst @disableCssClass">@Model.GetCaption(true)</span>
         @await Html.PartialAsync($"/Pages/Partial/Beskrivelse.cshtml", @Model.GetDescription())
         @{
             Model.CheckAddEnabler();
             bool first = true;
+            string chosenValue = "";
             <div>
-            @foreach (var choiceElement in choiceElements)
-            {
-                string id = $"{Model.GetId()}_CHOICE_{choiceElement.Name}";
+                @foreach (var choiceElement in choiceElements)
+                {
+                    if (choiceElement == null)
+                        throw new Exception($"'choiceElement' == null'");
+                    string id = $"{Model.GetId()}_CHOICE_{choiceElement.Name}";
                     bool isChecked = (selectedValue != "") ? choiceElement.Name == selectedValue : first;
                     if (isChecked)
                     {
                         selectedIndex = index;
+
+                        chosenValue = choiceElement.Name ?? "??";
                     }
                     string checkedAttr = (isChecked) ? "checked" : "";
                     first = false;
 
-                    <input type="radio" class="dropdown" name="@Model.GetId()_CHOICE" id="@id" value="@choiceElement.Name" onchange="chooseChoiceElement('@id','choice_container')" @checkedAttr @disableStr />
-                <label class="checkbox_tekst @disableCssClass" for="@id">@XsdUtils.GetCaption(choiceElement, true)</label>
+                    <input type="radio" class="dropdown" title="@Model.GetId()" name="@Model.GetNameChoice()_CHOICE" id="@id" value="@choiceElement.Name" onchange="chooseChoiceElement('@id','choice_container')" @checkedAttr @disableStr />
+                    <label class="checkbox_tekst @disableCssClass" title="@Model.GetId()" for="@id">@XsdUtils.GetCaption(choiceElement, true)@Html.Raw(Utils.getMandatoryMarker(Model, !isChecked))</label>
                 index++;
             }
+                @if (disable)
+                {
+                    <input type="hidden" name="@Model.GetNameChoice()_CHOICE" value="@chosenValue" />
+                }
 
                 @{
                     index = 0;
@@ -62,9 +73,8 @@
                         string displayClass = (index == selectedIndex) ? "" : "hidden";
                         index++;
                         <div class="choice_container @displayClass">
-
-                        @await Html.PartialAsync($"/Pages/Partial/{controlName}.cshtml", elementModel)
-                    </div>
+                            @await Html.PartialAsync($"/Pages/Partial/{controlName}.cshtml", elementModel)
+                        </div>
                     }
             }
             </div>

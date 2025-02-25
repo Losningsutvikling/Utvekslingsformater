@@ -1,0 +1,14 @@
+﻿@model DemoApp.Pages.Partial.MeldingMenyModel
+@{
+    <div class="dropdown">
+        <button class="dropbtn">...</button>
+        <div class="dropdown-content">
+            @foreach (var kvp in Model.actions)
+            {
+                <div onclick="@kvp.Value">@kvp.Key</div>
+            }
+        </div>
+    </div>
+
+
+}

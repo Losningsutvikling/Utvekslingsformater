@@ -1,8 +1,9 @@
-﻿@using DemoApp.Models.Fagsystem
+﻿@using DemoApp.Models.Simulator
+@using DemoApp.Models
 @model DemoApp.Pages.Partial.BarnSelectorModel
 @{
     <span class="barn_selector_tittel">Velg barn: </span>
-    <select name="barn_id" onchange="this.form.submit()">
+    <select name="@Konstanter.SelectedSak" onchange="this.form.submit()">
         <option value=""></option>
         @foreach (Barn barn in Model.BarnListe!)
         {

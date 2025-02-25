@@ -4,7 +4,7 @@
     var meldingsprotokoller = XsdUtils.MeldingsprotokollVersjoner.OrderByDescending(mp => mp.Version);
     // Selected eller bare 1 tilgjengelig
     string? selectedProtocol = Model.SelectedProtocol?.Version ?? "";
-    bool disable = !string.IsNullOrEmpty(selectedProtocol);
+    bool disable = !string.IsNullOrEmpty(selectedProtocol) || Model.SelectedProtocolDisabled;
     string disableCssClass = (disable) ? "disabled_button" : "";
     string disableStr = (disable) ? "disabled" : "";
     <div>

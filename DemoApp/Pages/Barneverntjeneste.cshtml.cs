@@ -1,4 +1,4 @@
-using DemoApp.Models.Fagsystem;
+using DemoApp.Models.Simulator;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Xml.Schema;
 

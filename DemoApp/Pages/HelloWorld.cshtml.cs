@@ -6,11 +6,12 @@ namespace DemoApp.Pages
     public class HelloWorldModel(IConfiguration config) : PageModel
     {
         public string message { get; set; } = "";
-        public void OnGet()
+        public async void OnGet()
         {
             try
             {
-                BlobShareReaderWriter.SaveFileContents(config, "test.file", "Hello, world!");
+                Task result = BlobShareReaderWriter.SaveFileContentsToBlob(config, "test.file", "Hello, world!");
+                await result;
                 message = "OK";
             }
             catch (Exception e)

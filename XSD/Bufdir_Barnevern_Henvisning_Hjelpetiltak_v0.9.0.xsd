@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns="https://Bufdir.no/Barnevern/Henvisning/Hjelpetiltak_v0.9.0" 
+	targetNamespace="https://Bufdir.no/Barnevern/Henvisning/Hjelpetiltak_v0.9.0" 
+	xmlns:bv="https://Bufdir.no/Barnevern/Generelt_v1.0.0" 
+	xmlns:henv="https://Bufdir.no/Barnevern/Henvisning_v1.0.0" 
+	xmlns:mld="https://Bufdir.no/Melding_v1.0.0" 
+	xmlns:kodelister="Bufdir_Barnevern_Henvisning_kodelister_v1.0.0.xml" 
+	elementFormDefault="qualified" 
+	version="0.9.0">
+
+	<xs:import namespace="https://Bufdir.no/Barnevern/Henvisning_v1.0.0" schemaLocation="Bufdir_Barnevern_Henvisning_v1.0.0.xsd"/>
+	<xs:import namespace="https://Bufdir.no/Barnevern/Generelt_v1.0.0" schemaLocation="Bufdir_Barnevern_Generelt_v1.0.0.xsd"/>
+
+	<xs:complexType name="HenvisningHjelpetiltakVedtakType" id="BUF_6E4298F8-CF9B-4F80-B191-55998EA0630C">
+		<xs:complexContent>
+			<xs:extension base="bv:VedtakIkkeOmsorgType">
+				<xs:sequence>
+					<xs:element name="Lovhjemmel" type="henv:HenvisningLovparagrafHjelpetiltakType" id="BUF_FD18503F-5EA6-4440-91B4-3CAD05E23604">
+						<xs:annotation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>	
+	</xs:complexType>
+
+
+	<xs:complexType name="HenvisningHjelpetiltakType" id="BUF_96CC681F-D4BE-4B8E-948E-750585C22787">
+		<xs:complexContent>
+			<xs:extension base="henv:HenvisningMeldingType">
+				<xs:sequence>
+					<xs:element name="Klient" type="bv:KlientBarnevernType" id="BUF_C3A4819F-AE5C-4576-BCD6-E0BA34C3B93B"/>
+					<xs:element name="ForespurtBistand" type="henv:HenvisningForespurtBistandHjelpetiltakType" id="BUF_37219AF9-C0A7-4680-9B3D-C6C3E1A1F0B3"/>
+					<xs:element name="Vedtak" type="HenvisningHjelpetiltakVedtakType" id="BUF_67F437FA-D61A-4FAA-BA1C-A703F620AED9"/>
+					<xs:element name="YtterligereBistand" type="henv:YtterligereBistandType" id="BUF_B2DF73D3-AEF7-40C9-9385-6A5D97A535A9" />
+					<xs:element name="BarnetsBehovOgSituasjon" type="bv:KunnskapsmodellBarnetsSituasjonOgBehovType" id="BUF_CC9A7CDF-B998-415D-995A-6275CBCCA465" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>	
+	</xs:complexType>
+	
+<!-- Element-definisjon -->	
+
+	<xs:element name="Henvisning" type="HenvisningHjelpetiltakType" id="BUF_98866B9A-00BA-4502-912A-E6A0517011D1">
+		<xs:annotation>
+			<xs:appinfo>
+				<MeldingsForbindelse>Ny|Oppdatering</MeldingsForbindelse>
+				<Aktor>1.Linje</Aktor>
+			</xs:appinfo>
+		</xs:annotation>
+	</xs:element>
+	
+</xs:schema>

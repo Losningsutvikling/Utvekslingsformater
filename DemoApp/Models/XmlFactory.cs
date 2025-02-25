@@ -1,4 +1,4 @@
-﻿using DemoApp.Models.Fagsystem;
+﻿using DemoApp.Models.Simulator;
 using System.Xml;
 using System.Xml.Schema;
 
@@ -6,17 +6,57 @@ namespace DemoApp.Models
 {
     public static class XmlFactory
     {
+        /// <summary>
+        /// {0} = Organisasjonsnummer
+        /// {1} = lokasjon/status => 'sendt', 'mottatt', 'lagret'
+        /// {2} = Filnavn (se neste konstant)        
+        /// /// </summary>
+        public static string MELDING_PATH = "{0}/{1}/{2}";
 
-        public static bool CreateXml(IConfiguration config, IWebHostEnvironment env, Dictionary<string, string> qp, string fileName)
+
+        /// <summary>
+        /// {0} = meldings-id
+        /// {1} = Dato/tid 
+        /// {2} = meldingstype (nmsp - filnavndel, f.eks.: 'Bufdir_Barnevern_Henvisning_Familierad_v0.9.0')
+        /// </summary>
+        public static readonly string MELDING_FILNAVN_PATTERN = "[{0}] {1} ({2}).xml";
+
+        public static readonly string MELDING_FILNAVN_DATETIME_FORMAT = "yyyy-MM-dd_HH-mm-ss";
+
+        public static string GetMeldingPath(string orgNummer, string subFolder)
+        {
+            return $"{orgNummer}/{subFolder}/";
+        }
+
+        public static string GenerateFileName(string nmsp, Dictionary<string, string> QueryParams, string subFolder, DateTime dateTime)
+        {
+            string orgNr = Utils.GetRequestValuePartialKey(QueryParams, Konstanter.OrgnrPartialPath);
+            string fileNamePart = string.Format(XmlFactory.MELDING_FILNAVN_PATTERN,
+                        Utils.GetRequestValuePartialKey(QueryParams, Konstanter.MeldingsIdPartialPath),
+                        dateTime.ToString(XmlFactory.MELDING_FILNAVN_DATETIME_FORMAT),
+                        Utils.GetRequestValue(QueryParams, Konstanter.SelectedSkjema).Replace("https://", "").Replace("/", "."));
+
+            string fileName = string.Format(XmlFactory.MELDING_PATH, orgNr, subFolder, fileNamePart);
+            return fileName;
+        }
+
+        /// <summary>
+        /// Returnerer lagret filnavn (kan avvike ved valideringsfeil)
+        /// </summary>
+        /// <param name="fileName">Hvis filnavn inneholder '/sendt/' blir dette erstattet med '/lagret' dersom det er valideringsfeil</param>
+        /// <param name="errors">Hvis denne sendes med, gjøres validering</param>
+
+        public static string WriteXml(IConfiguration config, IWebHostEnvironment env, bool useNmsp, Dictionary<string, string> values, string fileName, List<XmlValidationError>? errors = null)
         {
             Dictionary<string, string> ns = [];
 
-            string selectedProtocolName = Utils.GetRequestValue(qp, Konstanter.SelectedProtocol);
-            var meldingsProtokoll = XsdUtils.MeldingsprotokollVersjoner.FirstOrDefault(v => v.Version == selectedProtocolName);
-            var skjemaRotElementName = Utils.GetRequestValue(qp, Konstanter.SelectedSkjema);
-            var schemaElement = XsdUtils.FindByXPath(meldingsProtokoll!.TargetNamespace!, skjemaRotElementName);
-            var xsdSchema = XsdUtils.GetSchema(schemaElement);
-
+            string selectedProtocolName = Utils.GetRequestValue(values, Konstanter.SelectedProtocol);
+            //            var meldingsProtokoll = XsdUtils.MeldingsprotokollVersjoner.FirstOrDefault(v => v.Version == selectedProtocolName);
+            var schemaNmsp = Utils.GetRequestValue(values, Konstanter.SelectedSkjema);
+            var xsdSchema = XsdUtils.SchemaFromTargetNmsp(schemaNmsp)
+                ?? throw new Exception($"Finner ikke XSD med nmsp = '{schemaNmsp}'");
+            var schemaElement = XsdUtils.GetRootElement(xsdSchema)
+                ?? throw new Exception($"Ingen rotelement i {schemaNmsp}");
 
             string configPath = XsdUtils.GetDefinitionsDirectory(config);
             string DefsPath = (configPath.StartsWith("..")) ? configPath : Path.Combine(env.ContentRootPath, configPath);
@@ -31,7 +71,7 @@ namespace DemoApp.Models
                 XmlSchema schema = XmlSchema.Read(reader, null)
                         ?? throw new Exception($"Kan ikke laste {file.Name}");
                 schemaSet.Add(schema);
-                if (schemaElement.SourceUri.Contains(file.Name))
+                if (schemaElement!.SourceUri!.Contains(file.Name) == true)
                 {
                     schemaLoc = file.Name;
                 };
@@ -39,32 +79,44 @@ namespace DemoApp.Models
             schemaSet.Compile();
 
             XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.Schemas.Add(schemaSet);
+            if (useNmsp)
+                xmlDoc.Schemas.Add(schemaSet);
             XmlNode docNode = xmlDoc.CreateXmlDeclaration("1.0", "UTF-8", null);
             xmlDoc.AppendChild(docNode);
 
             Dictionary<string, string> rootElementAttributes = [];
 
-            foreach (XmlSchema sch in schemaSet.Schemas())
+            if (useNmsp)
             {
-                foreach (var nms2 in sch.Namespaces.ToArray().ToList())
+                foreach (XmlSchema sch in schemaSet.Schemas())
                 {
-                    if (nms2.Name != "" && nms2.Namespace.StartsWith("https://Bufdir.no") && !ns.ContainsKey(nms2.Namespace))
+                    foreach (var nms in sch.Namespaces.ToArray().ToList())
                     {
-                        ns.Add(nms2.Namespace, nms2.Name);
-                        rootElementAttributes["xmlns:" + nms2.Name] = nms2.Namespace;
+                        if (nms.Name != "" && nms.Namespace.StartsWith("https://Bufdir.no") && !ns.ContainsKey(nms.Namespace))
+                        {
+                            ns.Add(nms.Namespace, nms.Name);
+                            rootElementAttributes["xmlns:" + nms.Name] = nms.Namespace;
+                        }
                     }
                 }
             }
 
-            ns.Add(schemaElement.QualifiedName.Namespace, "melding");
+            if (useNmsp)
+            {
+                ns.Add(schemaElement.QualifiedName.Namespace, "melding");
+            }
 
-            rootElementAttributes["xmlns"] = schemaElement.QualifiedName.Namespace;
+            if (useNmsp)
+            {
+                rootElementAttributes["xmlns"] = schemaElement.QualifiedName.Namespace;
+            }
+
             rootElementAttributes["xmlns:xsi"] = "http://www.w3.org/2001/XMLSchema-instance";
 
-            WriteElement(xmlDoc, null, "", schemaElement, ns, qp);
+            WriteElement(useNmsp, xmlDoc, null, "", schemaElement, ns, schemaElement.QualifiedName.Namespace, values);
 
-            var rootDocumentElement = xmlDoc.ChildNodes[1] as XmlElement;
+            var rootDocumentElement = xmlDoc.ChildNodes[1] as XmlElement
+                ?? throw new Exception($"Rotelement '{schemaElement.Name}' ikke tilstede i dokument av typen '{schemaElement.QualifiedName.Namespace}'");
 
 
             foreach (var attr in rootElementAttributes)
@@ -75,40 +127,55 @@ namespace DemoApp.Models
             // schemalocation må legges til etter rotelement har xsi namespace for kunne få xsi prefix
             rootDocumentElement.SetAttribute("schemaLocation", "http://www.w3.org/2001/XMLSchema-instance", xsdSchema.TargetNamespace + " " + schemaLoc);
 
-            BlobShareReaderWriter.SaveFile(config, fileName, xmlDoc);
-
-            ValidateXml(fileName, config, env);
-
-            return true;
+            if (errors != null)
+                XmlValidator.ValidateXml(xmlDoc, xsdSchema!, ns, errors);
+            string xmlContent = xmlDoc.OuterXml;
+            if (errors?.Count == 0)
+            {
+                bool valid = XmlValidator.ValidateXmlBuiltIn(xmlDoc, out string error);
+                if (!valid)
+                    errors.Add(new(null, XmlValidationErrorType.StandardXmlValidationError, error));
+            }
+            if (errors != null && errors.Count > 0)
+                fileName = fileName.Replace("/sendt/", "/lagret/");
+            var task = BlobShareReaderWriter.SaveFile(config, fileName, xmlContent);
+            task.Wait();
+            return fileName;
         }
 
 
-        public static bool WriteElement(XmlDocument xmlDoc, XmlElement? parent, string xmlPath, XmlSchemaAnnotated elementType,
-                                        Dictionary<string, string> ns, Dictionary<string, string> qp, int index = -1)
+        public static bool WriteElement(bool useNmsp, XmlDocument xmlDoc, XmlElement? parent, string xmlPath, XmlSchemaAnnotated elementType,
+                                        Dictionary<string, string> ns, string defaultNmsp, Dictionary<string, string> values, string index = "")
         {
             bool result = false;
-            if (XsdUtils.GetIsRepeating(elementType) && index < 0)
+            if (XsdUtils.GetIsRepeating(elementType) && index == "")
             {
-                for (int i = 1; i < 50; i++)
+                string[] indexValues = GetIndexValues(values, xmlPath, elementType);
+                foreach (var indexValue in indexValues)
                 {
-                    if (WriteElement(xmlDoc, parent, xmlPath, elementType, ns, qp, i))
+                    if (WriteElement(useNmsp, xmlDoc, parent, xmlPath, elementType, ns, defaultNmsp, values, indexValue))
+                    {
                         result = true;
+                    }
                 }
             }
             else
             {
-                string indexPart = (index > 0) ? $":{index}" : "";
-                var newPath = (xmlPath.TrimEnd('.') + "." + XsdUtils.GetName(elementType)).TrimStart('.') + indexPart;
+                string indexPart = (index == "") ? "" : $":{index}";
+                var newPath = $"{xmlPath.Trim('.')}.{XsdUtils.GetName(elementType).TrimStart('.')}{indexPart}";
                 if (elementType is XmlSchemaChoice choiceElement)
                 {
-                    if (qp.TryGetValue(xmlPath + "._CHOICE", out string chosen))
+                    string elementName = $"{xmlPath.Trim('.')}.{XsdUtils.GetChoiceElementNames(choiceElement)}_CHOICE";
+                    if (values.TryGetValue(elementName, out string? chosen))
                     {
                         foreach (XmlSchemaElement item in choiceElement.Items)
                         {
                             if (item.Name == chosen)
                             {
-                                if (WriteElement(xmlDoc, parent, newPath, item, ns, qp))
+                                if (WriteElement(useNmsp, xmlDoc, parent, newPath, item, ns, defaultNmsp, values))
+                                {
                                     result = true;
+                                }
                             }
                         }
                     }
@@ -116,43 +183,42 @@ namespace DemoApp.Models
                 else
                 {
                     string nmsp = XsdUtils.GetQualifiedNamespace(elementType);
-                    var elementPrefix = ns[nmsp];
-                    XmlElement element = xmlDoc.CreateElement(elementPrefix, XsdUtils.GetName(elementType), nmsp);
+                    var elementPrefix = (useNmsp) ? ns[nmsp] : "";
+                    var elementNmsp = (useNmsp) ? nmsp : defaultNmsp;
+                    XmlElement element = xmlDoc.CreateElement(elementPrefix, XsdUtils.GetName(elementType), elementNmsp);
 
                     if (XsdUtils.GetComplexType(elementType) != null)
                     {
                         var complexType = XsdUtils.GetComplexType(elementType);
                         foreach (var child in XsdUtils.GetXsdChildren(complexType!))
                         {
-                            if (WriteElement(xmlDoc, element, newPath, child, ns, qp))
+                            if (WriteElement(useNmsp, xmlDoc, element, newPath, child, ns, defaultNmsp, values))
+                            {
                                 result = true;
+                            }
                         }
                     }
                     else // is SimpleType
                     {
                         string input;
 
-                        if (XsdUtils.GetControlNameForProperty(elementType) == "Checkbox" && qp.ContainsKey($"{newPath}_FALSE")) // && !qp.ContainsKey(newPath)
+                        if (XsdUtils.GetControlNameForProperty(elementType) == "Checkbox" && values.ContainsKey($"{newPath}_FALSE") && !(values.ContainsKey(newPath)))
                         {
                             element.InnerText = "false";
                             result = true;
                         }
 
-                        else if (qp.ContainsKey(newPath))
+                        else if (values.ContainsKey(newPath))
                         {
-                            input = qp[newPath];
+                            input = values[newPath];
                             if (input != "")
                             {
                                 element.InnerText = input == "on" ? "true" : input;
-                                qp.Remove(newPath);
                                 result = true;
                             }
-
                         }
-
                     }
                     if (result)
-
                     {
                         if (parent != null)
                             parent.AppendChild(element);
@@ -164,135 +230,174 @@ namespace DemoApp.Models
             return result;
         }
 
-        public static void ValidateXml(string xmlDoc, IConfiguration config, IWebHostEnvironment env)
+        private static string[] GetIndexValues(Dictionary<string, string> values, string xmlPath, XmlSchemaAnnotated elementType)
         {
-
-            string configPath = XsdUtils.GetDefinitionsDirectory(config);
-            string DefsPath = (configPath.StartsWith("..")) ? configPath : Path.Combine(env.ContentRootPath, configPath);
-            var files = new DirectoryInfo(DefsPath).GetFiles(@"*.xsd", SearchOption.TopDirectoryOnly/*AllDirectories*/);
-            XmlSchemaSet schemaSet = new();
-            foreach (var file in files)
+            List<string> result = [];
+            string elementPath = $"{xmlPath}.{XsdUtils.GetName(elementType)}:";
+            var selection = values.Where(kvp => kvp.Key.StartsWith(elementPath));
+            foreach (var kvp in selection)
             {
-                using var reader = XmlReader.Create(file.FullName);
-                XmlSchema schema = XmlSchema.Read(reader, null)
-                        ?? throw new Exception($"Kan ikke laste {file.Name}");
-                schemaSet.Add(schema);
+                string key = kvp.Key.Replace(elementPath, "");
+                int endIndex = key.IndexOf(".");
+                key = (endIndex > 0) ? key.Substring(0, endIndex) : key;
+                if (key != "" && !result.Contains(key))
+                    result.Add(key);
             }
-            schemaSet.Compile();
-
-            XmlReaderSettings settings = new XmlReaderSettings();
-            settings.Schemas.Add(schemaSet);
-            settings.Schemas.Compile();
-            settings.ValidationType = ValidationType.Schema;
-            settings.ValidationEventHandler += new ValidationEventHandler(ErrorHandler);
-
-            var xmlfile = BlobShareReaderWriter.GetFileStreamFromBlob(config, xmlDoc).Result;
-
-            Console.WriteLine("validation result of file: ");
-            XmlReader xReader = XmlReader.Create(xmlfile, settings);
-            while (xReader.Read()) { }
+            return result.ToArray();
         }
 
-        public static void ErrorHandler(object sender, ValidationEventArgs args)
+        public static void ReadFilesMeldingshode(IConfiguration config, string folder, List<FilInfo> files, string filter = "")
         {
-            if (args.Severity == XmlSeverityType.Warning)
+            var fileNames = BlobShareReaderWriter.GetAllFiles(config, folder); // alle lagrede filer
+            var filterParts = filter.Split("=");
+
+            foreach (var file in fileNames)
             {
-                Console.Write("WARNING: ");
-                Console.WriteLine(args.Message);
-            }
-            else if (args.Severity == XmlSeverityType.Error)
-            {
-                Console.Write("ERROR: ");
-                Console.WriteLine(args.Message);
+                var fileInfo = ReadFileMeldingshode(config, file);
+                bool addThisFile = (filterParts.Length == 2) ? fileInfo.Meldingshode.GetValue(filterParts[0]) == filterParts[1] : true;
+                if (addThisFile)
+                    files.Add(fileInfo);
             }
         }
 
-        public static Dictionary<string, Dictionary<string, string>> ReadXMlElement(IConfiguration config, string folder)
+        private static void ReadMeldingshodeElement(XmlReader reader, object current, string localName)
         {
-            var fileInfoList = new Dictionary<string, Dictionary<string, string>>(); // dict av dict med filnavn som key
-            var files = BlobShareReaderWriter.GetAllFiles(config, folder);
-
-            foreach (var file in files)
+            while (reader.Read())
             {
-                var fileInfo = new Dictionary<string, string>();
-                XmlReader reader;
-
-                if (string.IsNullOrEmpty(config["StorageAccountConnectString"]) && string.IsNullOrEmpty(config["StorageAccountClientId"]))
+                if (reader.LocalName == localName) // elementets slutt-tag
                 {
-                    reader = XmlReader.Create(file);
-
-                }
-                else
-                {
-                    var xmlfile = BlobShareReaderWriter.GetFileStreamFromBlob(config, file).Result;
-                    reader = XmlReader.Create(xmlfile);
+                    break;
                 }
 
-                while (reader.Read())
+                var propInfo = current.GetType().GetProperty(reader.LocalName);
+                if (propInfo != null)
                 {
-                    if (reader.IsStartElement("mld:Meldingshode"))
+                    if (!propInfo.PropertyType.FullName!.StartsWith("System."))
                     {
-                        while (reader.Read())
+                        var childObj = propInfo.GetValue(current);
+                        if (childObj == null)
                         {
-                            if (reader.Name == "mld:Meldingshode")
-                            {
-                                break;
-                            }
-                            var text = reader.ReadString();
-                            if (!reader.IsStartElement() && text != "")
-                            {
-                                fileInfo[reader.Name] = text;
-                            }
+                            Type objPropType = (propInfo.PropertyType.GenericTypeArguments.Length == 0) ? propInfo.PropertyType : propInfo.PropertyType.GenericTypeArguments[0];
+                            childObj = Activator.CreateInstance(objPropType)!;
+                            propInfo.SetValue(current, childObj);
                         }
-                        break;
+                        ReadMeldingshodeElement(reader, childObj, reader.LocalName);
+                    }
+                    else
+                    {
+                        var text = reader.ReadString();
+                        if (text != "")
+                        {
+                            if (propInfo.PropertyType == typeof(DateTime) || (propInfo.PropertyType.GenericTypeArguments.Length == 1 && propInfo.PropertyType.GenericTypeArguments[0] == typeof(DateTime)))
+                            {
+                                if (DateTime.TryParseExact(text.Trim(), XsdUtils.DateTimeFormatXML, null, System.Globalization.DateTimeStyles.None, out DateTime dtResult))
+                                    propInfo.SetValue(current, dtResult);
+                            }
+                            else
+                                propInfo.SetValue(current, text);
+                        }
                     }
                 }
-                fileInfoList.Add(file, fileInfo);
             }
-            return fileInfoList;
+
         }
 
-
-
-        public static List<PrefilledValue> ReadXMLFile(Dictionary<string, string> qp, IConfiguration config, string filename, string root, bool editMode)
+        public static FilInfo ReadFileMeldingshode(IConfiguration config, string fileName)
         {
+            FilInfo result = new() { Filnavn = fileName };
+            XmlReader reader;
 
-            string selectedProtocolName = Utils.GetRequestValue(qp, Konstanter.SelectedProtocol);
-            var meldingsProtokoll = XsdUtils.MeldingsprotokollVersjoner.FirstOrDefault(v => v.Version == selectedProtocolName);
-            var skjemaRotElementName = Utils.GetRequestValue(qp, Konstanter.SelectedSkjema);
-            var schemaElement = XsdUtils.FindByXPath(meldingsProtokoll!.TargetNamespace!, skjemaRotElementName);
-            var xsdSchema = XsdUtils.GetSchema(schemaElement);
+            if (string.IsNullOrEmpty(config["StorageAccountConnectString"]) && string.IsNullOrEmpty(config["StorageAccountClientId"])) // hvis ingen storage account emulator, burk lokal filsystem
+            {
+                reader = XmlReader.Create(fileName);
+            }
+            else
+            {
+                var xmlfile = BlobShareReaderWriter.GetFileStreamFromBlob(config, fileName).Result;
+                reader = XmlReader.Create(xmlfile);
+            }
 
+            while (reader.Read())
+            {
+                if (reader.IsStartElement("mld:Meldingshode") || reader.IsStartElement("Meldingshode"))
+                {
+                    ReadMeldingshodeElement(reader, result.Meldingshode, "Meldingshode");
+                    break;
+                }
+            }
+            return result;
+        }
+
+        public static string GetDateTimePartFromFilename(string fileName)
+        {
+            var parts = fileName.Split(' ');
+            if (parts.Length == 3)
+            {
+                string strDate = parts[1];
+                if (DateTime.TryParseExact(strDate.Trim(), MELDING_FILNAVN_DATETIME_FORMAT, null, System.Globalization.DateTimeStyles.None, out DateTime result))
+                    return result.ToString(MELDING_FILNAVN_DATETIME_FORMAT);
+            }
+            return "";
+        }
+
+        public static string GetStatusFromFile(FilInfo fileRec)
+        {
+            if (fileRec.Filnavn.Contains("/lagret/"))
+                return "Lagret";
+            if (fileRec.Filnavn.Contains("/sendt/"))
+                return "Sendt";
+            if (fileRec.Filnavn.Contains("/mottatt/"))
+                return "Mottatt";
+            return "???";
+        }
+
+        public static List<PrefilledValue> ReadXMLFile(XmlSchema schema, IConfiguration config, string filename, bool editMode)
+        {
+            var schemaElement = XsdUtils.GetRootElement(schema)
+                ?? throw new Exception($"Schema med nmsp '{schema?.TargetNamespace ?? "<ukjent>"}' ikke funnet");
 
             List<PrefilledValue> result = [];
             var xmlfile = BlobShareReaderWriter.GetFileStreamFromBlob(config, filename).Result;
             var doc = new XmlDocument();
             doc.Load(xmlfile);
-            var rootelem = doc.ChildNodes[1] as XmlElement;
             ReadElement(doc, null, "", schemaElement, result);
-
             return result;
         }
-
-        public static List<XmlElement> GetChildrenOfName(XmlElement element, string name)
+        public static void ReadXMLFile(XmlSchema schema, IConfiguration config, string filename, ref Dictionary<string, string> queryParams)
         {
-            List<XmlElement> result = [];
-            foreach (XmlElement child in element.ChildNodes)
+            var fileContents = ReadXMLFile(schema, config, filename, false);
+            foreach (var rec in fileContents)
             {
-                if (child.LocalName == name)
-                    result.Add(child);
+                if (!queryParams.ContainsKey(rec.Xpath))
+                    queryParams.Add(rec.Xpath, rec.Value);
+            }
+        }
+
+
+        public static List<XmlElement> GetChildrenOfName(XmlElement? element, string name)
+        {
+            // 
+            List<XmlElement> result = [];
+            if (element != null)
+            {
+                foreach (XmlElement child in element.ChildNodes)
+                {
+                    if (child.LocalName == name)
+                        result.Add(child);
+                }
             }
             return result;
         }
 
-        public static void ReadElement(XmlDocument xmlDoc, XmlElement parent, string xmlPath, XmlSchemaAnnotated elementType, List<PrefilledValue> values, int index = -1)
+        public static void ReadElement(XmlDocument xmlDoc, XmlElement? parent, string xmlPath, XmlSchemaAnnotated elementType, List<PrefilledValue> values, int index = -1)
         {
 
-            if (XsdUtils.GetIsRepeating(elementType) && index < 0)
+            if (XsdUtils.GetIsRepeating(elementType) && index < 0) // repeterende elementer
             {
                 string nmsp = XsdUtils.GetQualifiedNamespace(elementType);
-                string elementname = XsdUtils.GetName(elementType);
-                var elements = GetChildrenOfName(parent, elementname);
+                string elementName = XsdUtils.GetName(elementType);
+                var elements = GetChildrenOfName(parent, elementName);
+
                 for (int i = 0; i < elements.Count; i++)
                 {
                     ReadElement(xmlDoc, parent, xmlPath, elementType, values, i + 1);
@@ -301,41 +406,54 @@ namespace DemoApp.Models
 
             else
             {
-                string indexPart = (index > 0) ? $":{index}" : "";
+                string indexPart = "";
+                if (index > 0)
+                {
+                    if (XsdUtils.HasUniqueConstraint(elementType))
+                    {
+                        var enumType = XsdUtils.GetIterateTypeDefinition(elementType)
+                            ?? throw new Exception($"Finner ikke enumType '{XsdUtils.GetName(elementType)}'");
+
+                        var kodeliste = XsdUtils.GetKodeliste(enumType)!;
+                        if (kodeliste?.koder?.Length < index)
+                            throw new Exception($"Finner ikke kode i kodeliste for enumType '{enumType.Name}'");
+                        indexPart = $":{kodeliste!.koder![index - 1].verdi!.Replace(".", "-")}";
+                    }
+                    else
+                        indexPart = $":{index}";
+                }
                 var newPath = (xmlPath.TrimEnd('.') + "." + XsdUtils.GetName(elementType)).TrimStart('.') + indexPart;
                 if (elementType is XmlSchemaChoice choiceElement)
                 {
                     foreach (XmlSchemaElement item in choiceElement.Items)
                     {
                         ReadElement(xmlDoc, parent, xmlPath, item, values);
-
                     }
-
                 }
+
                 else
                 {
                     string nmsp = XsdUtils.GetQualifiedNamespace(elementType);
                     string elementname = XsdUtils.GetName(elementType);
-                    XmlElement element;
+                    XmlElement? element;
 
-                    if (parent == null)
+                    if (parent == null) // rotelement
                     {
-                        element = xmlDoc[XsdUtils.GetName(elementType), nmsp];
+                        element = xmlDoc.DocumentElement;
                     }
                     else if (index > 0)
                     {
                         var elements = GetChildrenOfName(parent, elementname);
-                        element = elements[index-1];
+                        element = elements[index - 1];
                     }
                     else
                     {
-                        element = parent[XsdUtils.GetName(elementType), nmsp];
+                        element = parent[elementname, nmsp];
 
                     }
 
                     if (XsdUtils.GetComplexType(elementType) != null && element != null)
                     {
-
                         var complexType = XsdUtils.GetComplexType(elementType);
                         foreach (var child in XsdUtils.GetXsdChildren(complexType!))
                         {
@@ -343,7 +461,7 @@ namespace DemoApp.Models
                             ReadElement(xmlDoc, element, newPath, child, values);
                         }
                     }
-                    else if (element != null)
+                    else if (element != null) // simple types
                     {
                         var text = element.InnerText;
                         if (text != "") // if element has value in xmldoc
@@ -354,6 +472,26 @@ namespace DemoApp.Models
                 }
             }
 
+        }
+
+        public static void DeleteFile(IConfiguration config, string fileName)
+        {
+            if (string.IsNullOrEmpty(config["StorageAccountConnectString"]) && string.IsNullOrEmpty(config["StorageAccountClientId"])) // hvis ingen storage account emulator, burk lokal filsystem
+            {
+                File.Delete(fileName);
+            }
+            else
+            {
+                BlobShareReaderWriter.DeleteFile(config, fileName);
+            }
+
+        }
+
+        internal static object CompareMeldingOrder(Dictionary<string, string> hode1, Dictionary<string, string> hode2)
+        {
+            var tid1 = hode1["mld:SendtTidspunkt"];
+            var tid2 = hode2["mld:SendtTidspunkt"];
+            return tid1.CompareTo(tid2);
         }
     }
 }

@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kodelister versjon="1.0.0" nmsp="https://Bufdir.no/Generelt_v1.0.0">
+
+<kodeliste navn="KjonnFregType" id="BUF_26D1F613-F2E1-4589-A444-0810ECD0508D">
+	<kode verdi="mann" 		tekst="Mann / Gutt"		gyldigFra="16.08.2024" alternativVerdi="1"/>
+	<kode verdi="kvinne" 	tekst="Kvinne / Jente" 	gyldigFra="16.08.2024" alternativVerdi="2"/>
+</kodeliste>
+
+<kodeliste navn="JaNeiType" id="BUF_B454E56F-DCDF-49A1-8DE1-3381E638C062">
+	<kode verdi="0" 	tekst="Nei"	/>
+	<kode verdi="1" 	tekst="Ja" 	/>
+</kodeliste>
+
+<kodeliste navn="LandkodeType" id="BUF_A5204974-A743-4CC9-83E7-13FADDD7ADB1">
+	<kode verdi="NO" tekst="Norge"/>
+	<kode verdi="AE" tekst="De forente arabiske emirater"/>
+	<kode verdi="AF" tekst="Afghanistan"/>
+	<kode verdi="AG" tekst="Antigua og Barbuda"/>
+	<kode verdi="AI" tekst="Anguilla"/>
+	<kode verdi="AL" tekst="Albania"/>
+	<kode verdi="AM" tekst="Armenia"/>
+	<kode verdi="AO" tekst="Angola"/>
+	<kode verdi="AQ" tekst="Antarktis"/>
+	<kode verdi="AR" tekst="Argentina"/>
+	<kode verdi="AS" tekst="Amerikansk Samoa"/>
+	<kode verdi="AT" tekst="Østerrike"/>
+	<kode verdi="AU" tekst="Australia"/>
+	<kode verdi="AW" tekst="Aruba"/>
+	<kode verdi="AX" tekst="Åland"/>
+	<kode verdi="AD" tekst="Andorra"/>
+	<kode verdi="AZ" tekst="Aserbajdsjan"/>
+	<kode verdi="BA" tekst="Bosnia-Hercegovina"/>
+	<kode verdi="BB" tekst="Barbados"/>
+	<kode verdi="BD" tekst="Bangladesh"/>
+	<kode verdi="BE" tekst="Belgia"/>
+	<kode verdi="BF" tekst="Burkina Faso"/>
+	<kode verdi="BG" tekst="Bulgaria"/>
+	<kode verdi="BH" tekst="Bahrain"/>
+	<kode verdi="BI" tekst="Burundi"/>
+	<kode verdi="BJ" tekst="Benin"/>
+	<kode verdi="BL" tekst="Saint-Barthélemy"/>
+	<kode verdi="BM" tekst="Bermuda"/>
+	<kode verdi="BN" tekst="Brunei"/>
+	<kode verdi="BO" tekst="Bolivia"/>
+	<kode verdi="BQ" tekst="Bonaire, Sint Eustatius og Saba"/>
+	<kode verdi="BR" tekst="Brasil"/>
+	<kode verdi="BS" tekst="Bahamas"/>
+	<kode verdi="BT" tekst="Bhutan"/>
+	<kode verdi="BV" tekst="Bouvetøya"/>
+	<kode verdi="BW" tekst="Botswana"/>
+	<kode verdi="BY" tekst="Belarus"/>
+	<kode verdi="BZ" tekst="Belize"/>
+	<kode verdi="CA" tekst="Canada"/>
+	<kode verdi="CC" tekst="Kokosøyene"/>
+	<kode verdi="CD" tekst="Den demokratiske republikken Kongo"/>
+	<kode verdi="CF" tekst="Den sentralafrikanske republikk"/>
+	<kode verdi="CG" tekst="Republikken Kongo"/>
+	<kode verdi="CH" tekst="Sveits"/>
+	<kode verdi="CI" tekst="Elfenbenskysten"/>
+	<kode verdi="CK" tekst="Cookøyene"/>
+	<kode verdi="CL" tekst="Chile"/>
+	<kode verdi="CM" tekst="Kamerun"/>
+	<kode verdi="CN" tekst="Kina"/>
+	<kode verdi="CO" tekst="Colombia"/>
+	<kode verdi="CR" tekst="Costa Rica"/>
+	<kode verdi="CU" tekst="Cuba"/>
+	<kode verdi="CV" tekst="Kapp Verde"/>
+	<kode verdi="CW" tekst="Curaçao"/>
+	<kode verdi="CX" tekst="Christmasøya"/>
+	<kode verdi="CY" tekst="Kypros"/>
+	<kode verdi="CZ" tekst="Tsjekkia"/>
+	<kode verdi="DE" tekst="Tyskland"/>
+	<kode verdi="DJ" tekst="Djibouti"/>
+	<kode verdi="DK" tekst="Danmark"/>
+	<kode verdi="DM" tekst="Dominica"/>
+	<kode verdi="DO" tekst="Den dominikanske republikk"/>
+	<kode verdi="DZ" tekst="Algerie"/>
+	<kode verdi="EC" tekst="Ecuador"/>
+	<kode verdi="EE" tekst="Estland"/>
+	<kode verdi="EG" tekst="Egypt"/>
+	<kode verdi="EH" tekst="Vest-Sahara"/>
+	<kode verdi="ER" tekst="Eritrea"/>
+	<kode verdi="ES" tekst="Spania"/>
+	<kode verdi="ET" tekst="Etiopia"/>
+	<kode verdi="FI" tekst="Finland"/>
+	<kode verdi="FJ" tekst="Fiji"/>
+	<kode verdi="FK" tekst="Falklandsøyene"/>
+	<kode verdi="FM" tekst="Mikronesiaføderasjonen"/>
+	<kode verdi="FO" tekst="Færøyene"/>
+	<kode verdi="FR" tekst="Frankrike"/>
+	<kode verdi="GA" tekst="Gabon"/>
+	<kode verdi="GB" tekst="Storbritannia"/>
+	<kode verdi="GD" tekst="Grenada"/>
+	<kode verdi="GE" tekst="Georgia"/>
+	<kode verdi="GF" tekst="Fransk Guyana"/>
+	<kode verdi="GG" tekst="Guernsey"/>
+	<kode verdi="GH" tekst="Ghana"/>
+	<kode verdi="GI" tekst="Gibraltar"/>
+	<kode verdi="GL" tekst="Grønland"/>
+	<kode verdi="GM" tekst="Gambia"/>
+	<kode verdi="GN" tekst="Guinea"/>
+	<kode verdi="GP" tekst="Guadeloupe"/>
+	<kode verdi="GQ" tekst="Ekvatorial-Guinea"/>
+	<kode verdi="GR" tekst="Hellas"/>
+	<kode verdi="GS" tekst="Sør-Georgia og Sør-Sandwichøyene"/>
+	<kode verdi="GT" tekst="Guatemala"/>
+	<kode verdi="GU" tekst="Guam"/>
+	<kode verdi="GW" tekst="Guinea-Bissau"/>
+	<kode verdi="GY" tekst="Guyana"/>
+	<kode verdi="HK" tekst="Hongkong"/>
+	<kode verdi="HM" tekst="Heard- og McDonaldøyene"/>
+	<kode verdi="HN" tekst="Honduras"/>
+	<kode verdi="HR" tekst="Kroatia"/>
+	<kode verdi="HT" tekst="Haiti"/>
+	<kode verdi="HU" tekst="Ungarn"/>
+	<kode verdi="ID" tekst="Indonesia"/>
+	<kode verdi="IE" tekst="Irland"/>
+	<kode verdi="IL" tekst="Israel"/>
+	<kode verdi="IM" tekst="Man"/>
+	<kode verdi="IN" tekst="India"/>
+	<kode verdi="IO" tekst="Det britiske territoriet i Indiahavet"/>
+	<kode verdi="IQ" tekst="Irak"/>
+	<kode verdi="IR" tekst="Iran"/>
+	<kode verdi="IS" tekst="Island"/>
+	<kode verdi="IT" tekst="Italia"/>
+	<kode verdi="JE" tekst="Jersey"/>
+	<kode verdi="JM" tekst="Jamaica"/>
+	<kode verdi="JO" tekst="Jordan"/>
+	<kode verdi="JP" tekst="Japan"/>
+	<kode verdi="KE" tekst="Kenya"/>
+	<kode verdi="KG" tekst="Kirgisistan"/>
+	<kode verdi="KH" tekst="Kambodsja"/>
+	<kode verdi="KI" tekst="Kiribati"/>
+	<kode verdi="KM" tekst="Komorene"/>
+	<kode verdi="KN" tekst="Saint Kitts og Nevis"/>
+	<kode verdi="KP" tekst="Nord-Korea"/>
+	<kode verdi="KR" tekst="Sør-Korea"/>
+	<kode verdi="KW" tekst="Kuwait"/>
+	<kode verdi="KY" tekst="Caymanøyene"/>
+	<kode verdi="KZ" tekst="Kasakhstan"/>
+	<kode verdi="LA" tekst="Laos"/>
+	<kode verdi="LB" tekst="Libanon"/>
+	<kode verdi="LC" tekst="Saint Lucia"/>
+	<kode verdi="LI" tekst="Liechtenstein"/>
+	<kode verdi="LK" tekst="Sri Lanka"/>
+	<kode verdi="LR" tekst="Liberia"/>
+	<kode verdi="LS" tekst="Lesotho"/>
+	<kode verdi="LT" tekst="Litauen"/>
+	<kode verdi="LU" tekst="Luxembourg"/>
+	<kode verdi="LV" tekst="Latvia"/>
+	<kode verdi="LY" tekst="Libya"/>
+	<kode verdi="MA" tekst="Marokko"/>
+	<kode verdi="MC" tekst="Monaco"/>
+	<kode verdi="MD" tekst="Moldova"/>
+	<kode verdi="ME" tekst="Montenegro"/>
+	<kode verdi="MF" tekst="Saint-Martin"/>
+	<kode verdi="MG" tekst="Madagaskar"/>
+	<kode verdi="MH" tekst="Marshalløyene"/>
+	<kode verdi="MK" tekst="Makedonia"/>
+	<kode verdi="ML" tekst="Mali"/>
+	<kode verdi="MM" tekst="Myanmar"/>
+	<kode verdi="MN" tekst="Mongolia"/>
+	<kode verdi="MO" tekst="Macao"/>
+	<kode verdi="MP" tekst="Nord-Marianene"/>
+	<kode verdi="MQ" tekst="Martinique"/>
+	<kode verdi="MR" tekst="Mauritania"/>
+	<kode verdi="MS" tekst="Montserrat"/>
+	<kode verdi="MT" tekst="Malta"/>
+	<kode verdi="MU" tekst="Mauritius"/>
+	<kode verdi="MV" tekst="Maldivene"/>
+	<kode verdi="MW" tekst="Malawi"/>
+	<kode verdi="MX" tekst="Mexico"/>
+	<kode verdi="MY" tekst="Malaysia"/>
+	<kode verdi="MZ" tekst="Mosambik"/>
+	<kode verdi="NA" tekst="Namibia"/>
+	<kode verdi="NC" tekst="Ny-Caledonia"/>
+	<kode verdi="NE" tekst="Niger"/>
+	<kode verdi="NF" tekst="Norfolkøya"/>
+	<kode verdi="NG" tekst="Nigeria"/>
+	<kode verdi="NI" tekst="Nicaragua"/>
+	<kode verdi="NL" tekst="Nederland"/>
+	<kode verdi="NP" tekst="Nepal"/>
+	<kode verdi="NR" tekst="Nauru"/>
+	<kode verdi="NU" tekst="Niue"/>
+	<kode verdi="NZ" tekst="New Zealand"/>
+	<kode verdi="OM" tekst="Oman"/>
+	<kode verdi="PA" tekst="Panama"/>
+	<kode verdi="PE" tekst="Peru"/>
+	<kode verdi="PF" tekst="Fransk Polynesia"/>
+	<kode verdi="PG" tekst="Papua Ny-Guinea"/>
+	<kode verdi="PH" tekst="Filippinene"/>
+	<kode verdi="PK" tekst="Pakistan"/>
+	<kode verdi="PL" tekst="Polen"/>
+	<kode verdi="PM" tekst="Saint-Pierre og Miquelon"/>
+	<kode verdi="PN" tekst="Pitcairnøyene"/>
+	<kode verdi="PR" tekst="Puerto Rico"/>
+	<kode verdi="PS" tekst="Palestina"/>
+	<kode verdi="PT" tekst="Portugal"/>
+	<kode verdi="PW" tekst="Palau"/>
+	<kode verdi="PY" tekst="Paraguay"/>
+	<kode verdi="QA" tekst="Qatar"/>
+	<kode verdi="RE" tekst="Réunion"/>
+	<kode verdi="RO" tekst="Romania"/>
+	<kode verdi="RS" tekst="Serbia"/>
+	<kode verdi="RU" tekst="Russland"/>
+	<kode verdi="RW" tekst="Rwanda"/>
+	<kode verdi="SA" tekst="Saudi-Arabia"/>
+	<kode verdi="SB" tekst="Salomonøyene"/>
+	<kode verdi="SC" tekst="Seychellene"/>
+	<kode verdi="SD" tekst="Sudan"/>
+	<kode verdi="SE" tekst="Sverige"/>
+	<kode verdi="SG" tekst="Singapore"/>
+	<kode verdi="SH" tekst="St. Helena, Ascension og Tristan da Cunha"/>
+	<kode verdi="SI" tekst="Slovenia"/>
+	<kode verdi="SJ" tekst="Svalbard og Jan Mayen"/>
+	<kode verdi="SK" tekst="Slovakia"/>
+	<kode verdi="SL" tekst="Sierra Leone"/>
+	<kode verdi="SM" tekst="San Marino"/>
+	<kode verdi="SN" tekst="Senegal"/>
+	<kode verdi="SO" tekst="Somalia"/>
+	<kode verdi="SR" tekst="Surinam"/>
+	<kode verdi="SS" tekst="Sør-Sudan"/>
+	<kode verdi="ST" tekst="São Tomé og Príncipe"/>
+	<kode verdi="SV" tekst="El Salvador"/>
+	<kode verdi="SX" tekst="Sint Maarten"/>
+	<kode verdi="SY" tekst="Syria"/>
+	<kode verdi="SZ" tekst="Swaziland"/>
+	<kode verdi="TC" tekst="Turks- og Caicosøyene"/>
+	<kode verdi="TD" tekst="Tsjad"/>
+	<kode verdi="TF" tekst="De franske sørterritorier"/>
+	<kode verdi="TG" tekst="Togo"/>
+	<kode verdi="TH" tekst="Thailand"/>
+	<kode verdi="TJ" tekst="Tadsjikistan"/>
+	<kode verdi="TK" tekst="Tokelau"/>
+	<kode verdi="TL" tekst="Øst-Timor"/>
+	<kode verdi="TM" tekst="Turkmenistan"/>
+	<kode verdi="TN" tekst="Tunisia"/>
+	<kode verdi="TO" tekst="Tonga"/>
+	<kode verdi="TR" tekst="Tyrkia"/>
+	<kode verdi="TT" tekst="Trinidad og Tobago"/>
+	<kode verdi="TV" tekst="Tuvalu"/>
+	<kode verdi="TW" tekst="Taiwan"/>
+	<kode verdi="TZ" tekst="Tanzania"/>
+	<kode verdi="UA" tekst="Ukraina"/>
+	<kode verdi="UG" tekst="Uganda"/>
+	<kode verdi="UM" tekst="USAs ytre småøyer"/>
+	<kode verdi="US" tekst="USA"/>
+	<kode verdi="UY" tekst="Uruguay"/>
+	<kode verdi="UZ" tekst="Usbekistan"/>
+	<kode verdi="VA" tekst="Vatikanstaten"/>
+	<kode verdi="VC" tekst="Saint Vincent og Grenadinene"/>
+	<kode verdi="VE" tekst="Venezuela"/>
+	<kode verdi="VG" tekst="De britiske Jomfruøyer"/>
+	<kode verdi="VI" tekst="De amerikanske Jomfruøyer"/>
+	<kode verdi="VN" tekst="Vietnam"/>
+	<kode verdi="VU" tekst="Vanuatu"/>
+	<kode verdi="WF" tekst="Wallis og Futuna"/>
+	<kode verdi="WS" tekst="Samoa"/>
+	<kode verdi="YE" tekst="Jemen"/>
+	<kode verdi="YT" tekst="Mayotte"/>
+	<kode verdi="ZA" tekst="Sør-Afrika"/>
+	<kode verdi="ZM" tekst="Zambia"/>
+	<kode verdi="ZW" tekst="Zimbabwe"/>
+</kodeliste>
+
+
+<kodeliste navn="SprakType" id="BUF_EC3036F2-A7F4-42A2-86DC-106C0CC020FD">"/>
+	<kode verdi="no"	tekst="Norsk"/>
+	<kode verdi="aa"	tekst="Afar"/>
+	<kode verdi="ab"	tekst="Abkhasisk"/>
+	<kode verdi="ae"	tekst="Avestisk"/>
+	<kode verdi="af"	tekst="Afrikaans"/>
+	<kode verdi="ak"	tekst="Akan"/>
+	<kode verdi="am"	tekst="Amharisk"/>
+	<kode verdi="an"	tekst="Aragonesisk"/>
+	<kode verdi="ar"	tekst="Arabisk"/>
+	<kode verdi="as"	tekst="Assamesisk"/>
+	<kode verdi="av"	tekst="Avarisk"/>
+	<kode verdi="ay"	tekst="Aymara"/>
+	<kode verdi="az"	tekst="Aserbajdsjansk"/>
+	<kode verdi="ba"	tekst="Basjkirsk"/>
+	<kode verdi="be"	tekst="Belarusisk"/>
+	<kode verdi="bg"	tekst="Bulgarsk"/>
+	<kode verdi="bh"	tekst="Bihari"/>
+	<kode verdi="bi"	tekst="Bislama"/>
+	<kode verdi="bm"	tekst="Bambara"/>
+	<kode verdi="bn"	tekst="Bengali"/>
+	<kode verdi="bo"	tekst="Tibetansk"/>
+	<kode verdi="br"	tekst="Bretonsk"/>
+	<kode verdi="bs"	tekst="Bosnisk"/>
+	<kode verdi="ca"	tekst="Katalansk"/>
+	<kode verdi="cdo"	tekst="Min dong"/>
+	<kode verdi="ce"	tekst="Tsjetsjensk"/>
+	<kode verdi="ch"	tekst="Chamorro"/>
+	<kode verdi="co"	tekst="Korsikansk"/>
+	<kode verdi="cr"	tekst="Cree"/>
+	<kode verdi="cs"	tekst="Tsjekkisk"/>
+	<kode verdi="cu"	tekst="Kirkeslavisk"/>
+	<kode verdi="cv"	tekst="Tsjuvasjisk"/>
+	<kode verdi="cy"	tekst="Walisisk"/>
+	<kode verdi="da"	tekst="Dansk"/>
+	<kode verdi="de"	tekst="Tysk"/>
+	<kode verdi="dv"	tekst="Dhivehi"/>
+	<kode verdi="dz"	tekst="Dzongkha"/>
+	<kode verdi="ee"	tekst="Ewe"/>
+	<kode verdi="el"	tekst="Gresk"/>
+	<kode verdi="en"	tekst="Engelsk"/>
+	<kode verdi="eo"	tekst="Esperanto"/>
+	<kode verdi="es"	tekst="Spansk"/>
+	<kode verdi="et"	tekst="Estisk"/>
+	<kode verdi="eu"	tekst="Baskisk"/>
+	<kode verdi="fa"	tekst="Persisk"/>
+	<kode verdi="ff"	tekst="Fulfulde"/>
+	<kode verdi="fi"	tekst="Finsk"/>
+	<kode verdi="fj"	tekst="Fijisk"/>
+	<kode verdi="fo"	tekst="Færøysk"/>
+	<kode verdi="fr"	tekst="Fransk"/>
+	<kode verdi="fy"	tekst="Frisisk"/>
+	<kode verdi="ga"	tekst="Irsk"/>
+	<kode verdi="gd"	tekst="Skotsk gælisk"/>
+	<kode verdi="gl"	tekst="Galisisk"/>
+	<kode verdi="gn"	tekst="Guaraní"/>
+	<kode verdi="gu"	tekst="Gujarati"/>
+	<kode verdi="gv"	tekst="Mansk"/>
+	<kode verdi="ha"	tekst="Hausa"/>
+	<kode verdi="he"	tekst="Hebraisk"/>
+	<kode verdi="hi"	tekst="Hindi"/>
+	<kode verdi="ho"	tekst="Hiri motu"/>
+	<kode verdi="hr"	tekst="Kroatisk"/>
+	<kode verdi="ht"	tekst="Haitisk kreolsk"/>
+	<kode verdi="hu"	tekst="Ungarsk"/>
+	<kode verdi="hy"	tekst="Armensk"/>
+	<kode verdi="hz"	tekst="Herero"/>
+	<kode verdi="ia"	tekst="Interlingua (International Auxiliary Language Association)"/>
+	<kode verdi="id"	tekst="Indonesisk"/>
+	<kode verdi="ie"	tekst="Interlingue"/>
+	<kode verdi="ig"	tekst="Ibo"/>
+	<kode verdi="ii"	tekst="Yi"/>
+	<kode verdi="ik"	tekst="Inupiak"/>
+	<kode verdi="io"	tekst="Ido"/>
+	<kode verdi="is"	tekst="Islandsk"/>
+	<kode verdi="it"	tekst="Italiensk"/>
+	<kode verdi="iu"	tekst="Inuittisk"/>
+	<kode verdi="ja"	tekst="Japansk"/>
+	<kode verdi="jv"	tekst="Javanesisk"/>
+	<kode verdi="ka"	tekst="Georgisk"/>
+	<kode verdi="kg"	tekst="kongo"/>
+	<kode verdi="ki"	tekst="kikuya"/>
+	<kode verdi="kj"	tekst="Kwanyama"/>
+	<kode verdi="kk"	tekst="Kasakhisk"/>
+	<kode verdi="kl"	tekst="Grønlandsk"/>
+	<kode verdi="km"	tekst="Khmer"/>
+	<kode verdi="kn"	tekst="Kannada"/>
+	<kode verdi="ko"	tekst="Koreansk"/>
+	<kode verdi="kr"	tekst="Kanuri"/>
+	<kode verdi="ks"	tekst="Kasjmiri"/>
+	<kode verdi="ku"	tekst="Kurdisk"/>
+	<kode verdi="kv"	tekst="Syrjensk"/>
+	<kode verdi="kw"	tekst="Kornisk"/>
+	<kode verdi="ky"	tekst="Kirgisisk"/>
+	<kode verdi="la"	tekst="Latin"/>
+	<kode verdi="lb"	tekst="Luxembourgsk"/>
+	<kode verdi="lg"	tekst="Luganda"/>
+	<kode verdi="li"	tekst="Limburgsk"/>
+	<kode verdi="ln"	tekst="Lingala"/>
+	<kode verdi="lo"	tekst="Laotisk"/>
+	<kode verdi="lt"	tekst="Litauisk"/>
+	<kode verdi="lu"	tekst="Luba-Katanga"/>
+	<kode verdi="lv"	tekst="Latvisk"/>
+	<kode verdi="lvk"	tekst="Lavukaleve"/>
+	<kode verdi="mg"	tekst="Gassisk"/>
+	<kode verdi="mh"	tekst="Marshallesisk"/>
+	<kode verdi="mi"	tekst="Maorisk"/>
+	<kode verdi="mk"	tekst="Makedonsk"/>
+	<kode verdi="ml"	tekst="Malayalam"/>
+	<kode verdi="mn"	tekst="Mongolsk"/>
+	<kode verdi="mo"	tekst="Moldovsk"/>
+	<kode verdi="mr"	tekst="Marathi"/>
+	<kode verdi="ms"	tekst="Malayisk"/>
+	<kode verdi="mt"	tekst="Maltesisk"/>
+	<kode verdi="my"	tekst="Burmesisk"/>
+	<kode verdi="na"	tekst="Naurisk"/>
+	<kode verdi="nb"	tekst="Bokmål"/>
+	<kode verdi="nd"	tekst="Nord-ndebele"/>
+	<kode verdi="ne"	tekst="Nepali"/>
+	<kode verdi="ng"	tekst="Ndonga"/>
+	<kode verdi="nl"	tekst="Nederlandsk"/>
+	<kode verdi="nn"	tekst="Nynorsk"/>
+	<kode verdi="nr"	tekst="Sør-ndebele"/>
+	<kode verdi="nv"	tekst="Navajo"/>
+	<kode verdi="ny"	tekst="Chichewa"/>
+	<kode verdi="oc"	tekst="Oksitansk"/>
+	<kode verdi="oj"	tekst="Ojibwa"/>
+	<kode verdi="om"	tekst="Oromo"/>
+	<kode verdi="or"	tekst="Oriya"/>
+	<kode verdi="os"	tekst="Ossetisk"/>
+	<kode verdi="pa"	tekst="Punjabi"/>
+	<kode verdi="pi"	tekst="Pali"/>
+	<kode verdi="pl"	tekst="Polsk"/>
+	<kode verdi="ps"	tekst="Pashto"/>
+	<kode verdi="pt"	tekst="Portugisisk"/>
+	<kode verdi="qu"	tekst="Quechua"/>
+	<kode verdi="rm"	tekst="Retoromansk"/>
+	<kode verdi="rn"	tekst="Kirundi"/>
+	<kode verdi="ro"	tekst="Rumensk"/>
+	<kode verdi="ru"	tekst="Russisk"/>
+	<kode verdi="rw"	tekst="Kinyarwanda"/>
+	<kode verdi="sa"	tekst="Sanskrit"/>
+	<kode verdi="sc"	tekst="Sardisk"/>
+	<kode verdi="sd"	tekst="Sindhi"/>
+	<kode verdi="se"	tekst="Nordsamisk"/>
+	<kode verdi="sg"	tekst="Sango"/>
+	<kode verdi="sh"	tekst="Serbokroatisk"/>
+	<kode verdi="si"	tekst="Singalesisk"/>
+	<kode verdi="sk"	tekst="Slovakisk"/>
+	<kode verdi="sl"	tekst="Slovensk"/>
+	<kode verdi="sm"	tekst="Samoansk"/>
+	<kode verdi="sn"	tekst="Shona"/>
+	<kode verdi="so"	tekst="Somali"/>
+	<kode verdi="sq"	tekst="Albansk"/>
+	<kode verdi="sr"	tekst="Serbisk"/>
+	<kode verdi="ss"	tekst="Swati"/>
+	<kode verdi="st"	tekst="Sesotho"/>
+	<kode verdi="su"	tekst="Sundanesisk"/>
+	<kode verdi="sv"	tekst="Svensk"/>
+	<kode verdi="sw"	tekst="Swahili"/>
+	<kode verdi="ta"	tekst="Tamilsk"/>
+	<kode verdi="te"	tekst="Telugu"/>
+	<kode verdi="tg"	tekst="Tadsjikisk"/>
+	<kode verdi="th"	tekst="Thai"/>
+	<kode verdi="ti"	tekst="Tigrinya"/>
+	<kode verdi="tk"	tekst="Turkmensk"/>
+	<kode verdi="tl"	tekst="Tagalog"/>
+	<kode verdi="tn"	tekst="Tswana"/>
+	<kode verdi="to"	tekst="Tonganesisk"/>
+	<kode verdi="tr"	tekst="Tyrkisk"/>
+	<kode verdi="ts"	tekst="Tsonga"/>
+	<kode verdi="tt"	tekst="Tatarisk"/>
+	<kode verdi="tw"	tekst="Twi"/>
+	<kode verdi="ty"	tekst="Tahitisk"/>
+	<kode verdi="uk"	tekst="Ukrainsk"/>
+	<kode verdi="ug"	tekst="Uigurisk"/>
+	<kode verdi="ur"	tekst="Urdu"/>
+	<kode verdi="uz"	tekst="Usbekisk"/>
+	<kode verdi="ve"	tekst="Venda"/>
+	<kode verdi="vi"	tekst="Vietnamesisk"/>
+	<kode verdi="vo"	tekst="Volapük"/>
+	<kode verdi="wa"	tekst="Vallonsk"/>
+	<kode verdi="wo"	tekst="Wolof"/>
+	<kode verdi="xh"	tekst="Xhosa"/>
+	<kode verdi="yi"	tekst="Jiddisk"/>
+	<kode verdi="yo"	tekst="Joruba"/>
+	<kode verdi="za"	tekst="Zhuang"/>
+	<kode verdi="zea"	tekst="Zeeuws"/>
+	<kode verdi="zh"	tekst="Kinesisk"/>
+	<kode verdi="zu"	tekst="Zulu"/>
+	<kode verdi="zza"	tekst="Zazaki"/>
+</kodeliste>
+
+<kodeliste navn="VedleggTypeType" id="BUF_7B3694CE-5A22-4840-93C7-30B5076FC322">
+	<kode verdi="1"   tekst="Menneskelig lesbar versjon av XML-melding"/>
+	<kode verdi="999" tekst="Annet"/>
+</kodeliste>
+
+</kodelister>

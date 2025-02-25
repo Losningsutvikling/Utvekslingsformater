@@ -1,5 +1,5 @@
 using DemoApp.Models;
-using DemoApp.Models.Fagsystem;
+using DemoApp.Models.Simulator;
 
 namespace DemoApp.Pages.Partial
 {
@@ -18,7 +18,7 @@ namespace DemoApp.Pages.Partial
         {
             this.BarnListe = TestdataGenerator.GetTestdata();
             Utils.GetRequestParams(request, out Dictionary<string, string> queryParams);
-            string barnId = Utils.GetRequestValue(queryParams, "barn_id");
+            string barnId = Utils.GetRequestValue(queryParams, Konstanter.SelectedSak);
             if (!string.IsNullOrEmpty(barnId))
                 selectedBarn = BarnListe.FirstOrDefault(b => b.Id.ToString() == barnId);
 

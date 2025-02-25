@@ -26,6 +26,10 @@ namespace DemoApp.Models
                 return value;
             return "";
         }
+        public static bool ExistsRequestValue(Dictionary<string, string> RequestParams, string param)
+        {
+            return RequestParams.TryGetValue(param, out var _);
+        }
 
         public static string GetRequestValue(HttpRequest req, string param)
         {
@@ -35,15 +39,49 @@ namespace DemoApp.Models
             return GetRequestValue(RequestParams, param);
         }
 
-        public static string getMandatoryMarker(PropertyRendererModel model)
+        /// <summary>
+        /// Gets the value of the first key ending with the parameter 'partialKey'
+        /// </summary>
+        public static string GetRequestValuePartialKey(Dictionary<string, string> RequestParams, string partialKey)
         {
-            bool returnMarker = false;
-            if ((XsdUtils.IsSimpleType(model.Prop) && model.Mandatory) || XsdUtils.AllChoiceElementsSimpleAndMandatory(model.Prop))
-                returnMarker = true;
-            else if (XsdUtils.AllChoiceElementsSimpleAndMandatory(model.Prop))
-                returnMarker = true;
-            return (returnMarker) ? "<span class='obligatorisk_markor'>*</span>" : "";
+            foreach (var kvp in RequestParams)
+            {
+                if (kvp.Key.EndsWith(partialKey))
+                    return kvp.Value;
+            }
+            return "";
         }
 
+        public static string Reformat(string dateTime, string currentFormat, string newFormat)
+        {
+            if (DateTime.TryParseExact(dateTime, currentFormat, null, System.Globalization.DateTimeStyles.None, out DateTime result))
+                return result.ToString(newFormat);
+            return "";
+
+        }
+
+
+
+        public static string getMandatoryMarker(PropertyRendererModel model, bool disable = false, bool overrideModel = false)
+        {
+            bool returnMarker = overrideModel;
+            if (!returnMarker)
+            {
+                if ((XsdUtils.IsSimpleType(model.Prop) && model.Mandatory) || XsdUtils.AllChoiceElementsSimpleAndMandatory(model.Prop))
+                    returnMarker = true;
+                else if (XsdUtils.ChoiceElementMandatory(model.Prop))
+                    returnMarker = true;
+            }
+            string disableCssClass = (disable) ? "disabled" : "";
+            return (returnMarker) ? $"<span class='obligatorisk_markor {disableCssClass}'>*</span>" : "";
+        }
+
+        private const int MIN_LENGDE_FOR_A_VISE_MIN_MARKOR = 10;
+
+        public static string getMinLengthMarker(PropertyRendererModel model)
+        {
+            int minlength = XsdUtils.GetMinLength(model.Prop);
+            return (minlength > MIN_LENGDE_FOR_A_VISE_MIN_MARKOR) ? $"<span class='minlength_markor'>minst {minlength} tegn</span>" : "";
+        }
     }
 }

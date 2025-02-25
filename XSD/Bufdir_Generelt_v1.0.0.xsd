@@ -1,0 +1,762 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns="https://Bufdir.no/Generelt_v1.0.0" 
+	xmlns:kodelister="Bufdir_Generelt_kodelister_v1.0.0.xml"
+	targetNamespace="https://Bufdir.no/Generelt_v1.0.0" 
+	elementFormDefault="qualified" 
+	version="1.0.0">
+
+	<xs:complexType name="AdresseType" id="BUF_C625B5CB-F30B-4A66-850E-00DCA90547D9">
+		<xs:sequence>
+			<xs:element name="Adresse" type="EnlinjeObligatorisk" id="BUF_E7487A0C-056E-4FBA-AD95-45DB286E7751">
+			</xs:element>
+			<xs:element name="Postnummer" type="EnlinjeObligatorisk" id="BUF_4ABE4DE0-54A3-4796-B0E9-B91D8B816F1E">
+			</xs:element>
+			<xs:element name="Poststed" type="EnlinjeObligatorisk" id="BUF_CE82C584-BCBC-4757-97E0-35D62E38C402">
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="AdresseMedKommuneType" id="BUF_978E62B2-8B0E-4483-A304-41C2D4E3ABE9">
+		<xs:complexContent>
+			<xs:extension base="AdresseType">
+				<xs:sequence>
+					<xs:element name="Kommunenummer" minOccurs="1" maxOccurs="1" type="KommunenummerType" id="BUF_BDA8216D-065B-4D31-A3C2-A8177BF08D50">
+					</xs:element>
+				</xs:sequence>	
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="BydelsinfoType" id="BUF_E10C2385-F287-47BD-B6BE-8F50E626BA04">
+		<xs:sequence>
+					<xs:element name="Bydelsnummer" minOccurs="1" id="BUF_5AC38EF3-6688-47D6-A644-AADAACAD7B54">
+						<xs:annotation>
+							<xs:documentation>2-sifret bydelsnummer</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:minLength value="2"/>
+								<xs:maxLength value="2"/>
+								<xs:pattern value="\d{2}"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="Bydelsnavn" minOccurs="1" id="BUF_C4908FAA-E1E1-4F7B-8EBF-50367EF4B9F0">
+						<xs:annotation>
+							<xs:documentation>Bydelsnavn. Eksempel: 'Gamle Oslo'
+							</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:minLength value="1"/>
+								<xs:maxLength value="70"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:simpleType name="DUFNummerType" id="BUF_2C2C3B52-194E-420B-ACE3-DBC813DFFB02">
+		<xs:annotation>
+			<xs:documentation>DUF-nummer (https://www.udi.no/ord-og-begreper/duf-nummer/)
+            </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="12"/>
+			<xs:maxLength value="12"/>
+			<xs:pattern value="\d{12}"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="Enlinje" id="BUF_A25AC86E-1A2F-4466-9196-99E0B5E15D90">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="EnlinjeObligatorisk" id="BUF_20055820-19D2-4F79-99B2-5A643960DE57">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="2"/>
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="FodselsdatoType" id="BUF_D2D069B3-2867-471A-869F-529A625C7F20">
+		<xs:restriction base="xs:date">
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="FodselsnummerType" id="BUF_48A168D0-C049-44F0-94D4-6C252FCC8D17">
+		<xs:annotation>
+			<xs:documentation>Fødselsnummer (https://www.udi.no/ord-og-begreper/fodselsnummer/),
+                D-nummer (https://www.udi.no/ord-og-begreper/d-nummer/),
+                fødselsdato (DDMMÅÅ) + 00100,
+                fødselsdato (DDMMÅÅ) + 00200,
+                fødselsdato (DDMMÅÅ) + 55555,
+                fødselsdato (DDMMÅÅ) + 99999
+            </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="11"/>
+			<xs:maxLength value="11"/>
+			<xs:pattern value="\d{11}"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="Fritekst" id="BUF_85483398-0AD1-44AB-B887-02131086DD3F">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="5000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="FritekstObligatorisk" id="BUF_23936C78-1B64-46D0-A350-6A03D9947831">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="2" />
+			<xs:maxLength value="5000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+
+
+	<xs:simpleType name="FulltNavnType" id="BUF_5C9508DE-241E-4D40-9F65-67350C31A811">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="2" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="KommuneinfoType" id="BUF_0582CDA8-73C4-4384-BC2C-61AA69D9A2F1">
+		<xs:sequence>
+			<xs:element name="Kommunenummer" minOccurs="1" maxOccurs="1" type="KommunenummerType" id="BUF_07ADD908-5D2E-4504-AA20-DCC384DD5243">
+			</xs:element>
+			<xs:element name="Kommunenavn"  minOccurs="1" maxOccurs="1" type="KommunenavnType" id="BUF_446CA10B-493B-46A8-98A5-66B05ABF684D">
+			</xs:element>
+			<xs:element name="Bydelsinfo" type="BydelsinfoType" minOccurs="0" maxOccurs="1" id="BUF_69528AB9-74DD-4FF9-9DD3-C417AC1DB863">
+				<xs:annotation>
+					<xs:documentation>
+Benyttes kun for kommuner med bydeler
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:simpleType name="KommunenavnType" id="BUF_786B395E-902A-4A94-B9B4-34174218D621">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="70"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="KommunenummerType" id="BUF_4FB870C4-490D-4CBB-9E1F-3949F626BD1A">
+		<xs:annotation>
+			<xs:documentation>
+				4-sifret kommunenummer
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="4"/>
+			<xs:maxLength value="4"/>
+			<xs:pattern value="\d{4}"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="KontaktpersonType" id="BUF_B8AEE09B-0A9E-4152-A603-2B516C34977B">
+		<xs:sequence>
+			<xs:element name="Navn" type="FulltNavnType" id="BUF_10F96C62-B4F8-4F54-9618-CC51ED3A024C"/>
+			<xs:element name="Telefon" type="EnlinjeObligatorisk" id="BUF_A25A946F-D70C-42C6-9B79-E6A903222137">
+				<xs:annotation>
+					<xs:documentation>
+						Obs! Kan inneholde landkode
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="epost" type="EnlinjeObligatorisk" id="BUF_88570DF6-A1E6-4B31-9D71-F6BEBC047FAF"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="OrganisasjonsnummerType" id="BUF_15688905-2A6A-4246-AE32-87BE0C8F8FC3">
+		<xs:annotation>
+			<xs:documentation>
+                    Organisasjonsnummer fra enhetsregisteret
+            </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="9"/>
+			<xs:maxLength value="9"/>
+			<xs:pattern value="\d{9}"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="OrganisasjonType" id="BUF_EFC79877-C75C-4E5F-BAE7-FD810A5D885D">
+		<xs:sequence>
+			<xs:element name="Organisasjonsnummer" type="OrganisasjonsnummerType" id="BUF_E1A8CF08-6E82-4EAF-9AEC-2705C91EA02E"/>
+			<xs:element name="Navn" minOccurs="1" id="BUF_65522C58-7618-4CC0-96FF-8D5845427BD1">
+				<xs:annotation>
+					<xs:documentation>Navn (Navn på tjeneste, f.eks. "Barneverntjenesten Asker kommune", Bufetat, BFE)</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="2"/>
+						<xs:maxLength value="200"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Kommuneinfo" type="KommuneinfoType" minOccurs="0" id="BUF_B50BD657-4F24-46E8-B832-DA2EF456311F">
+				<xs:annotation>
+					<xs:documentation>Kommunenavn meldingen gjelder, f.eks. "Asker kommune". Navnet i 'Organisasjon' kan være et annet, som f.eks. "Barneverntjenesten Asker kommune".
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="ReferanseType" id="BUF_3BC2D2BA-E0A9-469F-BD48-0B645917C69E">
+		<xs:annotation>
+			<xs:documentation>
+				Id som benyttes for å identifisere sak e.l. som en forsendelse gjelder, og som mottaker tidligere har oppgitt til formålet
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"></xs:restriction>
+	</xs:simpleType>
+	
+
+	<xs:simpleType name="UUIDType" id="BUF_9731D9E9-0BE8-461B-8B29-71ADFB682C16">
+		<xs:annotation>
+			<xs:documentation>
+			UUID i format XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+		</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="VersjonType" id="BUF_7D887770-7D13-46D2-8290-4EF9230C18C8">
+		<xs:annotation>
+			<xs:documentation>
+			   Versjonsnummer i formen '1', '1.1', '1.1.1', '1.1.1.2345'
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1" />
+			<xs:pattern value="(\d+\.)?(\d+\.)?(\d+\.)?(\*|\d+)" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="VedleggType" id="BUF_7BBE0323-CE82-4AC3-9ACA-0314B6E74362">
+		<xs:sequence>
+			<xs:element name="Filnavn" type="EnlinjeObligatorisk" id="BUF_C4BB1E69-D4CC-4052-88C1-FB9F605B7E3C">
+				<xs:unique name="unikFilnavn">
+					<xs:selector xpath="."/>
+					<xs:field xpath="."/>
+				</xs:unique>
+
+			</xs:element>
+			<xs:element name="VedleggType" type="VedleggTypeType" id="BUF_C44DA075-9127-4A93-B1FD-9E6C1E85649F"></xs:element>
+			<xs:element name="Beskrivelse" type="EnlinjeObligatorisk" id="BUF_7B4340A3-D0D1-4BDE-8E5A-BA0E68B942A4"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+<!-- Enum, kodeliste = Bufdir_kodelister_v1.0.0.xml -->
+
+	<xs:simpleType name="JaNeiType" id="BUF_B454E56F-DCDF-49A1-8DE1-3381E638C062">
+		<xs:annotation>
+			<xs:documentation>
+                0 = Nei
+                1 = Ja
+            </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:length value="1"/>
+			<xs:enumeration value="0"/>
+			<xs:enumeration value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="KjonnFregType" id="BUF_26D1F613-F2E1-4589-A444-0810ECD0508D">
+		<xs:annotation>
+			<xs:documentation>
+                                mann = Mann / Gutt
+                                kvinne = Kvinne / Jentes
+            </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="mann"/>
+			<xs:enumeration value="kvinne"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="LandkodeType" id="BUF_A5204974-A743-4CC9-83E7-13FADDD7ADB1">
+		<xs:annotation>
+			<xs:documentation>
+			ISO 3166 landkoder
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="AD"/>
+			<xs:enumeration value="AE"/>
+			<xs:enumeration value="AF"/>
+			<xs:enumeration value="AG"/>
+			<xs:enumeration value="AI"/>
+			<xs:enumeration value="AL"/>
+			<xs:enumeration value="AM"/>
+			<xs:enumeration value="AO"/>
+			<xs:enumeration value="AQ"/>
+			<xs:enumeration value="AR"/>
+			<xs:enumeration value="AS"/>
+			<xs:enumeration value="AT"/>
+			<xs:enumeration value="AU"/>
+			<xs:enumeration value="AW"/>
+			<xs:enumeration value="AX"/>
+			<xs:enumeration value="AZ"/>
+			<xs:enumeration value="BA"/>
+			<xs:enumeration value="BB"/>
+			<xs:enumeration value="BD"/>
+			<xs:enumeration value="BE"/>
+			<xs:enumeration value="BF"/>
+			<xs:enumeration value="BG"/>
+			<xs:enumeration value="BH"/>
+			<xs:enumeration value="BI"/>
+			<xs:enumeration value="BJ"/>
+			<xs:enumeration value="BL"/>
+			<xs:enumeration value="BM"/>
+			<xs:enumeration value="BN"/>
+			<xs:enumeration value="BO"/>
+			<xs:enumeration value="BQ"/>
+			<xs:enumeration value="BR"/>
+			<xs:enumeration value="BS"/>
+			<xs:enumeration value="BT"/>
+			<xs:enumeration value="BV"/>
+			<xs:enumeration value="BW"/>
+			<xs:enumeration value="BY"/>
+			<xs:enumeration value="BZ"/>
+			<xs:enumeration value="CA"/>
+			<xs:enumeration value="CC"/>
+			<xs:enumeration value="CD"/>
+			<xs:enumeration value="CF"/>
+			<xs:enumeration value="CG"/>
+			<xs:enumeration value="CH"/>
+			<xs:enumeration value="CI"/>
+			<xs:enumeration value="CK"/>
+			<xs:enumeration value="CL"/>
+			<xs:enumeration value="CM"/>
+			<xs:enumeration value="CN"/>
+			<xs:enumeration value="CO"/>
+			<xs:enumeration value="CR"/>
+			<xs:enumeration value="CU"/>
+			<xs:enumeration value="CV"/>
+			<xs:enumeration value="CW"/>
+			<xs:enumeration value="CX"/>
+			<xs:enumeration value="CY"/>
+			<xs:enumeration value="CZ"/>
+			<xs:enumeration value="DE"/>
+			<xs:enumeration value="DJ"/>
+			<xs:enumeration value="DK"/>
+			<xs:enumeration value="DM"/>
+			<xs:enumeration value="DO"/>
+			<xs:enumeration value="DZ"/>
+			<xs:enumeration value="EC"/>
+			<xs:enumeration value="EE"/>
+			<xs:enumeration value="EG"/>
+			<xs:enumeration value="EH"/>
+			<xs:enumeration value="ER"/>
+			<xs:enumeration value="ES"/>
+			<xs:enumeration value="ET"/>
+			<xs:enumeration value="FI"/>
+			<xs:enumeration value="FJ"/>
+			<xs:enumeration value="FK"/>
+			<xs:enumeration value="FM"/>
+			<xs:enumeration value="FO"/>
+			<xs:enumeration value="FR"/>
+			<xs:enumeration value="GA"/>
+			<xs:enumeration value="GB"/>
+			<xs:enumeration value="GD"/>
+			<xs:enumeration value="GE"/>
+			<xs:enumeration value="GF"/>
+			<xs:enumeration value="GG"/>
+			<xs:enumeration value="GH"/>
+			<xs:enumeration value="GI"/>
+			<xs:enumeration value="GL"/>
+			<xs:enumeration value="GM"/>
+			<xs:enumeration value="GN"/>
+			<xs:enumeration value="GP"/>
+			<xs:enumeration value="GQ"/>
+			<xs:enumeration value="GR"/>
+			<xs:enumeration value="GS"/>
+			<xs:enumeration value="GT"/>
+			<xs:enumeration value="GU"/>
+			<xs:enumeration value="GW"/>
+			<xs:enumeration value="GY"/>
+			<xs:enumeration value="HK"/>
+			<xs:enumeration value="HM"/>
+			<xs:enumeration value="HN"/>
+			<xs:enumeration value="HR"/>
+			<xs:enumeration value="HT"/>
+			<xs:enumeration value="HU"/>
+			<xs:enumeration value="ID"/>
+			<xs:enumeration value="IE"/>
+			<xs:enumeration value="IL"/>
+			<xs:enumeration value="IM"/>
+			<xs:enumeration value="IN"/>
+			<xs:enumeration value="IO"/>
+			<xs:enumeration value="IQ"/>
+			<xs:enumeration value="IR"/>
+			<xs:enumeration value="IS"/>
+			<xs:enumeration value="IT"/>
+			<xs:enumeration value="JE"/>
+			<xs:enumeration value="JM"/>
+			<xs:enumeration value="JO"/>
+			<xs:enumeration value="JP"/>
+			<xs:enumeration value="KE"/>
+			<xs:enumeration value="KG"/>
+			<xs:enumeration value="KH"/>
+			<xs:enumeration value="KI"/>
+			<xs:enumeration value="KM"/>
+			<xs:enumeration value="KN"/>
+			<xs:enumeration value="KP"/>
+			<xs:enumeration value="KR"/>
+			<xs:enumeration value="KW"/>
+			<xs:enumeration value="KY"/>
+			<xs:enumeration value="KZ"/>
+			<xs:enumeration value="LA"/>
+			<xs:enumeration value="LB"/>
+			<xs:enumeration value="LC"/>
+			<xs:enumeration value="LI"/>
+			<xs:enumeration value="LK"/>
+			<xs:enumeration value="LR"/>
+			<xs:enumeration value="LS"/>
+			<xs:enumeration value="LT"/>
+			<xs:enumeration value="LU"/>
+			<xs:enumeration value="LV"/>
+			<xs:enumeration value="LY"/>
+			<xs:enumeration value="MA"/>
+			<xs:enumeration value="MC"/>
+			<xs:enumeration value="MD"/>
+			<xs:enumeration value="ME"/>
+			<xs:enumeration value="MF"/>
+			<xs:enumeration value="MG"/>
+			<xs:enumeration value="MH"/>
+			<xs:enumeration value="MK"/>
+			<xs:enumeration value="ML"/>
+			<xs:enumeration value="MM"/>
+			<xs:enumeration value="MN"/>
+			<xs:enumeration value="MO"/>
+			<xs:enumeration value="MP"/>
+			<xs:enumeration value="MQ"/>
+			<xs:enumeration value="MR"/>
+			<xs:enumeration value="MS"/>
+			<xs:enumeration value="MT"/>
+			<xs:enumeration value="MU"/>
+			<xs:enumeration value="MV"/>
+			<xs:enumeration value="MW"/>
+			<xs:enumeration value="MX"/>
+			<xs:enumeration value="MY"/>
+			<xs:enumeration value="MZ"/>
+			<xs:enumeration value="NA"/>
+			<xs:enumeration value="NC"/>
+			<xs:enumeration value="NE"/>
+			<xs:enumeration value="NF"/>
+			<xs:enumeration value="NG"/>
+			<xs:enumeration value="NI"/>
+			<xs:enumeration value="NL"/>
+			<xs:enumeration value="NO"/>
+			<xs:enumeration value="NP"/>
+			<xs:enumeration value="NR"/>
+			<xs:enumeration value="NU"/>
+			<xs:enumeration value="NZ"/>
+			<xs:enumeration value="OM"/>
+			<xs:enumeration value="PA"/>
+			<xs:enumeration value="PE"/>
+			<xs:enumeration value="PF"/>
+			<xs:enumeration value="PG"/>
+			<xs:enumeration value="PH"/>
+			<xs:enumeration value="PK"/>
+			<xs:enumeration value="PL"/>
+			<xs:enumeration value="PM"/>
+			<xs:enumeration value="PN"/>
+			<xs:enumeration value="PR"/>
+			<xs:enumeration value="PS"/>
+			<xs:enumeration value="PT"/>
+			<xs:enumeration value="PW"/>
+			<xs:enumeration value="PY"/>
+			<xs:enumeration value="QA"/>
+			<xs:enumeration value="RE"/>
+			<xs:enumeration value="RO"/>
+			<xs:enumeration value="RS"/>
+			<xs:enumeration value="RU"/>
+			<xs:enumeration value="RW"/>
+			<xs:enumeration value="SA"/>
+			<xs:enumeration value="SB"/>
+			<xs:enumeration value="SC"/>
+			<xs:enumeration value="SD"/>
+			<xs:enumeration value="SE"/>
+			<xs:enumeration value="SG"/>
+			<xs:enumeration value="SH"/>
+			<xs:enumeration value="SI"/>
+			<xs:enumeration value="SJ"/>
+			<xs:enumeration value="SK"/>
+			<xs:enumeration value="SL"/>
+			<xs:enumeration value="SM"/>
+			<xs:enumeration value="SN"/>
+			<xs:enumeration value="SO"/>
+			<xs:enumeration value="SR"/>
+			<xs:enumeration value="SS"/>
+			<xs:enumeration value="ST"/>
+			<xs:enumeration value="SV"/>
+			<xs:enumeration value="SX"/>
+			<xs:enumeration value="SY"/>
+			<xs:enumeration value="SZ"/>
+			<xs:enumeration value="TC"/>
+			<xs:enumeration value="TD"/>
+			<xs:enumeration value="TF"/>
+			<xs:enumeration value="TG"/>
+			<xs:enumeration value="TH"/>
+			<xs:enumeration value="TJ"/>
+			<xs:enumeration value="TK"/>
+			<xs:enumeration value="TL"/>
+			<xs:enumeration value="TM"/>
+			<xs:enumeration value="TN"/>
+			<xs:enumeration value="TO"/>
+			<xs:enumeration value="TR"/>
+			<xs:enumeration value="TT"/>
+			<xs:enumeration value="TV"/>
+			<xs:enumeration value="TW"/>
+			<xs:enumeration value="TZ"/>
+			<xs:enumeration value="UA"/>
+			<xs:enumeration value="UG"/>
+			<xs:enumeration value="UM"/>
+			<xs:enumeration value="US"/>
+			<xs:enumeration value="UY"/>
+			<xs:enumeration value="UZ"/>
+			<xs:enumeration value="VA"/>
+			<xs:enumeration value="VC"/>
+			<xs:enumeration value="VE"/>
+			<xs:enumeration value="VG"/>
+			<xs:enumeration value="VI"/>
+			<xs:enumeration value="VN"/>
+			<xs:enumeration value="VU"/>
+			<xs:enumeration value="WF"/>
+			<xs:enumeration value="WS"/>
+			<xs:enumeration value="YE"/>
+			<xs:enumeration value="YT"/>
+			<xs:enumeration value="ZA"/>
+			<xs:enumeration value="ZM"/>
+			<xs:enumeration value="ZW"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="SprakType" id="BUF_EC3036F2-A7F4-42A2-86DC-106C0CC020FD">
+		<xs:annotation>
+			<xs:documentation></xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="aa"/>
+			<xs:enumeration value="ab"/>
+			<xs:enumeration value="ae"/>
+			<xs:enumeration value="af"/>
+			<xs:enumeration value="ak"/>
+			<xs:enumeration value="am"/>
+			<xs:enumeration value="an"/>
+			<xs:enumeration value="ar"/>
+			<xs:enumeration value="as"/>
+			<xs:enumeration value="av"/>
+			<xs:enumeration value="ay"/>
+			<xs:enumeration value="az"/>
+			<xs:enumeration value="ba"/>
+			<xs:enumeration value="be"/>
+			<xs:enumeration value="bg"/>
+			<xs:enumeration value="bh"/>
+			<xs:enumeration value="bi"/>
+			<xs:enumeration value="bm"/>
+			<xs:enumeration value="bn"/>
+			<xs:enumeration value="bo"/>
+			<xs:enumeration value="br"/>
+			<xs:enumeration value="bs"/>
+			<xs:enumeration value="ca"/>
+			<xs:enumeration value="cdo"/>
+			<xs:enumeration value="ce"/>
+			<xs:enumeration value="ch"/>
+			<xs:enumeration value="co"/>
+			<xs:enumeration value="cr"/>
+			<xs:enumeration value="cs"/>
+			<xs:enumeration value="cu"/>
+			<xs:enumeration value="cv"/>
+			<xs:enumeration value="cy"/>
+			<xs:enumeration value="da"/>
+			<xs:enumeration value="de"/>
+			<xs:enumeration value="dv"/>
+			<xs:enumeration value="dz"/>
+			<xs:enumeration value="ee"/>
+			<xs:enumeration value="el"/>
+			<xs:enumeration value="en"/>
+			<xs:enumeration value="eo"/>
+			<xs:enumeration value="es"/>
+			<xs:enumeration value="et"/>
+			<xs:enumeration value="eu"/>
+			<xs:enumeration value="fa"/>
+			<xs:enumeration value="ff"/>
+			<xs:enumeration value="fi"/>
+			<xs:enumeration value="fj"/>
+			<xs:enumeration value="fo"/>
+			<xs:enumeration value="fr"/>
+			<xs:enumeration value="fy"/>
+			<xs:enumeration value="ga"/>
+			<xs:enumeration value="gd"/>
+			<xs:enumeration value="gl"/>
+			<xs:enumeration value="gn"/>
+			<xs:enumeration value="gu"/>
+			<xs:enumeration value="gv"/>
+			<xs:enumeration value="ha"/>
+			<xs:enumeration value="he"/>
+			<xs:enumeration value="hi"/>
+			<xs:enumeration value="ho"/>
+			<xs:enumeration value="hr"/>
+			<xs:enumeration value="ht"/>
+			<xs:enumeration value="hu"/>
+			<xs:enumeration value="hy"/>
+			<xs:enumeration value="hz"/>
+			<xs:enumeration value="ia"/>
+			<xs:enumeration value="id"/>
+			<xs:enumeration value="ie"/>
+			<xs:enumeration value="ig"/>
+			<xs:enumeration value="ii"/>
+			<xs:enumeration value="ik"/>
+			<xs:enumeration value="io"/>
+			<xs:enumeration value="is"/>
+			<xs:enumeration value="it"/>
+			<xs:enumeration value="iu"/>
+			<xs:enumeration value="ja"/>
+			<xs:enumeration value="jv"/>
+			<xs:enumeration value="ka"/>
+			<xs:enumeration value="kg"/>
+			<xs:enumeration value="ki"/>
+			<xs:enumeration value="kj"/>
+			<xs:enumeration value="kk"/>
+			<xs:enumeration value="kl"/>
+			<xs:enumeration value="km"/>
+			<xs:enumeration value="kn"/>
+			<xs:enumeration value="ko"/>
+			<xs:enumeration value="kr"/>
+			<xs:enumeration value="ks"/>
+			<xs:enumeration value="ku"/>
+			<xs:enumeration value="kv"/>
+			<xs:enumeration value="kw"/>
+			<xs:enumeration value="ky"/>
+			<xs:enumeration value="la"/>
+			<xs:enumeration value="lb"/>
+			<xs:enumeration value="lg"/>
+			<xs:enumeration value="li"/>
+			<xs:enumeration value="ln"/>
+			<xs:enumeration value="lo"/>
+			<xs:enumeration value="lt"/>
+			<xs:enumeration value="lu"/>
+			<xs:enumeration value="lv"/>
+			<xs:enumeration value="lvk"/>
+			<xs:enumeration value="mg"/>
+			<xs:enumeration value="mh"/>
+			<xs:enumeration value="mi"/>
+			<xs:enumeration value="mk"/>
+			<xs:enumeration value="ml"/>
+			<xs:enumeration value="mn"/>
+			<xs:enumeration value="mo"/>
+			<xs:enumeration value="mr"/>
+			<xs:enumeration value="ms"/>
+			<xs:enumeration value="mt"/>
+			<xs:enumeration value="my"/>
+			<xs:enumeration value="na"/>
+			<xs:enumeration value="nb"/>
+			<xs:enumeration value="nd"/>
+			<xs:enumeration value="ne"/>
+			<xs:enumeration value="ng"/>
+			<xs:enumeration value="nl"/>
+			<xs:enumeration value="nn"/>
+			<xs:enumeration value="no"/>
+			<xs:enumeration value="nr"/>
+			<xs:enumeration value="nv"/>
+			<xs:enumeration value="ny"/>
+			<xs:enumeration value="oc"/>
+			<xs:enumeration value="oj"/>
+			<xs:enumeration value="om"/>
+			<xs:enumeration value="or"/>
+			<xs:enumeration value="os"/>
+			<xs:enumeration value="pa"/>
+			<xs:enumeration value="pi"/>
+			<xs:enumeration value="pl"/>
+			<xs:enumeration value="ps"/>
+			<xs:enumeration value="pt"/>
+			<xs:enumeration value="qu"/>
+			<xs:enumeration value="rm"/>
+			<xs:enumeration value="rn"/>
+			<xs:enumeration value="ro"/>
+			<xs:enumeration value="ru"/>
+			<xs:enumeration value="rw"/>
+			<xs:enumeration value="sa"/>
+			<xs:enumeration value="sc"/>
+			<xs:enumeration value="sd"/>
+			<xs:enumeration value="se"/>
+			<xs:enumeration value="sg"/>
+			<xs:enumeration value="sh"/>
+			<xs:enumeration value="si"/>
+			<xs:enumeration value="sk"/>
+			<xs:enumeration value="sl"/>
+			<xs:enumeration value="sm"/>
+			<xs:enumeration value="sn"/>
+			<xs:enumeration value="so"/>
+			<xs:enumeration value="sq"/>
+			<xs:enumeration value="sr"/>
+			<xs:enumeration value="ss"/>
+			<xs:enumeration value="st"/>
+			<xs:enumeration value="su"/>
+			<xs:enumeration value="sv"/>
+			<xs:enumeration value="sw"/>
+			<xs:enumeration value="ta"/>
+			<xs:enumeration value="te"/>
+			<xs:enumeration value="tg"/>
+			<xs:enumeration value="th"/>
+			<xs:enumeration value="ti"/>
+			<xs:enumeration value="tk"/>
+			<xs:enumeration value="tl"/>
+			<xs:enumeration value="tn"/>
+			<xs:enumeration value="to"/>
+			<xs:enumeration value="tr"/>
+			<xs:enumeration value="ts"/>
+			<xs:enumeration value="tt"/>
+			<xs:enumeration value="tw"/>
+			<xs:enumeration value="ty"/>
+			<xs:enumeration value="ug"/>
+			<xs:enumeration value="uk"/>
+			<xs:enumeration value="ur"/>
+			<xs:enumeration value="uz"/>
+			<xs:enumeration value="ve"/>
+			<xs:enumeration value="vi"/>
+			<xs:enumeration value="vo"/>
+			<xs:enumeration value="wa"/>
+			<xs:enumeration value="wo"/>
+			<xs:enumeration value="xh"/>
+			<xs:enumeration value="yi"/>
+			<xs:enumeration value="yo"/>
+			<xs:enumeration value="za"/>
+			<xs:enumeration value="zea"/>
+			<xs:enumeration value="zh"/>
+			<xs:enumeration value="zu"/>
+			<xs:enumeration value="zza"/>		
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="VedleggTypeType" id="BUF_7B3694CE-5A22-4840-93C7-30B5076FC322">
+		<xs:annotation>
+			<xs:documentation>
+			   Koder for kjente dokumenttyper:
+			   1 = Menneskelig lesbar versjon av XML-melding
+			 999 = Annet
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="1"/>		
+			<xs:enumeration value="999"/>		
+		</xs:restriction>
+	</xs:simpleType>
+
+</xs:schema>

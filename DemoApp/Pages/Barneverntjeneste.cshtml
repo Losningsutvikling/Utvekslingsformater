@@ -4,7 +4,7 @@
 @{
     ViewData["Title"] = "Barneverntjeneste";
     <h2>Barneverntjeneste</h2>
-    <div class="variabel"><span class="ledetekst">Navn</span><span class="tekst_verdi">@Model.BVtjeneste.Navn</span></div>
+    <div class="variabel"><span class="ledetekst">Navn</span><span class="tekst_verdi">@Model.BVtjeneste!.Navn</span></div>
     <div class="variabel"><span class="ledetekst">Org.nr.</span><span class="tekst_verdi">@Model.BVtjeneste.Organisasjonsnummer</span></div>
     <div class="variabel"><span class="ledetekst">Kommune</span><span class="tekst_verdi">@Model.BVtjeneste.Kommunenummer @Model.BVtjeneste.KommuneNavn</span></div>
     @if(!string.IsNullOrEmpty(Model.BVtjeneste.Bydelsnummer))

@@ -1,0 +1,42 @@
+﻿@page
+@using DemoApp.Models
+@using DemoApp.Models.Simulator
+@using DemoApp.Models.ViewModels
+@using System.Xml.Schema
+@using System.Xml
+@using DemoApp.Pages.Partial
+@model DemoApp.Pages.MeldingListeModel
+@{
+    <input type="hidden" name="@Konstanter.XmlFil" id="@Konstanter.XmlFil" value="">
+    <input type="hidden" name="@Konstanter.Handling" id="@Konstanter.Handling" value="">
+    <input type="hidden" name="actionParam" id="actionParam" value="">
+
+    <table id="meldingListe" class="melding_liste">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Dato / tid</th>
+                <th>Id</th>
+                <th>Status</th>
+                <th>Handling</th>
+            </tr>
+        </thead>
+        @foreach(var fileInfo in Model.meldinger)
+        {
+
+            string status = XmlFactory.GetStatusFromFile(fileInfo);
+
+            string id = fileInfo.Meldingshode.Id;
+            MeldingMenyModel menyModel = new(fileInfo);
+
+            string sendtTid = (fileInfo.Meldingshode.SendtTidspunkt != null) ? ((DateTime)(fileInfo.Meldingshode.SendtTidspunkt)).ToString("yyyy-MM-dd HH:mm:ss") : "";
+            <tr>
+                <td>@fileInfo.Meldingshode.Meldingstype<input type="hidden" value="@fileInfo.Filnavn" name="@id" /></td>
+                <td>@sendtTid</td>
+                <td>@id</td>
+                <td>@status</td>
+                <td>@await Html.PartialAsync("Partial/MeldingMeny.cshtml", menyModel)</td>
+            </tr>
+        }
+    </table>
+}
